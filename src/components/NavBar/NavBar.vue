@@ -30,11 +30,15 @@ export default {
 </script>
 <style>
 .bg-navbar-color {
-  background: purple;
+  background: #401B96;
 }
 
 .navbar-item-text {
-  color: azure;
   font-size: 20px;
+  text-decoration: none;
+}
+
+nav{
+  color: azure !important;
 }
 </style>

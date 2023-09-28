@@ -1,6 +1,6 @@
 <template>
   <li class="nav-item">
-    <router-link class="nav-link" exact-active-class="bg-navbar-active" :to='route'>{{ itemText }}</router-link>
+    <router-link class="nav-link" exact-active-class="navbar-active" :to='route'>{{ itemText }}</router-link>
   </li>
 </template>
 <script>
@@ -10,8 +10,8 @@ export default {
 }
 </script>
 <style>
-.bg-navbar-active {
-  color: dodgerblue;
+.navbar-active {
+  text-decoration: underline;
 }
 
 </style>
