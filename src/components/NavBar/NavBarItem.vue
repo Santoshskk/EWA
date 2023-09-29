@@ -1,5 +1,5 @@
 <template>
-  <li class="nav-item">
+  <li class="nav-item ">
     <router-link class="nav-link" exact-active-class="navbar-active" :to='route'>{{ itemText }}</router-link>
   </li>
 </template>
@@ -14,4 +14,11 @@ export default {
   text-decoration: underline;
 }
 
+.nav-link{
+  color: white !important;
+}
+
+.nav-item {
+  color: white !important;
+}
 </style>
