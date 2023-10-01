@@ -1,0 +1,28 @@
+{
+    "quizQuestions": [
+      {
+        "type": "yesNoQuestion",
+        "quizQuestion": "Is the Earth round?"
+      },
+      {
+        "type": "multipleChoiceQuestion",
+        "quizQuestion": "Which planet is known as the Red Planet?",
+        "answers": ["Earth", "Mars", "Jupiter", "Venus"]
+      },
+      {
+        "type": "yesNoQuestion",
+        "quizQuestion": "Is water wet?"
+      },
+      {
+        "type": "multipleChoiceQuestion",
+        "quizQuestion": "What is the capital of France?",
+        "answers": ["Berlin", "Madrid", "Paris", "Rome"]
+      },
+      {
+        "type": "multipleChoiceQuestion",
+        "quizQuestion": "Which of these is not a programming language?",
+        "answers": ["Python", "Java", "HTML", "C++"]
+      }
+    ]
+  }
+  
