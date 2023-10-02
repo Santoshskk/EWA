@@ -1,38 +1,56 @@
 <template>
     <div class="container-fluid text-center quizMain">
-      <div v-if="!quizStarted">
+      <div v-if="!quizStarted" class="quizButtonSection">
         <h1 class="">Welcome to the SDG quiz where you can find out what SDG suits your goals!</h1>
         <button @click="startQuiz" type="button" class="btn btn-primary my-5 startQuizButton ripple">Start quiz</button>
       </div>
        <!-- This is where the quiz progress bar will be displayed -->
       <!-- This is where the quiz questions will be displayed with the answers -->
-      <div v-if="quizStarted">
-        <QuizQuestionMultipleChoiceComponent :quizQuestion="quizQuestions[1].quizQuestion" :answers="quizQuestions[1].answers"/>
+      <div v-else>
+        <div v-if="currentQuestion.type === 'yesNoQuestion'">
+          <QuizQuestionYesNoComponent :quizQuestion="currentQuestion.quizQuestion" v-on:questionAnswered="handleQuestionAnswered"/>
+        </div>
+        <div v-else>
+          <QuizQuestionMultipleChoiceComponent  :quizQuestion="currentQuestion.quizQuestion" :answers="currentQuestion.answers" v-on:questionAnswered="handleQuestionAnswered"/>
+        </div>
       </div>
     </div>
 </template>
 
 <script>
-// import QuizQuestionYesNoComponent from '@/components/quiz/QuizQuestionYesNoComponent.vue'
+import QuizQuestionYesNoComponent from '@/components/quiz/QuizQuestionYesNoComponent.vue'
 import QuizQuestionMultipleChoiceComponent from '@/components/quiz/QuizQuestionMultipleChoiceComponent.vue'
-import quizQuestions from '@/assets/quizQuestions.json'
+import quizQuestionsJSON from '@/assets/quizQuestions.json'
+// import quizQuestions from '@/assets/quizQuestions.json'
 
 export default {
   name: 'QuizComponent',
   components: {
-    // QuizQuestionYesNoComponent,
+    QuizQuestionYesNoComponent,
     QuizQuestionMultipleChoiceComponent
   },
   data () {
     return {
       quizStarted: false,
-      quizQuestions: quizQuestions.quizQuestions
+      quizQuestionsArray: [],
+      quizIndex: 0,
+      currentQuestion: null
     }
   },
   methods: {
     startQuiz () {
+      this.quizQuestionsArray = quizQuestionsJSON.quizQuestions
+      this.currentQuestion = this.quizQuestionsArray[this.quizIndex]
       this.quizStarted = true
-      console.log(quizQuestions)
+      console.log(this.quizQuestionsArray)
+    },
+    handleQuestionAnswered (answers) {
+      this.quizIndex++
+      if (this.quizIndex > this.quizQuestionsArray.length - 1) {
+        this.quizStarted = false
+      } else {
+        this.currentQuestion = this.quizQuestionsArray[this.quizIndex]
+      }
     }
   }
 }
@@ -45,7 +63,7 @@ export default {
   height: 100vh;
 }
 
-.btn {
+.quizButtonSection .btn {
   border-radius: 15px !important;
   color: #A38EE1 !important;
   background-color: transparent !important;
