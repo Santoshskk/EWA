@@ -1,10 +1,10 @@
 <template>
     <div>
-        <h1 class="questionHeader">{{ quizQuestion }}</h1>
+        <h1 class="questionHeader">{{ questionObject.quizQuestion }}</h1>
         <div class="container">
             <div class="m-auto row " v-for="answer in quizAnswers" :key="answer.answer">
                 <div class="col-12 quizButtonSection">
-                    <button @click="clickedMultipleChoiceButton(answer)" type="button" :class="{selectedButton: answer.selected}" class="btn btn-primary my-5 quizMultipleChoiceButton" > {{ answer.answer }}</button>
+                    <button @click="clickedMultipleChoiceButton(answer)" type="button" :class="{selectedButton: answer.selected, quizAnswerButton: !answer.selected}" class="btn btn-primary my-5 quizMultipleChoiceButton" > {{ answer.answer }}</button>
                 </div>
             </div>
             <div class="d-flex justify-content-end">
@@ -15,17 +15,13 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, watchEffect } from 'vue'
 
 export default {
   name: 'QuizQuestionYesNoComponent',
   props: {
-    quizQuestion: {
-      type: String,
-      required: true
-    },
-    answers: {
-      type: Array,
+    questionObject: {
+      type: Object,
       required: true
     }
   },
@@ -35,21 +31,13 @@ export default {
   },
 
   setup (props) {
-    if (props.answers !== null && props.answers !== undefined) {
-      const quizAnswers = ref(props.answers.map(answer => {
-        return {
-          answer: answer,
-          selected: false
-        }
-      }))
-
-      const nextButtonEnabled = ref(quizAnswers.value.filter(answer => answer.selected).length > 0)
+    if (props.questionObject.answers !== null && props.questionObject.answers !== undefined) {
+      const quizAnswers = ref([])
+      const nextButtonEnabled = ref(false)
 
       const clickedMultipleChoiceButton = (answer) => {
         const index = quizAnswers.value.indexOf(answer)
         quizAnswers.value[index].selected = !quizAnswers.value[index].selected
-        console.log(quizAnswers.value[index].selected)
-        console.log(quizAnswers.value)
         checkIfNextButtonEnabled()
       }
 
@@ -57,19 +45,43 @@ export default {
         nextButtonEnabled.value = quizAnswers.value.filter(answer => answer.selected).length > 0
       }
 
+      watchEffect(() => {
+        if (Array.isArray(props.questionObject.answers)) {
+          quizAnswers.value = props.questionObject.answers.map(answer => {
+            return {
+              answer: answer,
+              selected: false
+            }
+          })
+        }
+        if (props.questionObject.givenAnswer !== undefined) {
+          console.log('new round')
+          for (const quizAnswer of quizAnswers.value) {
+            for (const givenAnswer of props.questionObject.givenAnswer) {
+              console.log(givenAnswer, quizAnswer.answer)
+              if (quizAnswer.answer === givenAnswer) {
+                quizAnswer.selected = true
+                nextButtonEnabled.value = true
+              }
+            }
+          }
+        }
+      })
+
       return { quizAnswers, clickedMultipleChoiceButton, nextButtonEnabled }
     }
   },
 
   methods: {
     handleQuestionAnswered () {
-      const selectedAnswers = this.quizAnswers.filter(answer => answer.selected)
+      const selectedAnswerObjects = this.quizAnswers.filter(answer => answer.selected)
+      const selectedAnswers = selectedAnswerObjects.map(answer => answer.answer)
+
       this.$emit('questionAnswered', selectedAnswers)
     }
   },
   computed: {
     selectedAnswersList () {
-      console.log(this.quizAnswers.filter(answer => answer.selected).length)
       return this.quizAnswers.filter(answer => answer.selected)
     }
   }
@@ -92,11 +104,6 @@ export default {
     margin: 20px !important
 }
 
-.quizButtonSection .selectedButton {
-    color: #fff !important;
-    background-color: #A38EE1 !important;
-    border: 2px solid #A38EE1 !important;
-}
 .quizNextButton {
     font-size: 1.5rem;
     width: 200px;

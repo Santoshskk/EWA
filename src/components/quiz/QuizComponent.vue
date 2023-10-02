@@ -2,16 +2,16 @@
     <div class="container-fluid text-center quizMain">
       <div v-if="!quizStarted" class="quizButtonSection">
         <h1 class="">Welcome to the SDG quiz where you can find out what SDG suits your goals!</h1>
-        <button @click="startQuiz" type="button" class="btn btn-primary my-5 startQuizButton ripple">Start quiz</button>
+        <button @click="startQuiz" type="button" class="btn btn-primary my-5 quizAnswerButton startQuizButton  ripple">Start quiz</button>
       </div>
        <!-- This is where the quiz progress bar will be displayed -->
       <!-- This is where the quiz questions will be displayed with the answers -->
       <div v-else>
         <div v-if="currentQuestion.type === 'yesNoQuestion'">
-          <QuizQuestionYesNoComponent :quizQuestion="currentQuestion.quizQuestion" v-on:questionAnswered="handleQuestionAnswered"/>
+          <QuizQuestionYesNoComponent :questionObject="currentQuestion" v-on:questionAnswered="handleQuestionAnswered"/>
         </div>
         <div v-else>
-          <QuizQuestionMultipleChoiceComponent  :quizQuestion="currentQuestion.quizQuestion" :answers="currentQuestion.answers" v-on:questionAnswered="handleQuestionAnswered"/>
+          <QuizQuestionMultipleChoiceComponent :questionObject="currentQuestion" v-on:questionAnswered="handleQuestionAnswered"/>
         </div>
       </div>
     </div>
@@ -21,7 +21,6 @@
 import QuizQuestionYesNoComponent from '@/components/quiz/QuizQuestionYesNoComponent.vue'
 import QuizQuestionMultipleChoiceComponent from '@/components/quiz/QuizQuestionMultipleChoiceComponent.vue'
 import quizQuestionsJSON from '@/assets/quizQuestions.json'
-// import quizQuestions from '@/assets/quizQuestions.json'
 
 export default {
   name: 'QuizComponent',
@@ -32,24 +31,35 @@ export default {
   data () {
     return {
       quizStarted: false,
-      quizQuestionsArray: [],
+      quizQuestionsObjectArray: [],
       quizIndex: 0,
       currentQuestion: null
     }
   },
   methods: {
     startQuiz () {
-      this.quizQuestionsArray = quizQuestionsJSON.quizQuestions
-      this.currentQuestion = this.quizQuestionsArray[this.quizIndex]
+      this.quizQuestionsObjectArray = quizQuestionsJSON.quizQuestions
+      this.currentQuestion = this.quizQuestionsObjectArray[this.quizIndex]
       this.quizStarted = true
-      console.log(this.quizQuestionsArray)
     },
     handleQuestionAnswered (answers) {
+      this.quizQuestionsObjectArray[this.quizIndex].givenAnswer = answers
       this.quizIndex++
-      if (this.quizIndex > this.quizQuestionsArray.length - 1) {
+      if (this.quizIndex > this.quizQuestionsObjectArray.length - 1) {
         this.quizStarted = false
+        this.quizIndex = 0
       } else {
-        this.currentQuestion = this.quizQuestionsArray[this.quizIndex]
+        this.currentQuestion = this.quizQuestionsObjectArray[this.quizIndex]
+      }
+    }
+  },
+  beforeRouteLeave (to, from, next) {
+    if (this.quizIndex !== 0) {
+      if (window.confirm('You have not finished the quiz, your progress will be lost')) {
+        this.quizIndex = 0
+        next()
+      } else {
+        next(false)
       }
     }
   }
@@ -65,12 +75,21 @@ export default {
 
 .quizButtonSection .btn {
   border-radius: 15px !important;
+}
+
+.quizButtonSection .quizAnswerButton {
   color: #A38EE1 !important;
   background-color: transparent !important;
   border: 2px solid #A38EE1 !important;
 }
 
-.btn:hover {
+.quizButtonSection .selectedButton {
+    color: #fff !important;
+    background-color: #A38EE1 !important;
+    border: 2px solid #A38EE1 !important;
+}
+
+.quizAnswerButton:hover {
   color: #fff !important;
   background-color: #A38EE1 !important;
   border: 2px solid #A38EE1 !important;
