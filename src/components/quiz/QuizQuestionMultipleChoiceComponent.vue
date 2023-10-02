@@ -8,7 +8,7 @@
                 </div>
             </div>
             <div class="d-flex justify-content-end">
-                    <button @click="handleQuestionAnswered()" type="button" class="btn btn-primary my-5 quizNextButton" :disabled="selectedAnswersList > 0" >Next</button>
+                    <button @click="handleQuestionAnswered()" type="button" class="btn btn-primary my-5 quizNextButton" :disabled="!nextButtonEnabled" >Next</button>
             </div>
         </div>
     </div>
@@ -31,7 +31,6 @@ export default {
   },
   data () {
     return {
-      nextButtonEnabled: false
     }
   },
 
@@ -44,12 +43,21 @@ export default {
         }
       }))
 
+      const nextButtonEnabled = ref(quizAnswers.value.filter(answer => answer.selected).length > 0)
+
       const clickedMultipleChoiceButton = (answer) => {
         const index = quizAnswers.value.indexOf(answer)
         quizAnswers.value[index].selected = !quizAnswers.value[index].selected
+        console.log(quizAnswers.value[index].selected)
+        console.log(quizAnswers.value)
+        checkIfNextButtonEnabled()
       }
 
-      return { quizAnswers, clickedMultipleChoiceButton }
+      const checkIfNextButtonEnabled = () => {
+        nextButtonEnabled.value = quizAnswers.value.filter(answer => answer.selected).length > 0
+      }
+
+      return { quizAnswers, clickedMultipleChoiceButton, nextButtonEnabled }
     }
   },
 
@@ -61,6 +69,7 @@ export default {
   },
   computed: {
     selectedAnswersList () {
+      console.log(this.quizAnswers.filter(answer => answer.selected).length)
       return this.quizAnswers.filter(answer => answer.selected)
     }
   }
@@ -83,7 +92,7 @@ export default {
     margin: 20px !important
 }
 
-.selectedButton {
+.quizButtonSection .selectedButton {
     color: #fff !important;
     background-color: #A38EE1 !important;
     border: 2px solid #A38EE1 !important;
