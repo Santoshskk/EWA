@@ -27,6 +27,11 @@
         "type": "multipleChoiceQuestion",
         "quizQuestion": "Which of these is not a programming language?",
         "answers": ["Python", "Java", "HTML", "C++"]
+      },      
+      {
+        "type": "multipleChoiceQuestion",
+        "quizQuestion": "Which of these is not a programming language?",
+        "answers": ["Python", "Java", "HTML", "C++"]
       }
     ]
 }
