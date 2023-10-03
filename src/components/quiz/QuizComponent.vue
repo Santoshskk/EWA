@@ -7,6 +7,7 @@
        <!-- This is where the quiz progress bar will be displayed -->
       <!-- This is where the quiz questions will be displayed with the answers -->
       <div v-else>
+        <QuizProgressBarComponent :currentQuestionIndex="this.quizIndex + 1" :totalQuestions="this.quizQuestionsObjectArray.length + 1"/>
         <div v-if="currentQuestion.type === 'yesNoQuestion'">
           <QuizQuestionYesNoComponent :questionObject="currentQuestion" v-on:questionAnswered="handleQuestionAnswered"/>
         </div>
@@ -21,12 +22,14 @@
 import QuizQuestionYesNoComponent from '@/components/quiz/QuizQuestionYesNoComponent.vue'
 import QuizQuestionMultipleChoiceComponent from '@/components/quiz/QuizQuestionMultipleChoiceComponent.vue'
 import quizQuestionsJSON from '@/assets/quizQuestions.json'
+import QuizProgressBarComponent from './QuizProgressBarComponent.vue'
 
 export default {
   name: 'QuizComponent',
   components: {
     QuizQuestionYesNoComponent,
-    QuizQuestionMultipleChoiceComponent
+    QuizQuestionMultipleChoiceComponent,
+    QuizProgressBarComponent
   },
   data () {
     return {
