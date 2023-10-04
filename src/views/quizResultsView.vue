@@ -1,7 +1,8 @@
 <template>
-  <h2 class="mx-0">These are your top 3 sdgs!</h2>
+  <h2 class="mx-0">These are your top sdgs!</h2>
   <section class="container mx-5">
     <div class="row">
+      <sdg-card-component/>
       <sdg-card-component/>
       <sdg-card-component/>
       <sdg-card-component/>
