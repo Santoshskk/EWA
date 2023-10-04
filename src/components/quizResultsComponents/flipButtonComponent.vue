@@ -17,8 +17,6 @@ export default {
   background: #401B96;
   color: white;
   font-family: inherit;
-  padding: 0.35em;
-  padding-left: 1.2em;
   font-size: 17px;
   font-weight: 500;
   border-radius: 0.9em;
@@ -30,7 +28,7 @@ export default {
   overflow: hidden;
   position: relative;
   height: 2.8em;
-  padding-right: 3.3em;
+  padding: 0.35em 3.3em 0.35em 1.2em;
 }
 
 .cssbuttons-io-button .icon {
