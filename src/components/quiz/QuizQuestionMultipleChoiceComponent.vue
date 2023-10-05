@@ -38,7 +38,11 @@ export default {
       nextButtonHover: true
     }
   },
-
+  /**
+   * This is a function that will be called when the component is created and setup all the values
+   * @param {*} props
+   * @author Marco de Boer
+   */
   setup (props) {
     if (props.questionObject.answers !== null && props.questionObject.answers !== undefined) {
       const quizAnswers = ref([])
@@ -49,11 +53,17 @@ export default {
         quizAnswers.value[index].selected = !quizAnswers.value[index].selected
         checkIfNextButtonEnabled()
       }
-
+      /**
+       * This is a function that will be called when the user clicks on the next button and emits the answer to the parent component
+       * @author Marco de Boer
+       */
       const checkIfNextButtonEnabled = () => {
         nextButtonEnabled.value = quizAnswers.value.filter(answer => answer.selected).length > 0
       }
-
+      /**
+       * This is a function that will be called when the user clicks on the next button and emits the answer to the parent component
+       * @author Marco de Boer
+       */
       watchEffect(() => {
         if (Array.isArray(props.questionObject.answers)) {
           quizAnswers.value = props.questionObject.answers.map(answer => {
@@ -80,6 +90,11 @@ export default {
   },
 
   methods: {
+    /**
+     * This is a function that will be called when the user clicks on the next button and emits the answer to the parent component
+     * The answers are filtered to only the selected answers and then emitted to the parent component
+     * @author Marco de Boer
+     */
     handleQuestionAnswered () {
       const selectedAnswerObjects = this.quizAnswers.filter(answer => answer.selected)
       const selectedAnswers = selectedAnswerObjects.map(answer => answer.answer)
@@ -92,7 +107,6 @@ export default {
       return this.quizAnswers.filter(answer => answer.selected)
     },
     showTooltip () {
-      console.log(!this.nextButtonEnabled && this.nextButtonHover)
       return !this.nextButtonEnabled && this.nextButtonHover
     }
   },

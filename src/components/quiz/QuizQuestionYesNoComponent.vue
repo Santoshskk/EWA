@@ -25,6 +25,11 @@ export default {
       required: true
     }
   },
+  /**
+   * This is a function that will be called when the component is created and setup all the values
+   * @param {*} props The props that are passed to this component
+   * @author Marco de Boer
+   */
   setup (props) {
     const yesWasSelected = ref(false)
     const noWasSelected = ref(false)
@@ -50,6 +55,11 @@ export default {
     clickedNoButton () {
       this.handleQuestionAnswered(false)
     },
+    /**
+     * This is a function that will be called when the user clicks on the next button and emits the answer to the parent component
+     * @param {boolean} answers is either true or false depending on the answer given by the user
+     * @author Marco de Boer
+     */
     handleQuestionAnswered (answers) {
       this.$emit('questionAnswered', answers)
     }

@@ -1,38 +1,60 @@
 {
-    "quizQuestions": [
-      {
-        "type": "yesNoQuestion",
-        "quizQuestion": "Is the Earth round?"
-      },
-      {
-        "type": "multipleChoiceQuestion",
-        "quizQuestion": "Which planet is known as the Red Planet?",
-        "answers": ["Earth", "Mars", "Jupiter", "Venus"]
-      },
-      {
-        "type": "yesNoQuestion",
-        "quizQuestion": "Is water wet?"
-      },
-      {
-        "type": "multipleChoiceQuestion",
-        "quizQuestion": "What is the capital of France?",
-        "answers": ["Berlin", "Madrid", "Paris", "Rome"]
-      },
-      {
-        "type": "multipleChoiceQuestion",
-        "quizQuestion": "Which of these is not a programming language?",
-        "answers": ["Python", "Java", "HTML", "C++"]
-      },
-      {
-        "type": "multipleChoiceQuestion",
-        "quizQuestion": "Which of these is not a programming language?",
-        "answers": ["Python", "Java", "HTML", "C++"]
-      },      
-      {
-        "type": "multipleChoiceQuestion",
-        "quizQuestion": "Which of these is not a programming language?",
-        "answers": ["Python", "Java", "HTML", "C++"]
-      }
-    ]
+  "quizQuestions": [
+    {
+      "type": "yesNoQuestion",
+      "quizQuestion": "Do you believe access to clean water is a basic human right?",
+      "SDG": 6
+    },
+    {
+      "type": "multipleChoiceQuestion",
+      "quizQuestion": "Which issue do you care about the most?",
+      "answers": ["Climate Change", "Gender Equality", "Economic Growth", "Quality Education"],
+      "SDG": [13, 5, 8, 4]
+    },
+    {
+      "type": "yesNoQuestion",
+      "quizQuestion": "Do you think renewable energy is the future?",
+      "SDG": 7
+    },
+    {
+      "type": "multipleChoiceQuestion",
+      "quizQuestion": "What is your preferred mode of transportation?",
+      "answers": ["Car", "Bicycle", "Public Transport", "Walking"],
+      "SDG": [11, 3, 9, 13]
+    },
+    {
+      "type": "yesNoQuestion",
+      "quizQuestion": "Do you believe that quality education should be accessible to everyone?",
+      "SDG": 4
+    },
+    {
+      "type": "multipleChoiceQuestion",
+      "quizQuestion": "Which of these social issues concerns you the most?",
+      "answers": ["Poverty", "Hunger", "Inequality", "Lack of Healthcare"],
+      "SDG": [1, 2, 10, 3]
+    },
+    {
+      "type": "yesNoQuestion",
+      "quizQuestion": "Do you think innovation is key to solving many of today's problems?",
+      "SDG": 9
+    },
+    {
+      "type": "multipleChoiceQuestion",
+      "quizQuestion": "How do you usually spend your free time?",
+      "answers": ["Outdoor Activities", "Reading", "Socializing", "Volunteering"],
+      "SDG": [15, 4, 11, 17]
+    },
+    {
+      "type": "yesNoQuestion",
+      "quizQuestion": "Do you think businesses should be more responsible for their environmental impact?",
+      "SDG": 12
+    },
+    {
+      "type": "multipleChoiceQuestion",
+      "quizQuestion": "What type of content do you usually share or talk about on social media?",
+      "answers": ["Environmental Issues", "Social Issues", "Technology", "Health and Wellness"],
+      "SDG": [13, 16, 9, 3]
+    }
+  ]
 }
-  
+
