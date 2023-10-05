@@ -8,7 +8,7 @@
       <!-- This is where the quiz questions will be displayed with the answers -->
       <div v-else>
         <QuizProgressBarComponent :currentQuestionIndex="this.quizIndex + 1" :totalQuestions="this.quizQuestionsObjectArray.length + 1"
-        :nextButtonVisible="isNextButtonVisible" :previousButtonVisible="isPreviousButtonVisible" v-on:changeQuestion="handleChangeQuestion"/>
+        :totalQuestionsAnswered="totalQuestionsAnswered" v-on:changeQuestion="handleChangeQuestion"/>
         <div v-if="currentQuestion.type === 'yesNoQuestion'">
           <QuizQuestionYesNoComponent :questionObject="currentQuestion" v-on:questionAnswered="handleQuestionAnswered"/>
         </div>
@@ -37,10 +37,8 @@ export default {
       quizStarted: false,
       quizQuestionsObjectArray: [],
       quizIndex: 0,
-      quizHistoryIndex: 0,
-      currentQuestion: null,
-      isNextButtonVisible: false,
-      isPreviousButtonVisible: false
+      totalQuestionsAnswered: 0,
+      currentQuestion: null
     }
   },
   methods: {
@@ -52,21 +50,17 @@ export default {
     handleQuestionAnswered (answers) {
       this.quizQuestionsObjectArray[this.quizIndex].givenAnswer = answers
       this.quizIndex++
-      this.quizHistoryIndex++
+      this.totalQuestionsAnswered++
       if (this.quizIndex > this.quizQuestionsObjectArray.length - 1) {
         this.quizStarted = false
         this.quizIndex = 0
-        this.quizHistoryIndex = 0
+        this.totalQuestionsAnswered = 0
       } else {
         this.currentQuestion = this.quizQuestionsObjectArray[this.quizIndex]
       }
     },
     handleChangeQuestion (change) {
-      console.log('called')
-      if (this.quizIndex !== 0) {
-        this.quizIndex += change
-        console.log('executed')
-      }
+      this.quizIndex += change
     }
   },
   beforeRouteLeave (to, from, next) {
@@ -82,10 +76,6 @@ export default {
   watch: {
     quizIndex () {
       this.currentQuestion = this.quizQuestionsObjectArray[this.quizIndex]
-    },
-    buttonVisiblity () {
-      this.nextButttonVisible = this.quizIndex < this.quizHistoryIndex
-      this.previousButtonVisible = this.quizIndex > 0
     }
   }
 }
