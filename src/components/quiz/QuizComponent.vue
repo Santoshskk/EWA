@@ -169,7 +169,7 @@ export default {
 }
 .quizMain {
   font-family: 'Inter';
-  padding-top: 100px;
+  padding-top: 30px;
   height: 100vh;
 }
 
