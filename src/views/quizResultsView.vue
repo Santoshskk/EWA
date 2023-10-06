@@ -7,35 +7,24 @@
       <sdg-card-component/>
       <sdg-card-component/>
     </div>
-    <Radar :data="data" :options="options" />
+    <div style="width: 400px">
+      <Doughnut :data="data" :options="options" />
+    </div>
+
   </section>
 </template>
 
 <script>
 import SdgCardComponent from '@/components/quizResultsComponents/sdgCardComponent'
-import {
-  Chart as ChartJS,
-  RadialLinearScale,
-  PointElement,
-  LineElement,
-  Filler,
-  Tooltip,
-  Legend
-} from 'chart.js'
-import { Radar } from 'vue-chartjs'
-import { data, options } from '@/assets/testData/testData.js'
-ChartJS.register(
-  RadialLinearScale,
-  PointElement,
-  LineElement,
-  Filler,
-  Tooltip,
-  Legend
-)
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
+import { Doughnut } from 'vue-chartjs'
+import { data, options } from '@/assets/testData/testData'
+
+ChartJS.register(ArcElement, Tooltip, Legend)
 
 export default {
   name: 'quizResultsView',
-  components: { SdgCardComponent, Radar },
+  components: { SdgCardComponent, Doughnut },
   data () {
     return {
       data: data,
