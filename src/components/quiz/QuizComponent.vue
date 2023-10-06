@@ -75,10 +75,14 @@ export default {
      * @author Marco de Boer
      */
     async startQuiz () {
-      this.quiz = await new Quiz(quizQuestionsJSON)
-      this.currentQuestion = await this.quiz.getCurrentQuestion()
-      this.quizStarted = true
-      this.quizEnded = false
+      try {
+        this.quiz = await new Quiz(quizQuestionsJSON)
+        this.currentQuestion = await this.quiz.getCurrentQuestion()
+        this.quizStarted = true
+        this.quizEnded = false
+      } catch (error) {
+        console.error(error)
+      }
     },
     /**
      * This function will handle the question answered event from the QuizQuestionYesNoComponent and QuizQuestionMultipleChoiceComponent
@@ -88,16 +92,20 @@ export default {
      * @author Marco de Boer
      */
     async handleQuestionAnswered () {
-      if (this.quizIndex + 1 === this.quiz.totalQuestions) {
-        this.quizStarted = false
-        this.quizEnded = true
-      }
-      this.currentQuestion = await this.quiz.getNextQuestion()
-      this.totalQuestionsAnswered = await this.quiz.getTotalAnsweredQuestions()
-      if (this.quizEnded) {
-        const quizanswers = await this.quiz.setQuizResultObjectArray()
-        console.log(quizanswers)
-        // #TODO do something here to redirect to results page
+      try {
+        if (this.quizIndex + 1 === this.quiz.totalQuestions) {
+          this.quizStarted = false
+          this.quizEnded = true
+        }
+        this.currentQuestion = await this.quiz.getNextQuestion()
+        this.totalQuestionsAnswered = await this.quiz.getTotalAnsweredQuestions()
+        if (this.quizEnded) {
+          const quizanswers = await this.quiz.setQuizResultObjectArray()
+          console.log(quizanswers)
+          // #TODO do something here to redirect to results page
+        }
+      } catch (error) {
+        console.error(error)
       }
     },
     /**
@@ -106,10 +114,14 @@ export default {
      * @author Marco de Boer
      */
     async handleChangeQuestion (change) {
-      if (change === 1) {
-        this.currentQuestion = await this.quiz.getNextQuestion()
-      } else {
-        this.currentQuestion = await this.quiz.getPreviousQuestion()
+      try {
+        if (change === 1) {
+          this.currentQuestion = await this.quiz.getNextQuestion()
+        } else {
+          this.currentQuestion = await this.quiz.getPreviousQuestion()
+        }
+      } catch (error) {
+        console.error(error)
       }
     }
   },

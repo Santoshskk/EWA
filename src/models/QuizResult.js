@@ -15,6 +15,10 @@ export default class QuizResult {
    * @param {Number} score
    */
   constructor (SDG, score) {
+    if (SDG === undefined || score === undefined) throw new Error('SDG or score is undefined')
+    if (SDG < 1 || SDG > 17) throw new Error('SDG is not between 1 and 17')
+    if (score !== Number(score) || SDG !== Number(SDG)) throw new Error('score is not a number')
+
     this.SDG = SDG
     this.score = score
   }

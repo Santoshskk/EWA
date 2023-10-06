@@ -33,6 +33,12 @@ export default class Quiz {
    */
 
   constructor (questionJSON) {
+    if (questionJSON === undefined) throw new Error('JSON is undefined')
+
+    if (questionJSON.quizName === undefined) throw new Error('quizName is undefined')
+
+    if (questionJSON.questions === undefined) throw new Error('questions is undefined')
+
     this.quizName = questionJSON.quizName
     this.questionObjectArray = []
     this.#instatiateQuiz(questionJSON.questions).then(() => {
@@ -50,12 +56,14 @@ export default class Quiz {
    * @author Marco de Boer
    */
   async #instatiateQuiz (questionJSON) {
+    if (questionJSON === undefined || questionJSON.length === 0) throw new Error('JSON is undefined or length is 0')
+
     for (const question of questionJSON) {
       if (question.type === 'multipleChoiceQuestion') {
         this.questionObjectArray.push(new QuizQuestionMultipleChoice(question.question, question.SDG, question.options))
       } else if (question.type === 'yesNoQuestion') {
         this.questionObjectArray.push(new QuizQuestionTrueFalse(question.question, question.SDG))
-      }
+      } else throw new Error('Question type is not valid')
     }
   }
 
@@ -77,18 +85,16 @@ export default class Quiz {
   }
 
   async getNextQuestion () {
+    if (this.currentQuestionIndex >= this.questionObjectArray.length) throw new Error('Cant get Next Question, there are no more questions')
+
     this.currentQuestionIndex++
-    if (this.currentQuestionIndex > this.questionObjectArray.length) {
-      this.currentQuestionIndex--
-    }
     return this.questionObjectArray[this.currentQuestionIndex]
   }
 
   async getPreviousQuestion () {
+    if (this.currentQuestionIndex <= 0) throw new Error('Cant get Previous Question, there are no more questions')
+
     this.currentQuestionIndex--
-    if (this.currentQuestionIndex < 0) {
-      this.currentQuestionIndex++
-    }
     return this.questionObjectArray[this.currentQuestionIndex]
   }
 

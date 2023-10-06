@@ -44,8 +44,12 @@ export default {
      * @author Marco de Boer
      */
     async handleQuestionAnswered () {
-      await this.questionObject.setGivenAnswers()
-      this.$emit('questionAnswered')
+      try {
+        await this.questionObject.setGivenAnswers()
+        this.$emit('questionAnswered')
+      } catch (error) {
+        console.log(error)
+      }
     },
     async handleOptionClicked (option) {
       await option.toggleSelected()

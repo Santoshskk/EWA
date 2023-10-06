@@ -47,8 +47,12 @@ export default {
      * @author Marco de Boer
      */
     handleQuestionAnswered (givenAnswer) {
-      this.questionObject.setGivenAnswer(givenAnswer)
-      this.$emit('questionAnswered')
+      try {
+        this.questionObject.setGivenAnswer(givenAnswer)
+        this.$emit('questionAnswered')
+      } catch (error) {
+        console.log(error)
+      }
     }
   },
   computed: {

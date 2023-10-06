@@ -22,6 +22,7 @@ export default class QuizQuestionMultipleChoice extends QuizQuestion {
    */
 
   constructor (question, SDG, options) {
+    if (options === undefined || options.length === 0) throw new Error('options is undefined or length is 0')
     super(question, SDG)
     this.#initializeOptions(options)
     this.givenAnswers = []
@@ -38,6 +39,7 @@ export default class QuizQuestionMultipleChoice extends QuizQuestion {
   #initializeOptions (options) {
     this.optionsObjectArray = []
     for (const option of options) {
+      if (option === null) throw new Error('option is null')
       this.optionsObjectArray.push(new QuizQuestionMultipleChoiceOption(option, false))
     }
   }

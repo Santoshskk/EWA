@@ -28,6 +28,9 @@ export default class QuizQuestoinTrueFalse extends QuizQuestion {
    */
 
   setGivenAnswer (answer) {
+    if (answer === undefined) throw new Error('answer is undefined')
+    if (answer !== Boolean(answer)) throw new Error('answer is not a boolean')
+
     this.givenAnswer = answer
   }
 }

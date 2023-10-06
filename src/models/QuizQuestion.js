@@ -15,6 +15,8 @@ export default class QuizQuestion {
    * @param {Number} SDG can be an array of numbers
    */
   constructor (question, SDG) {
+    if (question === undefined || SDG === undefined) throw new Error('question or SDG is undefined')
+
     this.question = question
     this.SDG = SDG
   }
