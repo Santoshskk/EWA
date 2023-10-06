@@ -1,6 +1,6 @@
 <template>
     <div class="container-fluid text-center quizMain">
-      <div v-if="!quizStarted" class="quizButtonSection ">
+      <div v-if="!quizStarted && !quizEnded" class="quizButtonSection ">
         <h1 v-show="showItemSequence[0]" class="slide-in-animation">Welcome to the SDG Quiz!</h1>
         <h3 v-show="showItemSequence[1]" class="slide-in-animation slide-in-animation-delayed m-5"> You will be asked questions about different topics </h3>
         <h3 v-show="showItemSequence[2]" class="slide-in-animation slide-in-animation-delayed m-5"> answer the questions and find out which SDG's are compatible with you!</h3>
@@ -8,14 +8,23 @@
       </div>
        <!-- This is where the quiz progress bar will be displayed -->
       <!-- This is where the quiz questions will be displayed with the answers -->
-      <div v-else>
-        <QuizProgressBarComponent :currentQuestionIndex="this.quizIndex + 1" :totalQuestions="this.quizQuestionsObjectArray.length + 1"
+      <div v-else-if="quizStarted && !quizEnded">
+        <QuizProgressBarComponent :currentQuestionIndex="this.quizIndex + 1" :totalQuestions="this.quiz.totalQuestions + 1"
         :totalQuestionsAnswered="totalQuestionsAnswered" v-on:changeQuestion="handleChangeQuestion"/>
-        <div v-if="currentQuestion.type === 'yesNoQuestion'">
+        <div v-if="(isCurrentQuestionYesNo)">
           <QuizQuestionYesNoComponent :questionObject="currentQuestion" v-on:questionAnswered="handleQuestionAnswered"/>
         </div>
         <div v-else>
           <QuizQuestionMultipleChoiceComponent :questionObject="currentQuestion" v-on:questionAnswered="handleQuestionAnswered"/>
+        </div>
+      </div>
+      <div v-else-if="!quizStarted && quizEnded" class="slide-in-animation">
+        <h1 class="my-4">Quiz ended!</h1>
+        <div class="row  maxWidth800 m-auto justify-content-center my-5">
+          <h2 class="col-6">Calculating results...</h2>
+          <div class="spinner-border spinnerColor " role="status">
+            <span class="sr-only"></span>
+          </div>
         </div>
       </div>
     </div>
@@ -26,6 +35,8 @@ import QuizQuestionYesNoComponent from '@/components/quiz/QuizQuestionYesNoCompo
 import QuizQuestionMultipleChoiceComponent from '@/components/quiz/QuizQuestionMultipleChoiceComponent.vue'
 import quizQuestionsJSON from '@/assets/quizQuestions.json'
 import QuizProgressBarComponent from './QuizProgressBarComponent.vue'
+import Quiz from '@/models/Quiz.js'
+import QuizQuestionTrueFalse from '@/models/QuizQuestionTrueFalse.js'
 
 export default {
   name: 'QuizComponent',
@@ -37,14 +48,13 @@ export default {
   data () {
     return {
       quizStarted: false,
-      quizQuestionsObjectArray: [],
+      quizEnded: false,
       quizIndex: 0,
       totalQuestionsAnswered: 0,
       currentQuestion: null,
       textIndex: 0,
       characterIndex: 0,
-      showItemSequence: [false, false, false, false],
-      quizResults: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      showItemSequence: [false, false, false, false]
     }
   },
   mounted () {
@@ -60,57 +70,47 @@ export default {
   },
   methods: {
     /**
-     * This function will start the quiz by setting the quizStarted variable to true and setting the currentQuestion to the first question in the quizQuestionsObjectArray
+     * This function will start the quiz and set the quizStarted to true and the quizEnded to false
+     * it will also create a new quiz object and set the currentQuestion to the first question in the quizQuestionsObjectArray
      * @author Marco de Boer
      */
-    startQuiz () {
-      this.quizQuestionsObjectArray = quizQuestionsJSON.quizQuestions
-      this.currentQuestion = this.quizQuestionsObjectArray[this.quizIndex]
+    async startQuiz () {
+      this.quiz = await new Quiz(quizQuestionsJSON)
+      this.currentQuestion = await this.quiz.getCurrentQuestion()
       this.quizStarted = true
+      this.quizEnded = false
     },
     /**
-     *  This function will handle the question answered event from the QuizQuestionYesNoComponent and QuizQuestionMultipleChoiceComponent
-     * @param {*} answers can be true or false or object of the answer if multiple choice
+     * This function will handle the question answered event from the QuizQuestionYesNoComponent and QuizQuestionMultipleChoiceComponent
+     * It will check if the quiz is ended and if it is it will set the quizEnded to true and the quizStarted to false
+     * It will also get the next question from the quiz and set the currentQuestion to the next question
+     * if the quiz ended it will calculate the results
      * @author Marco de Boer
      */
-    async handleQuestionAnswered (answers) {
-      this.quizQuestionsObjectArray[this.quizIndex].givenAnswer = answers
-      this.quizIndex++
-      this.totalQuestionsAnswered++
-      if (this.quizIndex > this.quizQuestionsObjectArray.length - 1) {
+    async handleQuestionAnswered () {
+      if (this.quizIndex + 1 === this.quiz.totalQuestions) {
         this.quizStarted = false
-        this.quizIndex = 0
-        this.totalQuestionsAnswered = 0
-        await this.calculateQuizResults()
-      } else {
-        this.currentQuestion = this.quizQuestionsObjectArray[this.quizIndex]
+        this.quizEnded = true
+      }
+      this.currentQuestion = await this.quiz.getNextQuestion()
+      this.totalQuestionsAnswered = await this.quiz.getTotalAnsweredQuestions()
+      if (this.quizEnded) {
+        const quizanswers = await this.quiz.setQuizResultObjectArray()
+        console.log(quizanswers)
+        // #TODO do something here to redirect to results page
       }
     },
     /**
      * This function will handle the change question event from the QuizProgressBarComponent
-     * @param {Number} change is either 1 or -1 to change the question index by 1 or -1
+     * @param {Number} change is either 1 or -1 to change to next or previous question
      * @author Marco de Boer
      */
-    handleChangeQuestion (change) {
-      this.quizIndex += change
-    },
-    /**
-     * This function will calculate the quiz results by looping through the quizQuestionsObjectArray and adding the answers to the quizResults array
-     * @author Marco de Boer
-     */
-    async calculateQuizResults () {
-      for (const question of this.quizQuestionsObjectArray) {
-        if (question.type === 'yesNoQuestion') {
-          if (question.givenAnswer === true) {
-            this.quizResults[question.SDG - 1] += 1
-          }
-        } else if (question.type === 'multipleChoiceQuestion') {
-          for (const answer of question.givenAnswer) {
-            this.quizResults[question.SDG[question.answers.indexOf(answer)] - 1] += 1
-          }
-        }
+    async handleChangeQuestion (change) {
+      if (change === 1) {
+        this.currentQuestion = await this.quiz.getNextQuestion()
+      } else {
+        this.currentQuestion = await this.quiz.getPreviousQuestion()
       }
-      console.log(this.quizResults)
     }
   },
   /**
@@ -130,13 +130,20 @@ export default {
       }
     }
   },
+  computed: {
+    isCurrentQuestionYesNo () {
+      return this.currentQuestion instanceof QuizQuestionTrueFalse
+    }
+  },
   watch: {
     /**
      * This will be called when the quizIndexChanges and displays the appropriate question in the quizQuestionsObjectArray
      * @author Marco de Boer
      */
-    quizIndex () {
-      this.currentQuestion = this.quizQuestionsObjectArray[this.quizIndex]
+
+    currentQuestion () {
+      this.quizIndex = this.quiz.currentQuestionIndex
+      this.questionAnswered = this.quiz.totalAnsweredQuestions
     }
   }
 }
@@ -172,13 +179,19 @@ export default {
 
 .quizAnswerButton:hover {
   color: #fff !important;
-  background-color: #A38EE1 !important;
+  background-color: #c2b9da83 !important;
   border: 2px solid #A38EE1 !important;
 }
 
 .startQuizButton {
   font-size: 1.5rem;
   width: 200px;
+}
+.spinnerColor {
+  color: #A38EE1;
+}
+.maxWidth800 {
+  max-width: 800px;
 }
 
 .ripple {

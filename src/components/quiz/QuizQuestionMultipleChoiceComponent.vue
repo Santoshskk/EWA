@@ -1,15 +1,15 @@
 <template>
     <div>
-        <h1 class="questionHeader">{{ questionObject.quizQuestion }}</h1>
+        <h1 class="questionHeader">{{ questionObject.question }}</h1>
         <div class="container">
-            <div class="m-auto row " v-for="answer in quizAnswers" :key="answer.answer">
+            <div class="m-auto row " v-for="option in questionObject.optionsObjectArray" :key="option.option">
                 <div class="col-12 quizButtonSection">
-                    <button @click="clickedMultipleChoiceButton(answer)" type="button" :class="{selectedButton: answer.selected, quizAnswerButton: !answer.selected}" class="btn btn-primary my-5 quizMultipleChoiceButton" > {{ answer.answer }}</button>
+                    <button @click="handleOptionClicked(option)" type="button" :class="{selectedButton: option.isSelected, quizAnswerButton: !option.isSelected}" class="btn btn-primary my-5 quizMultipleChoiceButton ripple" > {{ option.option }}</button>
                 </div>
             </div>
             <div class="d-flex justify-content-end"  >
               <div class="nextButtonDiv" @mouseenter="nextButtonHover = true" @mouseleave="nextButtonHover = false">
-              <button id="nextButton" @click="handleQuestionAnswered()" type="button" class="btn btn-primary my-5 quizNextButton d-inline-block" :disabled="!nextButtonEnabled"  aria-describedby="tooltip"
+              <button id="nextButton" @click="handleQuestionAnswered()" type="button" class="btn btn-primary my-5 quizNextButton d-inline-block" :disabled="!nextIsButtonEnabled"  aria-describedby="tooltip"
              >Next</button>
               </div>
             </div>
@@ -22,7 +22,6 @@
 </template>
 
 <script>
-import { ref, watchEffect } from 'vue'
 import { createPopper } from '@popperjs/core'
 
 export default {
@@ -35,71 +34,21 @@ export default {
   },
   data () {
     return {
-      nextButtonHover: true
+      nextButtonHover: false
     }
   },
-  /**
-   * This is a function that will be called when the component is created and setup all the values
-   * @param {*} props
-   * @author Marco de Boer
-   */
-  setup (props) {
-    if (props.questionObject.answers !== null && props.questionObject.answers !== undefined) {
-      const quizAnswers = ref([])
-      const nextButtonEnabled = ref(false)
-
-      const clickedMultipleChoiceButton = (answer) => {
-        const index = quizAnswers.value.indexOf(answer)
-        quizAnswers.value[index].selected = !quizAnswers.value[index].selected
-        checkIfNextButtonEnabled()
-      }
-      /**
-       * This is a function that will be called when the user clicks on the next button and emits the answer to the parent component
-       * @author Marco de Boer
-       */
-      const checkIfNextButtonEnabled = () => {
-        nextButtonEnabled.value = quizAnswers.value.filter(answer => answer.selected).length > 0
-      }
-      /**
-       * This is a function that will be called when the user clicks on the next button and emits the answer to the parent component
-       * @author Marco de Boer
-       */
-      watchEffect(() => {
-        if (Array.isArray(props.questionObject.answers)) {
-          quizAnswers.value = props.questionObject.answers.map(answer => {
-            return {
-              answer: answer,
-              selected: false
-            }
-          })
-        }
-        if (props.questionObject.givenAnswer !== undefined) {
-          for (const quizAnswer of quizAnswers.value) {
-            for (const givenAnswer of props.questionObject.givenAnswer) {
-              if (quizAnswer.answer === givenAnswer) {
-                quizAnswer.selected = true
-                nextButtonEnabled.value = true
-              }
-            }
-          }
-        }
-      })
-
-      return { quizAnswers, clickedMultipleChoiceButton, nextButtonEnabled }
-    }
-  },
-
   methods: {
     /**
      * This is a function that will be called when the user clicks on the next button and emits the answer to the parent component
      * The answers are filtered to only the selected answers and then emitted to the parent component
      * @author Marco de Boer
      */
-    handleQuestionAnswered () {
-      const selectedAnswerObjects = this.quizAnswers.filter(answer => answer.selected)
-      const selectedAnswers = selectedAnswerObjects.map(answer => answer.answer)
-
-      this.$emit('questionAnswered', selectedAnswers)
+    async handleQuestionAnswered () {
+      await this.questionObject.setGivenAnswers()
+      this.$emit('questionAnswered')
+    },
+    async handleOptionClicked (option) {
+      await option.toggleSelected()
     }
   },
   computed: {
@@ -107,9 +56,16 @@ export default {
       return this.quizAnswers.filter(answer => answer.selected)
     },
     showTooltip () {
-      return !this.nextButtonEnabled && this.nextButtonHover
+      return !this.nextIsButtonEnabled && this.nextButtonHover
+    },
+    nextIsButtonEnabled () {
+      return this.questionObject.optionsObjectArray.some(option => option.isSelected)
     }
   },
+  /**
+   * This is a lifecycle hook that will be called when the component is created and setup all the values for tooltip
+   * @author Marco de Boer
+   */
   mounted () {
     const buttonForPopper = document.querySelector('#nextButton')
     const tooltipForPopper = document.querySelector('#tooltip')

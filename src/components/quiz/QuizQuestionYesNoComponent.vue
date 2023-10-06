@@ -1,13 +1,13 @@
 <template>
     <div>
-        <h1 class="questionHeader">{{ questionObject.quizQuestion }}</h1>
+        <h1 class="questionHeader">{{ questionObject.question }}</h1>
         <div class="container">
             <div class=" justify-content-between answerBox m-auto row">
                 <div class="col-md-6 col-12 quizButtonSection">
-                    <button @click="clickedYesButton" type="button" :class="{selectedButton: yesWasSelected, quizAnswerButton: !yesWasSelected}"  class="btn btn-primary my-5 quizAnswerButton quizYesNoButton  ">Yes</button>
+                    <button @click="clickedYesButton" type="button" :class="{selectedButton: yesIsSelected, quizAnswerButton: !yesIsSelected}"  class="btn btn-primary my-5 quizAnswerButton quizYesNoButton  ">Yes</button>
                 </div>
                 <div class="col-md-6 col-12 quizButtonSection">
-                    <button @click="clickedNoButton" type="button" :class="{selectedButton: noWasSelected, quizAnswerButton: !noWasSelected}" class="btn btn-primary my-5 quizAnswerButton quizYesNoButton  ">No</button>
+                    <button @click="clickedNoButton" type="button" :class="{selectedButton: noIsSelected, quizAnswerButton: !noIsSelected}" class="btn btn-primary my-5 quizAnswerButton quizYesNoButton  ">No</button>
                 </div>
             </div>
         </div>
@@ -15,13 +15,13 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import QuizQuestionTrueFalse from '@/models/QuizQuestionTrueFalse.js'
 
 export default {
   name: 'QuizQuestionYesNoComponent',
   props: {
     questionObject: {
-      type: Object,
+      type: QuizQuestionTrueFalse,
       required: true
     }
   },
@@ -30,20 +30,6 @@ export default {
    * @param {*} props The props that are passed to this component
    * @author Marco de Boer
    */
-  setup (props) {
-    const yesWasSelected = ref(false)
-    const noWasSelected = ref(false)
-
-    if (props.questionObject.givenAnswer !== undefined) {
-      if (props.questionObject.givenAnswer === true) {
-        yesWasSelected.value = true
-      } else if (props.questionObject.givenAnswer === false) {
-        noWasSelected.value = true
-      }
-    }
-
-    return { yesWasSelected, noWasSelected }
-  },
   data () {
     return {
     }
@@ -60,8 +46,17 @@ export default {
      * @param {boolean} answers is either true or false depending on the answer given by the user
      * @author Marco de Boer
      */
-    handleQuestionAnswered (answers) {
-      this.$emit('questionAnswered', answers)
+    handleQuestionAnswered (givenAnswer) {
+      this.questionObject.setGivenAnswer(givenAnswer)
+      this.$emit('questionAnswered')
+    }
+  },
+  computed: {
+    yesIsSelected () {
+      return this.questionObject.givenAnswer === true
+    },
+    noIsSelected () {
+      return this.questionObject.givenAnswer === false
     }
   }
 }

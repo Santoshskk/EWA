@@ -1,0 +1,129 @@
+import QuizQuestionTrueFalse from '@/models/QuizQuestionTrueFalse'
+import QuizQuestionMultipleChoice from '@/models/QuizQuestionMultipleChoice'
+import QuizResult from '@/models/QuizResult'
+
+/**
+ * Quiz model class.
+ * @class Quiz
+ * @property {String} quizName
+ * @property {Array} questionObjectArray array of questions
+ * @property {Number} currentQuestionIndex
+ * @property {Number} totalQuestions
+ * @property {Number} totalAnsweredQuestions
+ * @property {Array} quizResultObjectArray array of quizResults (SDG, score)
+ * @author Marco de Boer
+ */
+
+export default class Quiz {
+  quizName
+  questionObjectArray
+  currentQuestionIndex
+  totalQuestions
+  totalAnsweredQuestions
+  quizResultObjectArray
+
+  /**
+   * For the constructor is only json needed the json needs to be in the following format:
+   * {
+   * "quizName": "name of the quiz",
+   * "questions": []
+   * }
+   * @param {JSON} questionJSON
+   * @author Marco de Boer
+   */
+
+  constructor (questionJSON) {
+    this.quizName = questionJSON.quizName
+    this.questionObjectArray = []
+    this.#instatiateQuiz(questionJSON.questions).then(() => {
+      this.totalQuestions = this.questionObjectArray.length
+    })
+    this.#instantieQuizResults()
+    this.currentQuestionIndex = 0
+    this.totalAnsweredQuestions = 0
+  }
+
+  /**
+   * This functions is used to make from each question a QuizQuestion object
+   * The JSON only contains the questions from the original JSON send to the contructor
+   * @param {JSON} questionJSON
+   * @author Marco de Boer
+   */
+  async #instatiateQuiz (questionJSON) {
+    for (const question of questionJSON) {
+      if (question.type === 'multipleChoiceQuestion') {
+        this.questionObjectArray.push(new QuizQuestionMultipleChoice(question.question, question.SDG, question.options))
+      } else if (question.type === 'yesNoQuestion') {
+        this.questionObjectArray.push(new QuizQuestionTrueFalse(question.question, question.SDG))
+      }
+    }
+  }
+
+  /**
+   * This functions is used to make from each SDG a QuizResult object
+   * The score is set to 0 by default
+   * @private
+   * @author Marco de Boer
+   */
+  async #instantieQuizResults () {
+    this.quizResultObjectArray = []
+    for (let i = 1; i < 18; i++) {
+      this.quizResultObjectArray.push(new QuizResult(i, 0))
+    }
+  }
+
+  async getCurrentQuestion () {
+    return this.questionObjectArray[this.currentQuestionIndex]
+  }
+
+  async getNextQuestion () {
+    this.currentQuestionIndex++
+    return this.questionObjectArray[this.currentQuestionIndex]
+  }
+
+  async getPreviousQuestion () {
+    this.currentQuestionIndex--
+    return this.questionObjectArray[this.currentQuestionIndex]
+  }
+
+  /**
+   * This function calculates how many questions have been answered in the quiz this is used for navigation in QuizComponent
+   * @returns {Number} totalAnsweredQuestions
+   * @author Marco de Boer
+   */
+  async getTotalAnsweredQuestions () {
+    this.totalAnsweredQuestions = 0
+    for (const question of this.questionObjectArray) {
+      if (question instanceof QuizQuestionTrueFalse && question.givenAnswer !== null) {
+        this.totalAnsweredQuestions++
+      } else if (question instanceof QuizQuestionMultipleChoice && question.givenAnswers.length !== 0) {
+        this.totalAnsweredQuestions++
+      }
+    }
+    return this.totalAnsweredQuestions
+  }
+
+  /**
+   * This function calculates the score per SDG. It goes trough each question and checks if the givenAnswer is true and
+   * sets the score of the SDG of that answer to +1
+   * @returns {Array} quizResultObjectArray array of quizResults (SDG, score) this is used for the result page in QuizComponent
+   * @author Marco de Boer
+   */
+
+  async setQuizResultObjectArray () {
+    for (const question of this.questionObjectArray) {
+      if (question instanceof QuizQuestionTrueFalse) {
+        if (question.givenAnswer === true) {
+          this.quizResultObjectArray[question.SDG - 1].score += 1
+        }
+      } else if (question instanceof QuizQuestionMultipleChoice) {
+        for (let i = 0; i < question.givenAnswers.length; i++) {
+          if (question.givenAnswers[i] === true) {
+            this.quizResultObjectArray[question.SDG[i] - 1].score += 1
+          }
+        }
+      }
+    }
+    return this.quizResultObjectArray
+  }
+}

@@ -10,6 +10,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@babel/plugin-transform-private-methods": "^7.22.5",
     "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.1",
     "bootstrap-icons": "^1.11.1",
