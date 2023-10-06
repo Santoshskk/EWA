@@ -78,11 +78,17 @@ export default class Quiz {
 
   async getNextQuestion () {
     this.currentQuestionIndex++
+    if (this.currentQuestionIndex > this.questionObjectArray.length) {
+      this.currentQuestionIndex--
+    }
     return this.questionObjectArray[this.currentQuestionIndex]
   }
 
   async getPreviousQuestion () {
     this.currentQuestionIndex--
+    if (this.currentQuestionIndex < 0) {
+      this.currentQuestionIndex++
+    }
     return this.questionObjectArray[this.currentQuestionIndex]
   }
 
