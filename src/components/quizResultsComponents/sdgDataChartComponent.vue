@@ -1,18 +1,8 @@
 <template>
-  <h2 class="mx-0">These are your top sdgs!</h2>
-  <section class="container mx-5">
-    <div class="row">
-      <sdg-card-component/>
-      <sdg-card-component/>
-      <sdg-card-component/>
-      <sdg-card-component/>
-    </div>
-    <Radar :data="data" :options="options" />
-  </section>
+  <Radar :data="data" :options="options" />
 </template>
 
 <script>
-import SdgCardComponent from '@/components/quizResultsComponents/sdgCardComponent'
 import {
   Chart as ChartJS,
   RadialLinearScale,
@@ -34,8 +24,10 @@ ChartJS.register(
 )
 
 export default {
-  name: 'quizResultsView',
-  components: { SdgCardComponent, Radar },
+  name: 'sdgDataChartComponent',
+  components: {
+    Radar
+  },
   data () {
     return {
       data: data,
@@ -44,7 +36,6 @@ export default {
   }
 }
 </script>
-
 <style scoped>
 
 </style>
