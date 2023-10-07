@@ -172,6 +172,7 @@ export default {
 
         // Clear the selectedOption after adding the goal
         this.selectedOption = ''
+        this.showGoalSDGEmpty = false
       } else {
         this.showGoalSDGEmpty = true
       }
