@@ -1,16 +1,19 @@
 <template>
   <h2 class="mx-0">These are your top sdgs!</h2>
-  <section class="container mx-5">
+  <section class="container">
     <div class="row">
-      <sdg-card-component/>
-      <sdg-card-component/>
-      <sdg-card-component/>
-      <sdg-card-component/>
+      <div style="width: 400px">
+        <Doughnut :data="data" :options="options"/>
+      </div>
+      <div class="col">
+        <sdg-card-component/>
+        <sdg-card-component/>
+      </div>
+      <div class="col">
+        <sdg-card-component/>
+        <sdg-card-component/>
+      </div>
     </div>
-    <div style="width: 400px">
-      <Doughnut :data="data" :options="options" />
-    </div>
-
   </section>
 </template>
 
@@ -24,7 +27,10 @@ ChartJS.register(ArcElement, Tooltip, Legend)
 
 export default {
   name: 'quizResultsView',
-  components: { SdgCardComponent, Doughnut },
+  components: {
+    SdgCardComponent,
+    Doughnut
+  },
   data () {
     return {
       data: data,
