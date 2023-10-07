@@ -51,14 +51,12 @@ const routes = [
   {
     path: '/quiz',
     name: 'Quiz',
-    component: QuizComponent,
-    children: [
-      {
-        path: 'results',
-        name: 'Quiz',
-        component: QuizResultsView
-      }
-    ]
+    component: QuizComponent
+  },
+  {
+    path: '/quiz/results',
+    name: 'quiz_results',
+    component: QuizResultsView
   }
 ]
 

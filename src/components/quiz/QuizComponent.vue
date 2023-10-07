@@ -192,7 +192,9 @@ export default {
 .quizMain {
   font-family: 'Inter';
   padding-top: 30px;
-  height: 100vh;
+  padding-bottom: 40px;
+  min-height: 100vh;
+  height: fit-content;
 }
 
 .quizButtonSection .btn {
