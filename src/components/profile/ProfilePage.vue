@@ -1,91 +1,93 @@
 <template>
-  <form>
-    <div class="container text-center">
-      <div class="row align-items-start">
-        <div class="col">
-          <div class="container">
-            <div class="container-md">
-              <img v-if="item.profilePic" :src="profile.photo" class="pfp" alt="...">
-              <img v-else src="@/assets/photo/profielfoto-silhouet.jpg" class="pfp" alt="...">
-              <div class="mb-3" style="margin: 1rem;">
-                <input type="file" accept="image/*" class="form-control" id="inputGroupFile02" @change="onChange">
+  <div class="mt-5 mb-5">
+    <form>
+      <div class="container text-center">
+        <div class="row align-items-start">
+          <div class="col">
+            <div class="container">
+              <div class="container-md">
+                <img v-if="item.profilePic" :src="profile.photo" class="pfp" alt="...">
+                <img v-else src="@/assets/photo/profielfoto-silhouet.jpg" class="pfp" alt="...">
+                <div class="mb-3" style="margin: 1rem;">
+                  <input type="file" accept="image/*" class="form-control" id="inputGroupFile02" @change="onChange">
+                </div>
+                <div class="mb-3">
+                  <label for="inputName" class="form-label">Name: </label>
+                  <input type="text" autocomplete="off" class="form-control" id="inputName" v-model="profile.name"
+                         required>
+                  <div v-if="isNameEmpty" class="invalid-message border mt-1 error">
+                    Name is required
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="inputBirthday" class="form-label">Birthday: </label>
+                  <input type="date" min="1900-01-01" class="form-control" id="inputBirthday" v-model="profile.birth"
+                         required>
+                  <div v-if="isBirthEmpty" class="invalid-message border mt-1 error">
+                    Birthday is required
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="inputOccupation" class="form-label">Occupation: </label>
+                  <input type="text" autocomplete="off" class="form-control" id="inputOccupation"
+                         v-model="profile.occupation" aria-required="true" required>
+                </div>
+                <div v-if="isOccupationEmpty" class="invalid-message border mt-1 error">
+                  Occupation is required
+                </div>
+                <button @click="saveEdit" type="submit" class="btn btn-primary editButton">Save</button>
+                <button @click="cancelEdit" type="button" class="btn btn-secondary editButton">Cancel</button>
               </div>
-              <div class="mb-3">
-                <label for="inputName" class="form-label">Name: </label>
-                <input type="text" autocomplete="off" class="form-control" id="inputName" v-model="profile.name"
-                       required>
-                <div v-if="isNameEmpty" class="invalid-message border mt-1 error">
-                  Name is required
+            </div>
+          </div>
+          <div class="col">
+            <div class="mb-3">
+              <label for="inputBio" class="form-label">Bio: </label>
+              <textarea class="form-control" id="inputBio" autocomplete="off"
+                        style="height: 25rem; width: 100%; resize: none" v-model="profile.bio" required></textarea>
+              <div v-if="isBioEmpty" class="invalid-message border mt-1 error">
+                Bio is required
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="mb-3">
+              <label for="inputGoals">Goals</label>
+            </div>
+            <div class="container goalContainer">
+              <div v-for="goal in profile.goals" :key="goal.id">
+                <div class="container border rounded-4 mb-4 goals">
+                  <img :src="goal.image" class="col-1 goalImage mt-2" alt="...">
+                  <h6 class="col-6 goalTitle">{{ goal.title }}</h6>
+                  <i class="bi bi-trash"></i>
+                  <button @click="deleteGoal(goal.id)" class="col-1 btn btn-danger deleteGoalButton">Delete</button>
                 </div>
               </div>
-              <div class="mb-3">
-                <label for="inputBirthday" class="form-label">Birhtday: </label>
-                <input type="date" min="1900-01-01" class="form-control" id="inputBirthday" v-model="profile.birth"
-                       required>
-                <div v-if="isBirthEmpty" class="invalid-message border mt-1 error">
-                  Birthday is required
-                </div>
-              </div>
-              <div class="mb-3">
-                <label for="inputOccupation" class="form-label">Occupation: </label>
-                <input type="text" autocomplete="off" class="form-control" id="inputOccupation"
-                       v-model="profile.occupation" aria-required="true" required>
-              </div>
-              <div v-if="isOccupationEmpty" class="invalid-message border mt-1 error">
-                Occupation is required
-              </div>
-              <button @click="saveEdit" type="submit" class="btn btn-primary editButton">Save</button>
-              <button @click="cancelEdit" type="button" class="btn btn-secondary editButton">Cancel</button>
             </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="mb-3">
-            <label for="inputBio" class="form-label">Bio: </label>
-            <textarea class="form-control" id="inputBio" autocomplete="off"
-                      style="height: 25rem; width: 100%; resize: none" v-model="profile.bio" required></textarea>
-            <div v-if="isBioEmpty" class="invalid-message border mt-1 error">
-              Bio is required
+            <div v-if="isGoalEmpty" class="invalid-message border mt-1 error">
+              Goal is required
             </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="mb-3">
-            <label for="inputGoals">Goals</label>
-          </div>
-          <div class="container goalContainer">
-            <div v-for="goal in profile.goals" :key="goal.id">
-              <div class="container border rounded-4 mb-4 goals">
-                <img :src="goal.image" class="col-1 goalImage mt-2" alt="...">
-                <h6 class="col-6 goalTitle">{{ goal.title }}</h6>
-                <i class="bi bi-trash"></i>
-                <button @click="deleteGoal(goal.id)" class="col-1 btn btn-danger deleteGoalButton">Delete</button>
+            <div class="row mt-1">
+              <div class="col-5">
+                <label for="selectList">Select a goal:</label>
+              </div>
+              <div class="col">
+                <select class="form-select" v-model="selectedOption" required>
+                  <option v-for="(goal, index) in sdgGoals" :key="index" :value="goal">
+                    {{ goal }}
+                  </option>
+                </select>
               </div>
             </div>
-          </div>
-          <div v-if="isGoalEmpty" class="invalid-message border mt-1 error">
-            Goal is required
-          </div>
-          <div class="row mt-1">
-            <div class="col-5">
-              <label for="selectList">Select an goal:</label>
+            <button @click="createGoal" type="button" class="btn btn-primary editButton">Add Goals</button>
+            <div v-if="showGoalSDGEmpty" class="invalid-message border mt-1 error">
+              Please select a valid goal.
             </div>
-            <div class="col">
-              <select class="form-select" v-model="selectedOption" required>
-                <option v-for="(goal, index) in sdgGoals" :key="index" :value="goal">
-                  {{ goal }}
-                </option>
-              </select>
-            </div>
-          </div>
-          <button @click="createGoal" type="button" class="btn btn-primary editButton">Add Goals</button>
-          <div v-if="showGoalSDGEmpty" class="invalid-message border mt-1 error">
-            Please select a valid goal.
           </div>
         </div>
       </div>
-    </div>
-  </form>
+    </form>
+  </div>
 </template>
 
 <script>
@@ -172,6 +174,7 @@ export default {
 
         // Clear the selectedOption after adding the goal
         this.selectedOption = ''
+        this.showGoalSDGEmpty = false
       } else {
         this.showGoalSDGEmpty = true
       }
