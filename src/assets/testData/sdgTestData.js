@@ -14,6 +14,7 @@ export const sdgData = [
     color: '#dda63a',
     description: 'End hunger and improve sustainable agriculture.',
     src: require('@/assets/sdgData/Goal 2/E_WEB_02.png'),
+    generalContribution: 'Promote sustainable agriculture and reduce food waste.',
     gifSrc: require('@/assets/sdgData/Goal 2/2_SDG_MakeEveryDayCount_Gifs_GDU.gif')
   },
   {
@@ -22,6 +23,7 @@ export const sdgData = [
     color: '#4c9f38',
     description: 'Promote well-being and ensure access to healthcare for all.',
     src: require('@/assets/sdgData/Goal 3/E_WEB_03.png'),
+    generalContribution: 'Advocate for affordable healthcare and mental health support.',
     gifSrc: require('@/assets/sdgData/Goal 3/3_SDG_MakeEveryDayCount_Gifs_GDU.gif')
   },
   {
@@ -30,6 +32,7 @@ export const sdgData = [
     color: '#c5192d',
     description: 'Ensure quality education and lifelong learning for everyone.',
     src: require('@/assets/sdgData/Goal 4/E_WEB_04.png'),
+    generalContribution: 'Encourage digital literacy and modern skill development.',
     gifSrc: require('@/assets/sdgData/Goal 4/4_SDG_MakeEveryDayCount_Gifs_GDU.gif')
   },
   {
@@ -37,6 +40,7 @@ export const sdgData = [
     title: 'Gender Equality',
     color: '#ff3a21',
     description: 'Empower all women and achieve gender equality.',
+    generalContribution: 'Raise awareness about gender biases and stereotypes.',
     src: require('@/assets/sdgData/Goal 5/E_WEB_05.png'),
     gifSrc: require('@/assets/sdgData/Goal 5/5_SDG_MakeEveryDayCount_Gifs_GDU.gif')
 
@@ -46,6 +50,7 @@ export const sdgData = [
     title: 'Clean Water and Sanitation',
     color: '#26bde2',
     description: 'Ensure sustainable water and sanitation for all.',
+    generalContribution: 'Promote efficient water use and conservation.',
     src: require('@/assets/sdgData/Goal 6/E_WEB_06.png'),
     gifSrc: require('@/assets/sdgData/Goal 6/6_SDG_MakeEveryDayCount_Gifs_GDU.gif')
   },
@@ -54,6 +59,7 @@ export const sdgData = [
     title: 'Affordable + Clean Energy',
     color: '#fcc30b',
     description: 'Ensure access to affordable, reliable, and sustainable energy.',
+    generalContribution: 'Support renewable energy adoption in your company',
     src: require('@/assets/sdgData/Goal 7/E_WEB_07.png'),
     gifSrc: require('@/assets/sdgData/Goal 7/7_SDG_MakeEveryDayCount_Gifs_GDU.gif')
   },
