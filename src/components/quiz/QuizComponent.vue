@@ -63,6 +63,7 @@ export default {
      * This is used to show the welcome text in a sequence
      * @author Marco de Boer
      */
+    window.addEventListener('beforeunload', this.beforeWindowUnload)
     setInterval(() => {
       this.showItemSequence[this.textIndex] = true
       this.textIndex++
@@ -126,6 +127,18 @@ export default {
       } catch (error) {
         console.error(error)
       }
+    },
+    /**
+     *  This method is called when the user tries to leave the page. It will ask the user if they want to discard the changes.
+     * @param {*} e event you dont have to give this parameter, it will be given automatically
+     * @autor Marco de Boer
+     */
+    beforeWindowUnload (e) {
+      if (!this.quizStarted && this.totalQuestionsAnswered === 0) {
+        return
+      }
+      e.preventDefault()
+      e.returnValue = 'You have not finished the quiz, your progress will be lost.'
     }
   },
   /**
@@ -136,7 +149,7 @@ export default {
    * @author Marco de Boer
    */
   beforeRouteLeave (to, from, next) {
-    if (this.totalQuestionsAnswered !== 0) {
+    if (this.quizStarted && this.totalQuestionsAnswered !== 0) {
       if (window.confirm('You have not finished the quiz, your progress will be lost')) {
         this.totalQuestionsAnswered = 0
         next()
@@ -160,6 +173,9 @@ export default {
       this.quizIndex = this.quiz.currentQuestionIndex
       this.questionAnswered = this.quiz.totalAnsweredQuestions
     }
+  },
+  beforeUnmount () {
+    window.removeEventListener('beforeunload', this.beforeWindowUnload)
   }
 }
 </script>
