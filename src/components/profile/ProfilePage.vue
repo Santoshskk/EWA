@@ -275,7 +275,7 @@ export default {
 }
 
 .goalImage {
-  width: 23%;
+  width: auto;
   height: 80%;
 }
 
