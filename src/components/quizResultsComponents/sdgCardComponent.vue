@@ -20,6 +20,7 @@ export default {
     sdgData: {
       type: Object,
       default: () => ({
+        gifSrc: '',
         src: '',
         color: '',
         description: '',

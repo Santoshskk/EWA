@@ -5,26 +5,9 @@
       <div style="width: 400px">
         <Doughnut :data="data" :options="options"/>
       </div>
-      <div class="col p-0">
-        <sdg-card-component :sdg-data="this.sdgData[0]"/>
-      </div>
-      <div class="col p-0">
-      <sdg-card-component :sdg-data="this.sdgData[1]"/>
-      </div>
-      <div class="col p-0">
-        <sdg-card-component :sdg-data="this.sdgData[2]"/>
-      </div>
-      <div class="col p-0">
-        <sdg-card-component :sdg-data="this.sdgData[3]"/>
-      </div>
-      <div class="col p-0">
-        <sdg-card-component :sdg-data="this.sdgData[4]"/>
-      </div>
-      <div class="col p-0">
-        <sdg-card-component :sdg-data="this.sdgData[5]"/>
-      </div>
-      <div class="col p-0">
-        <sdg-card-component :sdg-data="this.sdgData[6]"/>
+<!--      Loop to add all the sdg-results-->
+      <div v-for="(sdg, index) in sdgData.slice(0, 7)" :key="index" class="col p-0">
+        <sdg-card-component :sdg-data="sdg"/>
       </div>
     </div>
   </section>

@@ -4,37 +4,40 @@ export const sdgData = [
     title: 'No Poverty',
     color: '#e5243b',
     description: 'End poverty everywhere and ensure a decent life for all.',
-    src: require('@/assets/sdgData/Goal 1/1_SDG_MakeEveryDayCount_Gifs_GDU.gif')
+    src: require('@/assets/sdgData/Goal 1/E_WEB_01.png'),
+    gifSrc: require('@/assets/sdgData/Goal 1/1_SDG_MakeEveryDayCount_Gifs_GDU.gif')
   },
   {
     id: 2,
     title: 'Zero Hunger',
     color: '#dda63a',
     description: 'End hunger and improve sustainable agriculture.',
-    src: require('@/assets/sdgData/Goal 2/E_WEB_02.png')
+    src: require('@/assets/sdgData/Goal 2/E_WEB_02.png'),
+    gifSrc: require('@/assets/sdgData/Goal 2/2_SDG_MakeEveryDayCount_Gifs_GDU.gif')
   },
   {
     id: 3,
     title: 'Good Health and Well-being',
     color: '#4c9f38',
     description: 'Promote well-being and ensure access to healthcare for all.',
-    src: require('@/assets/sdgData/Goal 3/E_WEB_03.png')
-
+    src: require('@/assets/sdgData/Goal 3/E_WEB_03.png'),
+    gifSrc: require('@/assets/sdgData/Goal 3/3_SDG_MakeEveryDayCount_Gifs_GDU.gif')
   },
   {
     id: 4,
     title: 'Quality Education',
     color: '#c5192d',
     description: 'Ensure quality education and lifelong learning for everyone.',
-    src: require('@/assets/sdgData/Goal 4/E_WEB_04.png')
-
+    src: require('@/assets/sdgData/Goal 4/E_WEB_04.png'),
+    gifSrc: require('@/assets/sdgData/Goal 4/4_SDG_MakeEveryDayCount_Gifs_GDU.gif')
   },
   {
     id: 5,
     title: 'Gender Equality',
     color: '#ff3a21',
     description: 'Empower all women and achieve gender equality.',
-    src: require('@/assets/sdgData/Goal 5/E_WEB_05.png')
+    src: require('@/assets/sdgData/Goal 5/E_WEB_05.png'),
+    gifSrc: require('@/assets/sdgData/Goal 5/5_SDG_MakeEveryDayCount_Gifs_GDU.gif')
 
   },
   {
@@ -42,15 +45,16 @@ export const sdgData = [
     title: 'Clean Water and Sanitation',
     color: '#26bde2',
     description: 'Ensure sustainable water and sanitation for all.',
-    src: require('@/assets/sdgData/Goal 6/E_WEB_06.png')
+    src: require('@/assets/sdgData/Goal 6/E_WEB_06.png'),
+    gifSrc: require('@/assets/sdgData/Goal 6/6_SDG_MakeEveryDayCount_Gifs_GDU.gif')
   },
   {
     id: 7,
     title: 'Affordable + Clean Energy',
     color: '#fcc30b',
     description: 'Ensure access to affordable, reliable, and sustainable energy.',
-    src: require('@/assets/sdgData/Goal 7/E_WEB_07.png')
-
+    src: require('@/assets/sdgData/Goal 7/E_WEB_07.png'),
+    gifSrc: require('@/assets/sdgData/Goal 7/7_SDG_MakeEveryDayCount_Gifs_GDU.gif')
   },
   {
     id: 8,
