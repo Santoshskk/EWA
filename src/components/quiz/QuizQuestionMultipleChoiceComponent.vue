@@ -1,13 +1,14 @@
 <template>
     <div>
         <h1 class="questionHeader">{{ questionObject.question }}</h1>
+        <h5 v-show="isAnswerLimitBiggerThenOne">&#40;You can select {{ questionObject.answerLimit }} answers&#41;</h5>
         <div class="container">
             <div class="m-auto row " v-for="option in questionObject.optionsObjectArray" :key="option.option">
                 <div class="col-12 quizButtonSection">
-                    <button @click="handleOptionClicked(option)" type="button" :class="{selectedButton: option.isSelected, quizAnswerButton: !option.isSelected}" class="btn btn-primary my-5 quizMultipleChoiceButton ripple" > {{ option.option }}</button>
+                    <button @click="handleOptionClicked(option)" type="button" :class="{selectedButton: option.isSelected, quizAnswerButton: !option.isSelected}" class="btn btn-primary my-5 quizMultipleChoiceButton" > {{ option.option }}</button>
                 </div>
             </div>
-            <div class="d-flex justify-content-end"  >
+            <div v-if="isAnswerLimitBiggerThenOne"  class="d-flex justify-content-end"  >
               <div class="nextButtonDiv" @mouseenter="nextButtonHover = true" @mouseleave="nextButtonHover = false">
               <button id="nextButton" @click="handleQuestionAnswered()" type="button" class="btn btn-primary my-5 quizNextButton d-inline-block" :disabled="!nextIsButtonEnabled"  aria-describedby="tooltip"
              >Next</button>
@@ -51,8 +52,20 @@ export default {
         console.log(error)
       }
     },
+    /**
+     * This is a function that will be called when the user clicks on an option and will toggle the selected value of the option
+     * If the answer limit is 1 then the question will be answered immediately after the option is clicked
+     * @param {QuizQuestionMultipleChoiceOption} option
+     * @author Marco de Boer
+     */
     async handleOptionClicked (option) {
-      await option.toggleSelected()
+      if (this.questionObject.answerLimit === 1) {
+        await option.toggleSelected().then(() => {
+          this.handleQuestionAnswered()
+        })
+      } else if (option.isSelected || this.questionObject.answerLimit > await this.questionObject.getSelectedAnswersAmount()) {
+        await option.toggleSelected()
+      }
     }
   },
   computed: {
@@ -64,6 +77,9 @@ export default {
     },
     nextIsButtonEnabled () {
       return this.questionObject.optionsObjectArray.some(option => option.isSelected)
+    },
+    isAnswerLimitBiggerThenOne () {
+      return this.questionObject.answerLimit > 1
     }
   },
   /**
@@ -92,7 +108,7 @@ export default {
 .questionHeader {
     font-size: 2.5rem;
     font-weight: 500;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
 }
 
 .answerBox{

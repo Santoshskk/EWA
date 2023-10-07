@@ -7,25 +7,34 @@ import QuizQuestionMultipleChoiceOption from './QuizQuestionMultipleChoiceOption
  * @extends QuizQuestion
  * @property {Array} optionsObjectArray array of options (possible answers) for the question
  * @property {Array} givenAnswers array of booleans
+ * @property {Number} answerLimit number of answers that can be given (default is the amount of options)
  * @author Marco de Boer
  */
 
 export default class QuizQuestionMultipleChoice extends QuizQuestion {
   optionsObjectArray
   givenAnswers
+  answerLimit
 
   /**
    * This class is for questions that have more than 2 options as answers
    * @param {String} question
    * @param {Array} SDG array of numbers
    * @param {Array} options array of strings
+   * @param {Number} answerLimit number of answers that can be given (default is the amount of options)
    */
 
-  constructor (question, SDG, options) {
-    if (options === undefined || options.length === 0) throw new Error('options is undefined or length is 0')
+  constructor (question, SDG, options, answerLimit = 0) {
+    if (options === undefined || options.length === 0) throw new Error('options is undefined or length is 0' + options)
+    if (answerLimit > options.length) throw new Error('answerLimit is bigger than the amount of options')
     super(question, SDG)
     this.#initializeOptions(options)
     this.givenAnswers = []
+    if (answerLimit === 0) {
+      this.answerLimit = options.length
+    } else {
+      this.answerLimit = answerLimit
+    }
   }
 
   /**
@@ -57,5 +66,20 @@ export default class QuizQuestionMultipleChoice extends QuizQuestion {
         this.givenAnswers[i] = false
       }
     }
+  }
+
+  /**
+   * This function get the amount of selected answers this can be used to know if the answerLimit is reached
+   * @returns {Number} amount of selected answers
+   * @author Marco de Boer
+   */
+  async getSelectedAnswersAmount () {
+    let counter = 0
+    for (const option of this.optionsObjectArray) {
+      if (option.isSelected) {
+        counter++
+      }
+    }
+    return counter
   }
 }

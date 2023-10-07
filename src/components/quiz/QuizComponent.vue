@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid text-center quizMain">
+    <div class="container-fluid text-center quizMain" @click="skipAnimation">
       <div v-if="!quizStarted && !quizEnded" class="quizButtonSection ">
         <h1 v-show="showItemSequence[0]" class="slide-in-animation">Welcome to the SDG Quiz!</h1>
         <h3 v-show="showItemSequence[1]" class="slide-in-animation slide-in-animation-delayed m-5"> You will be asked questions about different topics </h3>
@@ -9,7 +9,7 @@
        <!-- This is where the quiz progress bar will be displayed -->
       <!-- This is where the quiz questions will be displayed with the answers -->
       <div v-else-if="quizStarted && !quizEnded">
-        <QuizProgressBarComponent :currentQuestionIndex="this.quizIndex + 1" :totalQuestions="this.quiz.totalQuestions + 1"
+        <QuizProgressBarComponent :currentQuestionIndex="this.quizIndex + 1" :totalQuestions="this.quiz.totalQuestions"
         :totalQuestionsAnswered="totalQuestionsAnswered" v-on:changeQuestion="handleChangeQuestion"/>
         <div v-if="(isCurrentQuestionYesNo)">
           <QuizQuestionYesNoComponent :questionObject="currentQuestion" v-on:questionAnswered="handleQuestionAnswered"/>
@@ -108,6 +108,9 @@ export default {
         console.error(error)
       }
     },
+    skipAnimation () {
+      this.showItemSequence = [true, true, true, true]
+    },
     /**
      * This function will handle the change question event from the QuizProgressBarComponent
      * @param {Number} change is either 1 or -1 to change to next or previous question
@@ -189,9 +192,13 @@ export default {
     border: 2px solid #A38EE1 !important;
 }
 
+.quizButtonSection .selectedButton:hover {
+  background-color: #8C7ACD !important;
+}
+
 .quizAnswerButton:hover {
   color: #fff !important;
-  background-color: #c2b9da83 !important;
+  background-color: #C0B2E8 !important;
   border: 2px solid #A38EE1 !important;
 }
 

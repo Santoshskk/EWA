@@ -10,7 +10,8 @@
       "type": "multipleChoiceQuestion",
       "question": "Which issue do you care about the most?",
       "options": ["Climate Change", "Gender Equality", "Economic Growth", "Quality Education"],
-      "SDG": [13, 5, 8, 4]
+      "SDG": [13, 5, 8, 4],
+      "answerLimit": 1
     },
     {
       "type": "yesNoQuestion",
@@ -21,7 +22,8 @@
       "type": "multipleChoiceQuestion",
       "question": "What is your preferred mode of transportation?",
       "options": ["Car", "Bicycle", "Public Transport", "Walking"],
-      "SDG": [11, 3, 9, 13]
+      "SDG": [11, 3, 9, 13],
+      "answerLimit": 1
     },
     {
       "type": "yesNoQuestion",
@@ -30,9 +32,10 @@
     },
     {
       "type": "multipleChoiceQuestion",
-      "question": "Which of these social issues concerns you the most?",
+      "question": "Select the social issues that concern you?",
       "options": ["Poverty", "Hunger", "Inequality", "Lack of Healthcare"],
-      "SDG": [1, 2, 10, 3]
+      "SDG": [1, 2, 10, 3],
+      "answerLimit": 4
     },
     {
       "type": "yesNoQuestion",
@@ -43,7 +46,8 @@
       "type": "multipleChoiceQuestion",
       "question": "How do you usually spend your free time?",
       "options": ["Outdoor Activities", "Reading", "Socializing", "Volunteering"],
-      "SDG": [15, 4, 11, 17]
+      "SDG": [15, 4, 11, 17],
+      "answerLimit": 1
     },
     {
       "type": "yesNoQuestion",
@@ -52,9 +56,10 @@
     },
     {
       "type": "multipleChoiceQuestion",
-      "question": "What type of content do you usually share or talk about on social media?",
-      "options": ["Environmental Issues", "Social Issues", "Technology", "Health and Wellness"],
-      "SDG": [13, 16, 9, 3]
+      "question": "What's your approach to consumption?",
+      "options": ["Buy what I need", "Buy what I want", "Sustainable shopping", "Minimalist"],
+      "SDG": [12, 8, 13, 15],
+      "answerLimit": 2
     },
     {
       "type": "yesNoQuestion",
@@ -65,7 +70,8 @@
       "type": "multipleChoiceQuestion",
       "question": "What is your view on economic growth?",
       "options": ["It's essential", "It should be sustainable", "It's not always necessary", "It often leads to inequality"],
-      "SDG": [8, 12, 15, 10]
+      "SDG": [8, 12, 15, 10],
+      "answerLimit": 1
     },
     {
       "type": "yesNoQuestion",
@@ -76,7 +82,8 @@
       "type": "multipleChoiceQuestion",
       "question": "What's your stance on poverty?",
       "options": ["It's a complex issue", "It can be eradicated", "It's often overlooked", "It's interconnected with other issues"],
-      "SDG": [1, 2, 10, 17]
+      "SDG": [1, 2, 10, 17],
+      "answerLimit": 1
     },
     {
       "type": "yesNoQuestion",
@@ -87,7 +94,8 @@
       "type": "multipleChoiceQuestion",
       "question": "What is your primary source of news?",
       "options": ["Social Media", "Traditional Media", "Word of Mouth", "Independent Research"],
-      "SDG": [16, 17, 11, 4]
+      "SDG": [16, 17, 11, 4],
+      "answerLimit": 1
     },
     {
       "type": "yesNoQuestion",
@@ -98,18 +106,13 @@
       "type": "multipleChoiceQuestion",
       "question": "How do you usually handle conflicts?",
       "options": ["Dialogue", "Avoidance", "Seek Mediation", "Confrontation"],
-      "SDG": [16, 3, 17, 10]
+      "SDG": [16, 3, 17, 10],
+      "answerLimit": 1
     },
     {
       "type": "yesNoQuestion",
       "question": "Do you believe that everyone should have access to affordable healthcare?",
       "SDG": 3
-    },
-    {
-      "type": "multipleChoiceQuestion",
-      "question": "What's your approach to consumption?",
-      "options": ["Buy what I need", "Buy what I want", "Sustainable shopping", "Minimalist"],
-      "SDG": [12, 8, 13, 15]
     },
     {
       "type": "yesNoQuestion",
@@ -120,7 +123,8 @@
       "type": "multipleChoiceQuestion",
       "question": "What's your view on work-life balance?",
       "options": ["It's essential", "Work comes first", "Balance is hard", "It's a luxury"],
-      "SDG": [8, 3, 5, 10]
+      "SDG": [8, 3, 5, 10],
+      "answerLimit": 1
     },
     {
       "type": "yesNoQuestion",
@@ -131,7 +135,8 @@
       "type": "multipleChoiceQuestion",
       "question": "How do you view global partnerships?",
       "options": ["Essential for progress", "Complicated but necessary", "Not always effective", "Can lead to dependency"],
-      "SDG": [17, 16, 10, 8]
+      "SDG": [17, 16, 10, 8],
+      "answerLimit": 1
     },
     {
       "type": "yesNoQuestion",
