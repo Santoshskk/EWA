@@ -3,7 +3,7 @@
   <section class="container">
     <div class="row">
       <div style="width: 400px">
-        <Doughnut :data="data" :options="options"/>
+        <Doughnut :data="this.data" :options="this.options"/>
       </div>
 <!--      Loop to add all the sdg-results-->
       <div v-for="(sdg, index) in sdgData.slice(0, 7)" :key="index" class="col p-0">
@@ -33,6 +33,12 @@ export default {
       data: data,
       options: options,
       sdgData: sdgData
+    }
+  },
+  created () {
+    if (this.$route.query.quizanswers) {
+      const quizanswers = JSON.parse(decodeURIComponent(this.$route.query.quizanswers))
+      console.log(quizanswers)// Output will be the original object, e.g., { key1: 'value1', key2: 'value2' }
     }
   }
 }
