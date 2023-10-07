@@ -19,8 +19,8 @@
 <!--        Drop down admin dashboard menu -->
         <NavBarDropdown v-if="isAdmin" />
       </ul>
-      <button class="btn btn-info" v-if="!isLoggedIn"> Sign up</button>
-      <button class="btn btn-success mx-1">Login</button>
+      <NavBarItem class="btn btn-info" v-if="!isLoggedIn" item-text="Sign up" route="/signup"/>
+      <NavBarItem class="btn btn-success mx-1" item-text="Log in" route="/login"/>
     </div>
   </div>
 </nav>
