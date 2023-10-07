@@ -102,8 +102,10 @@ export default {
         this.totalQuestionsAnswered = await this.quiz.getTotalAnsweredQuestions()
         if (this.quizEnded) {
           const quizanswers = await this.quiz.setQuizResultObjectArray()
-          console.log(quizanswers)
-          // #TODO do something here to redirect to results page
+          this.$router.push({
+            path: `${this.$route.matched[0].path}/results`,
+            query: { quizanswers: encodeURIComponent(JSON.stringify(quizanswers)) }
+          })
         }
       } catch (error) {
         console.error(error)

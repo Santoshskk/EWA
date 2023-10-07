@@ -19,7 +19,14 @@ const routes = [
   {
     path: '/quiz',
     name: 'Quiz',
-    component: QuizComponent
+    component: QuizComponent,
+    children: [
+      {
+        path: 'results',
+        name: 'Quiz',
+        component: QuizComponent
+      }
+    ]
   }
 ]
 
