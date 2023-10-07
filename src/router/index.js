@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import ClientComponent from '@/components/AboutUs/ClientComponent'
 import TeamComponent from '@/components/AboutUs/TeamComponent'
 import PurposeComponent from '@/components/AboutUs/PurposeComponent'
+import QuizComponent from '../components/quiz/QuizComponent.vue'
 
 const routes = [
   {
@@ -43,6 +44,18 @@ const routes = [
     path: '/profile',
     name: 'profile',
     component: () => import('../components/profile/ProfilePage')
+  },
+  {
+    path: '/quiz',
+    name: 'Quiz',
+    component: QuizComponent,
+    children: [
+      {
+        path: 'results',
+        name: 'Quiz',
+        component: QuizComponent
+      }
+    ]
   }
 ]
 
