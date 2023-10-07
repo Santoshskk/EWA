@@ -16,15 +16,20 @@ const routes = [
     name: 'about_us',
     redirect: '/about_us/team',
     children: [
-      { path: 'client', component: ClientComponent },
-      { path: 'team', component: TeamComponent },
-      { path: 'purpose', component: PurposeComponent }
+      { path: 'client', component: () => import('../components/AboutUs/ClientComponent') },
+      { path: 'team', component: () => import('../components/AboutUs/TeamComponent') },
+      { path: 'purpose', component: () => import('../components/AboutUs/PurposeComponent') }
     ],
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-  }, {
+  },
+  {
+    path: '/:pathMatch(.*)',
+    component: () => import('../components/UnknownRoute')
+  },
+  {
     path: '/quiz_results',
     name: 'quiz_results1',
     component: () => import('../views/quizResultsView')
