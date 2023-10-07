@@ -64,7 +64,7 @@ export class Goal {
       }
       default: {
         console.error('Image cannot be found for goal: ' + title)
-        return require('@/assets/logo.png')
+        return require('@/assets/img/logos/logo.png')
       }
     }
   }
