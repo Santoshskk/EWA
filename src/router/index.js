@@ -4,6 +4,7 @@ import ClientComponent from '@/components/AboutUs/ClientComponent'
 import TeamComponent from '@/components/AboutUs/TeamComponent'
 import PurposeComponent from '@/components/AboutUs/PurposeComponent'
 import QuizComponent from '../components/quiz/QuizComponent.vue'
+import QuizResultsView from '@/views/quizResultsView'
 
 const routes = [
   {
@@ -53,7 +54,7 @@ const routes = [
       {
         path: 'results',
         name: 'Quiz',
-        component: QuizComponent
+        component: QuizResultsView
       }
     ]
   }

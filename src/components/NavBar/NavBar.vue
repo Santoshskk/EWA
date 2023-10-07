@@ -14,7 +14,7 @@
 <!--        NavbarItems-->
         <NavBarItem item-text="Home" route="/"/>
         <NavBarItem item-text="About us" route="/about_us"/>
-        <NavBarItem item-text="Quiz" route="/quiz_results"/>
+        <NavBarItem item-text="Quiz" route="/quiz"/>
         <NavBarItem item-text="SDG info" route="/sdg"/>
 <!--        Drop down admin dashboard menu -->
         <NavBarDropdown v-if="isAdmin" />
