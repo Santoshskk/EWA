@@ -1,10 +1,12 @@
 <template>
   <div class="card m-1" style="width: 18rem;">
-    <img class="card-img-top" alt="...">
+    <img class="card-img-top" alt="..." :src="sdgData.src">
     <div class="card-body">
-      <h5 class="card-title">Card title</h5>
-      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-      <flip-button-component/>
+      <h5 class="card-title">{{sdgData.title}}</h5>
+      <p class="card-text">{{sdgData.description}}</p>
+      <div class="card-footer">
+        <flip-button-component/>
+      </div>
     </div>
   </div>
 </template>
@@ -13,8 +15,19 @@
 import FlipButtonComponent from '@/components/quizResultsComponents/flipButtonComponent'
 export default {
   name: 'sdgCardComponent',
-  components: { FlipButtonComponent }
-
+  components: { FlipButtonComponent },
+  props: {
+    sdgData: {
+      type: Object,
+      default: () => ({
+        src: '',
+        color: '',
+        description: '',
+        id: 0,
+        title: ''
+      })
+    }
+  }
 }
 </script>
 
