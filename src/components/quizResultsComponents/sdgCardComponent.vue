@@ -1,11 +1,11 @@
 <template>
   <div class="card m-1" style="width: 18rem;">
-    <img class="card-img-top" alt="..." :src="sdgData.src">
+    <img class="card-img-top" alt="..." :src="imgsrc">
     <div class="card-body">
       <h5 class="card-title">{{sdgData.title}}</h5>
-      <p class="card-text">{{sdgData.description}}</p>
+      <p class="card-text">{{cardDescription}}</p>
       <div class="card-footer">
-        <flip-button-component/>
+        <flip-button-component @click="changeClicked" :is-clicked="isClicked"/>
       </div>
     </div>
   </div>
@@ -16,6 +16,16 @@ import FlipButtonComponent from '@/components/quizResultsComponents/flipButtonCo
 export default {
   name: 'sdgCardComponent',
   components: { FlipButtonComponent },
+  data () {
+    return {
+      isClicked: false
+    }
+  },
+  methods: {
+    changeClicked () {
+      this.isClicked = !this.isClicked
+    }
+  },
   props: {
     sdgData: {
       type: Object,
@@ -24,9 +34,18 @@ export default {
         src: '',
         color: '',
         description: '',
+        generalContribution: '',
         id: 0,
         title: ''
       })
+    }
+  },
+  computed: {
+    imgsrc () {
+      return this.isClicked ? this.sdgData.gifSrc : this.sdgData.src
+    },
+    cardDescription () {
+      return this.isClicked ? this.sdgData.generalContribution : this.sdgData.description
     }
   }
 }

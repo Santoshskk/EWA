@@ -4,6 +4,7 @@ export const sdgData = [
     title: 'No Poverty',
     color: '#e5243b',
     description: 'End poverty everywhere and ensure a decent life for all.',
+    generalContribution: 'Advocate for Fair Wages and Equal Pay',
     src: require('@/assets/sdgData/Goal 1/E_WEB_01.png'),
     gifSrc: require('@/assets/sdgData/Goal 1/1_SDG_MakeEveryDayCount_Gifs_GDU.gif')
   },
