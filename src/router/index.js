@@ -1,8 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import ClientComponent from '@/components/AboutUs/ClientComponent'
-import TeamComponent from '@/components/AboutUs/TeamComponent'
-import PurposeComponent from '@/components/AboutUs/PurposeComponent'
 import QuizComponent from '../components/quiz/QuizComponent.vue'
 import QuizResultsView from '@/views/quizResultsView'
 
