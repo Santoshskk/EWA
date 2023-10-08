@@ -67,60 +67,91 @@ export const sdgData = [
     id: 8,
     title: 'Decent Work and Economic Growth',
     color: '#a21942',
-    description: 'Promote inclusive and sustainable economic growth and employment.'
+    description: 'Promote inclusive and sustainable economic growth and employment.',
+    generalContribution: 'Advocate for fair working conditions and equitable opportunities.',
+    src: require('@/assets/sdgData/Goal 8/E_WEB_08.png'),
+    gifSrc: require('@/assets/sdgData/Goal 8/8_SDG_MakeEveryDayCount_Gifs_GDU.gif')
   },
   {
     id: 9,
     title: 'Industry, Innovation, and Infrastructure',
     color: '#fd6925',
-    description: 'Promote sustainable industry, innovation, and resilient infrastructure.'
+    description: 'Promote sustainable industry, innovation, and resilient infrastructure.',
+    generalContribution: 'Support research and development for sustainable technologies and infrastructure.',
+    src: require('@/assets/sdgData/Goal 9/E_WEB_09.png'),
+    gifSrc: require('@/assets/sdgData/Goal 9/9_SDG_MakeEveryDayCount_Gifs_GDU.gif')
   },
   {
     id: 10,
     title: 'Reduced Inequality',
     color: '#dd1367',
-    description: 'Reduce inequality within and among countries.'
+    description: 'Reduce inequality within and among countries.',
+    generalContribution: 'Advocate for policies that reduce income and social disparities.',
+    src: require('@/assets/sdgData/Goal 10/E_WEB_10.png'),
+    gifSrc: require('@/assets/sdgData/Goal 10/10_SDG_MakeEveryDayCount_Gifs_GDU.gif')
   },
   {
     id: 11,
     title: 'Sustainable Cities and Communities',
     color: '#fd9d24',
-    description: 'Make cities inclusive, safe, resilient, and sustainable.'
+    description: 'Make cities inclusive, safe, resilient, and sustainable.',
+    generalContribution: 'Promote sustainable urban planning and development.',
+    src: require('@/assets/sdgData/Goal 11/E_WEB_11.png'),
+    gifSrc: require('@/assets/sdgData/Goal 11/11_SDG_MakeEveryDayCount_Gifs_GDU.gif')
   },
   {
     id: 12,
     title: 'Responsible Consumption and Production',
     color: '#bf8b2e',
-    description: 'Ensure sustainable consumption and production patterns.'
+    description: 'Ensure sustainable consumption and production patterns.',
+    generalContribution: 'Advocate for reducing waste and promoting sustainable products.',
+    src: require('@/assets/sdgData/Goal 12/E_WEB_12.png'),
+    gifSrc: require('@/assets/sdgData/Goal 12/12_SDG_MakeEveryDayCount_Gifs_GDU.gif')
   },
   {
     id: 13,
     title: 'Climate Action',
     color: '#3f7e44',
-    description: 'Take urgent action to combat climate change and its impacts.'
+    description: 'Take urgent action to combat climate change and its impacts.',
+    generalContribution: 'Support initiatives and policies to mitigate climate change.',
+    src: require('@/assets/sdgData/Goal 13/E_WEB_13.png'),
+    gifSrc: require('@/assets/sdgData/Goal 13/13_SDG_MakeEveryDayCount_Gifs_GDU.gif')
   },
   {
     id: 14,
     title: 'Life Below Water',
     color: '#0a97b0',
-    description: 'Conserve and sustainably use marine resources for sustainable development.'
+    description: 'Conserve and sustainably use marine resources for sustainable development.',
+    generalContribution: 'Advocate for marine conservation and responsible fishing practices.',
+    src: require('@/assets/sdgData/Goal 14/E_WEB_14.png'),
+    gifSrc: require('@/assets/sdgData/Goal 14/14_SDG_MakeEveryDayCount_Gifs_GDU.gif')
   },
   {
     id: 15,
     title: 'Life on Land',
     color: '#56c02b',
-    description: 'Protect, restore, and promote sustainable use of terrestrial ecosystems.'
+    description: 'Protect, restore, and promote sustainable use of terrestrial ecosystems.',
+    generalContribution: 'Participate in reforestation and land conservation efforts.',
+    src: require('@/assets/sdgData/Goal 15/E_WEB_15.png'),
+    gifSrc: require('@/assets/sdgData/Goal 15/15_SDG_MakeEveryDayCount_Gifs_GDU.gif')
   },
   {
     id: 16,
     title: 'Peace, Justice, and Strong Institutions',
     color: '#00689d',
-    description: 'Promote peaceful and inclusive societies and provide access to justice for all.'
+    description: 'Promote peaceful and inclusive societies and provide access to justice for all.',
+    generalContribution: 'Advocate for equal rights, access to justice, and peaceful resolution of conflicts.',
+    src: require('@/assets/sdgData/Goal 16/E_WEB_16.png'),
+    gifSrc: require('@/assets/sdgData/Goal 16/16_SDG_MakeEveryDayCount_Gifs_GDU.gif')
   },
   {
     id: 17,
     title: 'Partnerships for the Goals',
     color: '#19486a',
-    description: 'Strengthen global partnerships for sustainable development.'
+    description: 'Strengthen global partnerships for sustainable development.',
+    generalContribution: 'Promote collaboration and partnerships for sustainable initiatives.',
+    src: require('@/assets/sdgData/Goal 17/E_WEB_17.png'),
+    gifSrc: require('@/assets/sdgData/Goal 17/17_SDG_MakeEveryDayCount_Gifs_GDU.gif')
   }
+
 ]

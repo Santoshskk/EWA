@@ -32,10 +32,8 @@ export default {
       default: () => ({
         gifSrc: '',
         src: '',
-        color: '',
         description: '',
         generalContribution: '',
-        id: 0,
         title: ''
       })
     }
