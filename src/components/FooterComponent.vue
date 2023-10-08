@@ -104,7 +104,9 @@ export default {
   width: 18rem;
   margin-bottom: 2%;
 }
-
+#footerBody {
+  border: none;
+}
 #footerTitle {
   margin-top: 5%;
 }
