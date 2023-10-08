@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import QuizComponent from '../components/quiz/QuizComponent.vue'
 import QuizResultsView from '@/views/quizResultsView'
+import SdgInfoPage from '@/components/LandingPage/SdgInfoPage.vue'
 
 const routes = [
   {
@@ -57,6 +58,15 @@ const routes = [
     path: '/quiz/results',
     name: 'quiz_results',
     component: QuizResultsView
+  },
+  {
+    path: '/sdg',
+    name: 'sdgInfo',
+    component: SdgInfoPage,
+    children:
+      [
+        { path: ':id', component: SdgInfoPage, props: true }
+      ]
   }
 ]
 
