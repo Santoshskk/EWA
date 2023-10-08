@@ -190,7 +190,6 @@ export default {
   transition: all 0.5s ease-in-out;
 }
 .quizMain {
-  font-family: 'Inter';
   padding-top: 30px;
   padding-bottom: 40px;
   min-height: 100vh;

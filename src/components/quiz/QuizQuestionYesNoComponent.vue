@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1 class="questionHeader">{{ questionObject.question }}</h1>
+        <h1 class="fs-1 fs-sd-2">{{ questionObject.question }}</h1>
         <div class="container">
             <div class=" justify-content-between answerBox m-auto row">
                 <div class="col-md-6 col-12 quizButtonSection">

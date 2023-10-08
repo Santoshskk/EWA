@@ -1,7 +1,7 @@
 <template>
-  <section class="vh-100 bg-image">
-    <div class="mask d-flex align-items-center h-100 background">
-      <div class="container h-100">
+  <section class="bg-image">
+    <div class="mask d-flex align-items-center background">
+      <div class="container p-5">
         <div class="row d-flex justify-content-center align-items-center h-100">
           <div class="col-12 col-md-9 col-lg-7 col-xl-6">
             <div class="card" style="border-radius: 15px;">
@@ -25,10 +25,10 @@
                     <input v-model="emailBox" type="email" class="form-control" id="emailBox" placeholder="Your Email" />
                   </div>
                   <div class="form-outline mb-4">
-                    <input v-model="educationBox" type="text" class="form-control" id="educationBox" placeholder="Education" />
+                    <input v-model="educationBox" type="text" class="form-control" id="educationBox" placeholder="Occupation" />
                   </div>
                   <div class="form-outline mb-4">
-                    <input v-model="postCodeBox" type="text" class="form-control" id="postCodeBox" placeholder="Postcode" />
+                    <input v-model="postCodeBox" type="text" class="form-control" id="postCodeBox" placeholder="ZIP code/Postal code" />
                   </div>
                   <div class="form-outline mb-4">
                     <input v-model="userName" type="text" class="form-control" id="userName" placeholder="Username*" />
@@ -55,9 +55,9 @@
                   </div>
                   <!-- dateofbirth -->
                   <div class="d-flex justify-content-center">
-                    <button @click="signUpCheck" class="btn btn-success btn-block btn-lg buttonColor text-body">Sign up</button>
+                    <button @click.prevent="signUpCheck" class="btn btn-success btn-block btn-lg buttonColor text-body">Sign up</button>
                   </div>
-                  <p class="text-center text-muted mt-4 mb-0">Have already an account?
+                  <p class="text-center text-muted mt-4 mb-0">Already have an account?
                     <router-link class="fw-bold text-body" to="/login">Login here</router-link>
                   </p>
                 </form>

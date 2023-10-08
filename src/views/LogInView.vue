@@ -17,7 +17,7 @@
                   </div>
                   <div class="d-flex justify-content-center">
                     <button type="button"
-                            @click="logInCheck" class="btn btn-success btn-block btn-lg buttonColor text-body">Register</button>
+                            @click="logInCheck" class="btn btn-success btn-block btn-lg buttonColor text-body">Log In</button>
                   </div>
                   <p class="text-center text-muted mt-4 mb-0">Don't have an account?
                     <router-link class="fw-bold text-body" to="/signup">Sign up here</router-link>

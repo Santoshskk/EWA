@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1 class="questionHeader">{{ questionObject.question }}</h1>
+        <h1 class="fs-1 fs-sd-2">{{ questionObject.question }}</h1>
         <h5 v-show="isAnswerLimitBiggerThenOne">&#40;You can select {{ questionObject.answerLimit }} answers&#41;</h5>
         <div class="container">
             <div class="m-auto row " v-for="option in questionObject.optionsObjectArray" :key="option.option">
@@ -105,15 +105,6 @@ export default {
 </script>
 
 <style>
-.questionHeader {
-    font-size: 2.5rem;
-    font-weight: 500;
-    margin-bottom: 30px;
-}
-
-.answerBox{
-    max-width: 500px;
-}
 .quizMultipleChoiceButton {
     font-size: 1.5rem;
     width: 80%;
