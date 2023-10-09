@@ -106,6 +106,7 @@ export default {
         return false
       }
     },
+    // This methode checks the input and validates it
     signUpCheck () {
       let countError = 0
       if (this.userName === '') {

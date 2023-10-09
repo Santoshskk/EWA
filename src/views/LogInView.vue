@@ -47,6 +47,7 @@ export default {
   },
 
   methods: {
+    // A hardcoded account that redirects to the profile page
     logInCheck () {
       if (this.userName === 'Santosh1234' && this.password === 'santosh') {
         this.errorMessage = ''
