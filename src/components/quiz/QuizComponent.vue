@@ -65,6 +65,10 @@ export default {
      */
     window.addEventListener('beforeunload', this.beforeWindowUnload)
     setInterval(() => {
+      if (this.showItemSequence.length === this.textIndex) {
+        clearInterval()
+        return
+      }
       this.showItemSequence[this.textIndex] = true
       this.textIndex++
     }, 500)

@@ -100,7 +100,7 @@ export default {
         }
       ]
     })
-    document.querySelector('.progressBarBottomMargin').scrollIntoView({ behavior: 'smooth' })
+    document.querySelector('nav').scrollIntoView({ behavior: 'smooth' })
   }
 }
 </script>

@@ -34,6 +34,9 @@ export default {
     return {
     }
   },
+  mounted () {
+    document.querySelector('nav').scrollIntoView({ behavior: 'smooth' })
+  },
   methods: {
     clickedYesButton () {
       this.handleQuestionAnswered(true)

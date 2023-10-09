@@ -1,7 +1,7 @@
 <template>
 <!--  This is the whole footer -->
-  <div class="card card-body text-center removeBorderRadius m-auto" id="footerBody">
-    <div class="card-body m-auto">
+  <div class="card card-body text-center removeBorderRadius" id="footerBody">
+    <div class="card-body m-auto w-100">
       <h5 class="card-title">Looks like you have reached the end...</h5>
       <div class="card-container">
         <!--  This is the section for potential questions of the users -->
@@ -72,6 +72,10 @@ export default {
 </script>
 
 <style scoped>
+
+.card-container {
+  margin-top: 20px;
+}
 .btn-footer {
   background-color: #6D3FD9;
   color:white;
