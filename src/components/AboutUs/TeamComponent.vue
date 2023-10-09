@@ -1,23 +1,23 @@
 <template>
   <h1 class="text-center"> Who we are</h1>
   <div class="card-body justify-content-center d-flex gap-5" id="body">
-    <div class="card">
+    <div class="card2">
       <img alt="team" class="team card-img" src='../../assets/img/about-us/team.jpg' id="team-component">
-      <p class="text-center font-monospace">
+      <p class="text-center">
         We are team Green Office-1,
         all of our current consisting members are second year Software Engineering students of the Hogeschool van Amsterdam!
       </p>
     </div>
-    <div class="card">
-      <p class="text-center font-monospace">
+    <div class="card2">
+      <p class="text-center">
         Our members:
       </p>
       <ul class="list-group">
-        <li class="list-group-item bg-dark text-white">Romello ten Broeke</li>
+        <li class="list-group-item bg-primaryColor text-white">Romello ten Broeke</li>
         <li class="list-group-item">Marco de Boer</li>
-        <li class="list-group-item bg-dark text-white">Justin Chan</li>
+        <li class="list-group-item bg-primaryColor text-white">Justin Chan</li>
         <li class="list-group-item">Santosh Kakkar</li>
-        <li class="list-group-item bg-dark text-white">Pim Schuit</li>
+        <li class="list-group-item bg-primaryColor text-white">Pim Schuit</li>
         <li class="list-group-item">Jiaming Yan</li>
       </ul>
     </div>
@@ -40,15 +40,20 @@ export default {
 }
 h1.text-center {
   font-family: fantasy;
-  color: #401B85;
   margin-top: 2%;
   animation: fade-up 1s;
 }
 
-.card {
-  background-color: lightgray;
-  max-width: 50%;
+.bg-primaryColor {
+  background-color: #401B96;
+}
+
+.card2 {
+  background-color: #E0DBF1;
+  max-width: 80%;
   height: auto;
+  border-radius: 10px;
+  padding: 10px;
 }
 
 #team-component {

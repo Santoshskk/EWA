@@ -111,8 +111,7 @@ export default {
 .w-80 {
   width: 90%;
 }
-.text-center {
-}
+
 .main-container {
   overflow-x: hidden;
   /*background-image: linear-gradient(#401B96, #ddf3f3 3%, #ddf3f3 97%, #401B96);*/
@@ -131,8 +130,6 @@ export default {
   color: #411C97;
 }
 
-.card-body {
-}
 .card-text {
   text-align: justify;
   text-justify: inter-word;
