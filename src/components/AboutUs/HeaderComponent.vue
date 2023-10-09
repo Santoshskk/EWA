@@ -1,6 +1,6 @@
 <template>
   <div class="header-body">
-    <img alt="header" class="header opacity-80" src='../../assets/img/about-us/header.jpg' id="header-component">
+    <img alt="header" class="header opacity-80" src='../../assets/img/about-us/about-us.png' id="header-component">
     <h1 class="card-text" id="header-text">About Us</h1>
   </div>
 </template>
@@ -28,12 +28,12 @@ export default {
 #header-text {
   font-family: fantasy;
   font-size: 6rem;
-  color: black;
+  color: white;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  border: 6px solid black;
+  border: 6px solid white;
   padding: 6px 14px;
 }
 
