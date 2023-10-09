@@ -16,11 +16,13 @@
       </div>
       <!--      quiz button row-->
       <div class="row d-flex justify-content-center">
-        <button class="quiz-button" @click="goToQuiz">To Quiz!</button>
+        <button class="btn btn-primary quiz-button" @click="goToQuiz">To Quiz!</button>
       </div>
       <!--      SDG overview field rows -->
       <div class="row gy-3"><h3>More about the Sustainable Development Goals:</h3></div>
+      <div class="d-flex fadeAnimation m-auto justify-content-center">
       <SdgOverview></SdgOverview>
+      </div>
     </div>
   </div>
 </template>
@@ -76,32 +78,50 @@ export default {
 .main-container {
   overflow-x: hidden;
   /*background-image: linear-gradient(#401B96, #ddf3f3 3%, #ddf3f3 97%, #401B96);*/
-  background-color: #ddf3f3;
+  background-color: #ffffff;
   padding-bottom: 75px;
 }
 
 .about-us-text {
   cursor: pointer;
+  color: #401B96;
+  text-decoration: none;
+}
+
+.about-us-text:hover {
+  text-decoration: underline;
+  color: #411C97;
 }
 
 .card-body {
-  animation: fade-up 1s;
+  animation: fade-up 1.5s;
 }
+.card-text {
+  /* color: white !important */
+}
+
+.card {
+  /* border: 2px solid #401B96 !important; */
+  background-color: #E0DBF1;
+  border: none;
+  animation: fade-up 1.5s;
+
+}
+
 .purpose-card {
   margin-top: 25px;
   max-width: 500px;
   font-size: 18px;
 }
 
+.fadeAnimation {
+  animation: fade-up 2s;
+}
+
 .quiz-button {
   width: 200px;
-  height: 100px;
   margin-top: 50px;
-  border: none;
-  border-radius: 25px;
-  background-color: #401B96;
-  font-size: 26px;
-  color: white;
+  font-size: 1.6rem;
   animation: fade-up 1.5s;
 }
 

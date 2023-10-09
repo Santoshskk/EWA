@@ -20,8 +20,8 @@
 <!--        Drop down admin dashboard menu -->
         <NavBarDropdown v-if="isAdmin" />
       </ul>
-      <NavBarItem class="btn btn-info" v-if="!isLoggedIn" item-text="Sign up" route="/signup"/>
-      <NavBarItem class="btn btn-success mx-1" item-text="Log in" route="/login"/>
+      <NavBarItem class="btn btn-navsignup" v-if="!isLoggedIn" item-text="Sign up" route="/signup"/>
+      <NavBarItem class="btn btn-navLogin mx-1" item-text="Log in" route="/login"/>
     </div>
   </div>
 </nav>
@@ -45,6 +45,33 @@ export default {
 
 .bg-navbar-color {
   background: #401B96;
+}
+
+.btn-navsignup {
+  background: #348bfc;
+  border: 1px solid #348bfc;
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-right: 10px;
+}
+
+.btn-navsignup:hover {
+  background: #2846ee;
+  border: 1px solid #2846ee;
+  color: white;
+}
+
+.btn-navLogin {
+  background: transparent;
+  border: 1px solid white;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.btn-navLogin:hover {
+  background: white;
+  color: #401B96;
 }
 
 .navbar-item-text {

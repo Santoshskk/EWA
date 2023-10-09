@@ -4,7 +4,7 @@
         <h1 v-show="showItemSequence[0]" class="slide-in-animation">Welcome to the SDG Quiz!</h1>
         <h3 v-show="showItemSequence[1]" class="slide-in-animation slide-in-animation-delayed m-5"> You will be asked questions about different topics </h3>
         <h3 v-show="showItemSequence[2]" class="slide-in-animation slide-in-animation-delayed m-5"> answer the questions and find out which SDG's are compatible with you!</h3>
-        <button v-show="showItemSequence[3]" @click="startQuiz" type="button" class="btn btn-primary my-5 quizAnswerButton startQuizButton slide-in-animation slide-in-animation-delayed  ripple">Start quiz</button>
+        <button v-show="showItemSequence[3]" @click="startQuiz" type="button" class="btn btn-primary my-5 startQuizButton slide-in-animation slide-in-animation-delayed">Start quiz</button>
       </div>
        <!-- This is where the quiz progress bar will be displayed -->
       <!-- This is where the quiz questions will be displayed with the answers -->
@@ -194,10 +194,6 @@ export default {
   padding-bottom: 40px;
   min-height: 100vh;
   height: fit-content;
-}
-
-.quizButtonSection .btn {
-  border-radius: 15px !important;
 }
 
 .quizButtonSection .quizAnswerButton {

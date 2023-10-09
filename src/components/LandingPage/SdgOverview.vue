@@ -32,7 +32,7 @@ export default {
 
 <style>
 .sdg-overview {
-  background-color: azure;
+  background-color: #411C97;
   padding: 50px;
   border-radius: 50px;
   margin: 25px;
