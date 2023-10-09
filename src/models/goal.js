@@ -1,3 +1,12 @@
+/**
+ * Goal model class
+ * @class Goal
+ * @property {Number} id
+ * @property {String} image
+ * @property {String} title
+ * @author Justin Chan
+ */
+
 export class Goal {
   id
   image
@@ -9,6 +18,12 @@ export class Goal {
     this.title = title
   }
 
+  /**
+   * Function assigns the icon to its goal
+   * @param title
+   * @return {*}
+   * @author Justin Chan
+   */
   makeImage (title) {
     switch (title) {
       case 'No Poverty': {

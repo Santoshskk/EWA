@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-5 mb-5">
+  <div class="mt-5 mb-5 profileBody">
     <form>
       <div class="container text-center">
         <div class="row align-items-start">
@@ -94,6 +94,12 @@
 import { Profile } from '@/models/profile'
 import { Goal } from '@/models/goal'
 
+/**
+ * ProfilePage compontent
+ * This is the page is used so users view their profile information
+ * and make changes to them.
+ */
+
 export default {
   name: 'ProfilePage',
   data () {
@@ -147,25 +153,44 @@ export default {
       showGoalSDGEmpty: false
     }
   },
+  /**
+   * Function will create a copy of the profile when the page is loaded
+   */
   created () {
     // Creates a copy of the profile
     this.oldProfileData = Profile.copyConstructor(this.profile)
   },
   methods: {
+    /**
+     * Function to show the newly uploaded profile picture
+     * @param e
+     */
     onChange (e) {
+      // Changes the image to the newly inputted image
       const file = e.target.files[0]
       this.image = file
       this.item.profilePic = URL.createObjectURL(file)
       this.profile.photo = this.item.profilePic
     },
+    /**
+     * Function to delete a goal
+     * @param id
+     */
     deleteGoal (id) {
+      // Deletes a goal from the list
       this.profile.goals = this.profile.goals.filter((goal) => goal.id !== id)
     },
+    /**
+     * Function will add a new goal to the list
+     * It will check if a goal is selected and if it is it will create a new goal
+     * and add it to the list
+     */
     createGoal () {
       const goalLenght = this.profile.goals.length
       const increment = 1
       const newId = goalLenght + increment
       const selectedSDG = this.sdgGoals.find(goal => goal === this.selectedOption)
+      // Validation check
       if (selectedSDG) {
         // Create a new goal with the selected SDG title and image
         const newGoal = new Goal(newId, selectedSDG)
@@ -179,6 +204,9 @@ export default {
         this.showGoalSDGEmpty = true
       }
     },
+    /**
+     * Function will undo any changes that has been made
+     */
     cancelEdit () {
       if (confirm('Are you sure you want to undo your changes?') === true) {
         console.log('Before reset:', this.profile)
@@ -197,6 +225,9 @@ export default {
         alert('Changes have been undone')
       }
     },
+    /**
+     * Function to save changes
+     */
     saveEdit () {
       // Check if name, birth, occupation, bio and goals are not empty
       if (this.profile.name === '' ||
@@ -217,6 +248,7 @@ export default {
           // Overwrite old data with newely input data
           this.profile = new Profile(id, name, photo, birth, occupation, bio, goals)
           alert('Changes have been saved')
+          // Creates a new copy of the profile
           this.oldProfileData = Profile.copyConstructor(this.profile)
           this.$router
             .push({ path: '/' })
@@ -225,6 +257,10 @@ export default {
     }
   },
   computed: {
+    /**
+     * Validation checks
+     * @return {boolean}
+     */
     isNameEmpty () {
       // Check if the name is an empty string
       return this.profile.name.trim() === ''
