@@ -10,7 +10,7 @@
         </p>
         <button class="btn btn-primary quiz-button" @click="goToQuiz">To Quiz!</button>
       </div>
-      <div class="col-lg-6 col-12  card purpose-card">
+      <div class="col-lg-6 col-12  card purpose-card ">
         <div class="card-body">
           <h1 class="card-title">Our Purpose!</h1>
           <p class="card-text">Welcome to our interactive platform designed to help you discover which United Nations
@@ -26,7 +26,7 @@
       </div>
       <!--      SDG overview field rows -->
       <div class="row gy-3"><h2 class="headerText2">More about the Sustainable Development Goals:</h2></div>
-      <div class="d-flex fadeAnimation m-auto justify-content-center">
+      <div class="d-flex m-auto justify-content-center">
       <SdgOverview></SdgOverview>
       </div>
     </div>
@@ -47,6 +47,7 @@ export default {
   components: { SdgOverview },
   data () {
     return {
+      itemShowIndex: 0
     }
   },
   methods: {
@@ -109,7 +110,6 @@ export default {
   width: 90%;
 }
 .text-center {
-  animation: fade-up 0.5s;
 }
 .main-container {
   overflow-x: hidden;
@@ -130,7 +130,6 @@ export default {
 }
 
 .card-body {
-  animation: fade-up 1.5s;
 }
 .card-text {
   text-align: justify;
@@ -142,7 +141,6 @@ export default {
   /* border: 2px solid #401B96 !important; */
   background-color: #E0DBF1;
   border: none;
-  animation: fade-up 1.5s;
   margin-top: 150px !important;
   border-radius: 10px;
 }
@@ -161,7 +159,15 @@ export default {
   width: 200px;
   margin-top: 50px;
   font-size: 1.6rem;
-  animation: fade-up 1.5s;
+}
+
+.slide-in-animation2 {
+  /* Initial position -50px off the top of its original position */
+  transform: translateY(50px);
+  opacity: 0; /* Initial opacity set to 0 to make it invisible */
+
+  /* Animation configuration */
+  animation: slideIn 1.5s ease-out forwards; /* Name, duration, easing function, fill mode */
 }
 
 @keyframes fade-up {
