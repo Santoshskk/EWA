@@ -13,7 +13,7 @@
       </div>
       </div>
       <div class="col-lg-6 col-12 purpose-card">
-        <div v-show="showItemSequence[1]" class="slide-in-animation card">
+        <div v-show="showItemSequence[1]" class="slide-in-animation card cardSpecific">
           <div class="card-body">
             <h1 class="card-title">Our Purpose!</h1>
             <p class="card-text">Welcome to our interactive platform designed to help you discover which United Nations
@@ -66,7 +66,7 @@ export default {
     setInterval(() => {
       this.showItemSequence[this.textIndex] = true
       this.textIndex++
-    }, 700)
+    }, 600)
   },
   methods: {
     /**
@@ -105,6 +105,7 @@ export default {
 }
 .welcomeDiv {
   margin-top: 100px !important;
+  margin-left: 0 !important;
 }
 
 .headerText {
@@ -157,8 +158,7 @@ export default {
   /* color: white !important */
 }
 
-.card {
-  /* border: 2px solid #401B96 !important; */
+.cardSpecific {
   background-color: #E0DBF1;
   border: none;
   margin-top: 150px !important;

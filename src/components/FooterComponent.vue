@@ -1,7 +1,7 @@
 <template>
 <!--  This is the whole footer -->
-  <div class="card text-center" id="footerBody">
-    <div class="card-body">
+  <div class="card card-body text-center removeBorderRadius m-auto" id="footerBody">
+    <div class="card-body m-auto">
       <h5 class="card-title">Looks like you have reached the end...</h5>
       <div class="card-container">
         <!--  This is the section for potential questions of the users -->
@@ -35,7 +35,7 @@
       </div>
       <!--  This button allows the user to go back to the top of the page -->
       <p class="card-text">Or just simply go back to the top of this page with the button below</p>
-      <button class="btn btn-primary" id="scroll-to-top" @click="scrollToTop">Go back to top</button>
+      <button class="btn btn-footer" id="scroll-to-top" @click="scrollToTop">Go back to top</button>
     </div>
     <div class="card-footer text-body-secondary">
       <p class="card-text">Presented to you by: HvA HBO-ICT, S206-Green Office Team 1</p>
@@ -72,6 +72,16 @@ export default {
 </script>
 
 <style scoped>
+.btn-footer {
+  background-color: #6D3FD9;
+  color:white;
+  font-weight: 500;
+
+}
+.btn-footer:hover {
+  color: #6D3FD9;
+  background-color: white;
+}
 /* Styling for the footer */
 .text-center {
   width: 100%;
@@ -80,8 +90,12 @@ export default {
   color: red;
 }
 
+.removeBorderRadius {
+  border-radius: 0 !important;
+}
+
 .card-body {
-  background-color: #401B96;
+  background-color: #401B96 !important;
 }
 
 .card-container{
@@ -91,8 +105,9 @@ export default {
   gap: 2%;
 }
 
-.card-title, .card-text {
+#footerBody .card-title, #footerBody .card-text {
   color: white;
+  text-align: center;
 }
 
 .card-footer {

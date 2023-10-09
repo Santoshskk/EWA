@@ -67,7 +67,7 @@ export default {
     setInterval(() => {
       this.showItemSequence[this.textIndex] = true
       this.textIndex++
-    }, 700)
+    }, 500)
   },
   methods: {
     /**
