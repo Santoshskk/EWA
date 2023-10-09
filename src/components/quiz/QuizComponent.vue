@@ -2,9 +2,9 @@
     <div class="container-fluid text-center quizMain" @click="skipAnimation">
       <div v-if="!quizStarted && !quizEnded" class="quizButtonSection ">
         <h1 v-show="showItemSequence[0]" class="slide-in-animation headerText2 fs-1 fs-sd-2">Welcome to the SDG Quiz!</h1>
-        <h3 v-show="showItemSequence[1]" class="slide-in-animation slide-in-animation-delayed m-5 headerText3"> You will be asked questions about different topics </h3>
-        <h3 v-show="showItemSequence[2]" class="slide-in-animation slide-in-animation-delayed m-5 headerText3"> answer the questions and find out which SDG's are compatible with you!</h3>
-        <button v-show="showItemSequence[3]" @click="startQuiz" type="button" class="btn btn-primary my-5 startQuizButton slide-in-animation slide-in-animation-delayed">Start quiz</button>
+        <h3 v-show="showItemSequence[1]" class="slide-in-animation m-5 headerText3"> You will be asked questions about different topics </h3>
+        <h3 v-show="showItemSequence[2]" class="slide-in-animation m-5 headerText3"> answer the questions and find out which SDG's are compatible with you!</h3>
+        <button v-show="showItemSequence[3]" @click="startQuiz" type="button" class="btn btn-primary my-5 startQuizButton slide-in-animation">Start quiz</button>
       </div>
        <!-- This is where the quiz progress bar will be displayed -->
       <!-- This is where the quiz questions will be displayed with the answers -->

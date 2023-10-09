@@ -1,5 +1,5 @@
 <template>
-  <div class="container sdg-overview">
+  <div v-show="showItem" class="container sdg-overview slide-in-animation">
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 row-cols-lg-6  gx-3 gy-3">
       <SdgCard v-for="goal in sdgArray" :key="goal.id" :content="goal">{{ goal.id }}</SdgCard>
     </div>
@@ -18,6 +18,7 @@ import { SustainableDevelopmentGoal } from '@/models/SustainableDevelopmentGoal'
 export default {
   name: 'SdgOverview',
   components: { SdgCard },
+  props: ['showItem'],
   data () {
     return {
       sdgArray: []
