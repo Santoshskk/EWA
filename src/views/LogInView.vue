@@ -47,21 +47,12 @@ export default {
   },
 
   methods: {
-    logIn () {
-      // a methode to get the account from the database (later on)
-      router.push({ name: 'home' })
-    },
-
     logInCheck () {
-      let countError = 0
-      if (this.userName === '' || this.password === '') {
-        this.errorMessage = 'Please check that you have used the correct email address and password and try again.'
-        countError++
-      } else {
+      if (this.userName === 'Santosh1234' && this.password === 'santosh') {
         this.errorMessage = ''
-      }
-      if (countError === 0) {
-        this.logIn()
+        router.push({ name: 'profile' })
+      } else {
+        this.errorMessage = 'Please check that you have used the correct email address and password and try again.'
       }
     }
   }
