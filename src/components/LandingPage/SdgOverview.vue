@@ -1,5 +1,5 @@
 <template>
-  <div class="container sdg-overview w-75">
+  <div class="container sdg-overview">
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 row-cols-lg-6  gx-3 gy-3">
       <SdgCard v-for="goal in sdgArray" :key="goal.id" :content="goal">{{ goal.id }}</SdgCard>
     </div>
@@ -33,8 +33,8 @@ export default {
 <style>
 .sdg-overview {
   background-color: #411C97;
-  padding: 50px;
-  border-radius: 50px;
-  margin: 25px;
+  padding: 30px;
+  border-radius: 10px;
+  margin-top: 20px;
 }
 </style>

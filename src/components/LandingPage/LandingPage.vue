@@ -1,9 +1,16 @@
 <template>
   <div class="main-container">
     <!--    our purpose info row-->
-    <div class="row d-flex justify-content-center">
-      <h1 class="text-center text-dark mt-3">Welcome to our webpage!</h1>
-      <div class="card w-50 purpose-card">
+    <div class="row d-flex justify-content-center gap-2 w-80 m-auto">
+      <div class="col-lg-6 col-12 m-auto justify-content-center welcomeDiv align-items-lg-start">
+        <h1 class="text-center text-dark my-2 headerText">Welcome to our webpage!</h1>
+        <p class="paragraphText">
+          Unlock your potential for global impact! On this website, you can explore and act on the UN’s Sustainable
+           Development Goals tailored to your field of expertise. Ready to make a difference? Take our quiz now!
+        </p>
+        <button class="btn btn-primary quiz-button" @click="goToQuiz">To Quiz!</button>
+      </div>
+      <div class="col-lg-6 col-12  card purpose-card">
         <div class="card-body">
           <h1 class="card-title">Our Purpose!</h1>
           <p class="card-text">Welcome to our interactive platform designed to help you discover which United Nations
@@ -16,10 +23,9 @@
       </div>
       <!--      quiz button row-->
       <div class="row d-flex justify-content-center">
-        <button class="btn btn-primary quiz-button" @click="goToQuiz">To Quiz!</button>
       </div>
       <!--      SDG overview field rows -->
-      <div class="row gy-3"><h3>More about the Sustainable Development Goals:</h3></div>
+      <div class="row gy-3"><h2 class="headerText2">More about the Sustainable Development Goals:</h2></div>
       <div class="d-flex fadeAnimation m-auto justify-content-center">
       <SdgOverview></SdgOverview>
       </div>
@@ -72,6 +78,36 @@ export default {
 </script>
 
 <style>
+.card-title {
+  font-weight: bold;
+}
+.welcomeDiv {
+  margin-top: 100px !important;
+}
+
+.headerText {
+  font-size: 2.8rem;
+  font-weight: bold;
+  text-align: start !important;
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.headerText2 {
+  font-size: 2.8rem;
+  font-weight: bold;
+  text-align: center !important;
+  margin-top: 50px;
+}
+
+.paragraphText {
+  font-size: 1.2rem;
+  text-align: justify;
+  text-justify: inter-word;
+}
+.w-80 {
+  width: 90%;
+}
 .text-center {
   animation: fade-up 0.5s;
 }
@@ -97,6 +133,8 @@ export default {
   animation: fade-up 1.5s;
 }
 .card-text {
+  text-align: justify;
+  text-justify: inter-word;
   /* color: white !important */
 }
 
@@ -105,12 +143,13 @@ export default {
   background-color: #E0DBF1;
   border: none;
   animation: fade-up 1.5s;
-
+  margin-top: 150px !important;
+  border-radius: 10px;
 }
 
 .purpose-card {
   margin-top: 25px;
-  max-width: 500px;
+  max-width: 450px;
   font-size: 18px;
 }
 
@@ -133,6 +172,12 @@ export default {
   100% {
     opacity: 1;
     transform: translateY(0px) scale(1);
+  }
+}
+
+@media only screen and (max-width: 1000px) {
+  .headerText {
+    text-align: center !important;
   }
 }
 </style>
