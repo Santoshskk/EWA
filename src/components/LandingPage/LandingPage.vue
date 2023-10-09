@@ -92,6 +92,7 @@ export default {
   text-align: start !important;
   margin-top: 50px;
   margin-bottom: 50px;
+  color: #292b2e;
 }
 
 .headerText2 {
@@ -99,6 +100,7 @@ export default {
   font-weight: bold;
   text-align: center !important;
   margin-top: 50px;
+  color: #292b2e;
 }
 
 .paragraphText {

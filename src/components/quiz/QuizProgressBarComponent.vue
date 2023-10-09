@@ -96,13 +96,13 @@ export default {
     background-color: transparent;
     width: fit-content;
     height: fit-content;
-    padding: 0;
+    padding: 0px;
 }
 .progressBarBottomMargin {
     margin-bottom: 40px;
 }
-.quizArrow {
-    color: #A38EE1;
+.removeButtonStyle svg {
+    color: #6D3FD9 !important;
 }
 
 </style>

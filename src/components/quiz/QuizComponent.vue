@@ -1,9 +1,9 @@
 <template>
     <div class="container-fluid text-center quizMain" @click="skipAnimation">
       <div v-if="!quizStarted && !quizEnded" class="quizButtonSection ">
-        <h1 v-show="showItemSequence[0]" class="slide-in-animation">Welcome to the SDG Quiz!</h1>
-        <h3 v-show="showItemSequence[1]" class="slide-in-animation slide-in-animation-delayed m-5"> You will be asked questions about different topics </h3>
-        <h3 v-show="showItemSequence[2]" class="slide-in-animation slide-in-animation-delayed m-5"> answer the questions and find out which SDG's are compatible with you!</h3>
+        <h1 v-show="showItemSequence[0]" class="slide-in-animation headerText2 fs-1 fs-sd-2">Welcome to the SDG Quiz!</h1>
+        <h3 v-show="showItemSequence[1]" class="slide-in-animation slide-in-animation-delayed m-5 headerText3"> You will be asked questions about different topics </h3>
+        <h3 v-show="showItemSequence[2]" class="slide-in-animation slide-in-animation-delayed m-5 headerText3"> answer the questions and find out which SDG's are compatible with you!</h3>
         <button v-show="showItemSequence[3]" @click="startQuiz" type="button" class="btn btn-primary my-5 startQuizButton slide-in-animation slide-in-animation-delayed">Start quiz</button>
       </div>
        <!-- This is where the quiz progress bar will be displayed -->
@@ -19,9 +19,9 @@
         </div>
       </div>
       <div v-else-if="!quizStarted && quizEnded" class="slide-in-animation">
-        <h1 class="my-4">Quiz ended!</h1>
+        <h1 class="my-4 headerText2">Quiz ended!</h1>
         <div class="row  maxWidth800 m-auto justify-content-center my-5">
-          <h2 class="col-6">Calculating results...</h2>
+          <h2 class="col-6 headerText3">Calculating results...</h2>
           <div class="spinner-border spinnerColor " role="status">
             <span class="sr-only"></span>
           </div>
@@ -184,6 +184,11 @@ export default {
 </script>
 
 <style>
+.headerText3 {
+  font-weight: 500;
+  margin-bottom: 0;
+  color: #292b2e;
+}
 .slide-in-form {
   transform: translateY(100%); /* Push the form off the bottom of the screen/container */
   opacity: 0;
@@ -197,25 +202,26 @@ export default {
 }
 
 .quizButtonSection .quizAnswerButton {
-  color: #A38EE1 !important;
+  color: #6D3FD9 !important;
   background-color: transparent !important;
-  border: 2px solid #A38EE1 !important;
+  border: 2px solid #6D3FD9 !important;
 }
 
 .quizButtonSection .selectedButton {
     color: #fff !important;
-    background-color: #A38EE1 !important;
-    border: 2px solid #A38EE1 !important;
+    background-color: #6D3FD9 !important;
+    border: 2px solid #6D3FD9 !important;
 }
 
 .quizButtonSection .selectedButton:hover {
-  background-color: #8C7ACD !important;
+  background-color: #411C97 !important;
+  border: 2px solid #411C97 !important;
 }
 
 .quizAnswerButton:hover {
   color: #fff !important;
-  background-color: #C0B2E8 !important;
-  border: 2px solid #A38EE1 !important;
+  background-color: #7f5ad4e8 !important;
+  border: 2px solid #7f5ad4e8 !important;
 }
 
 .startQuizButton {
@@ -223,7 +229,7 @@ export default {
   width: 200px;
 }
 .spinnerColor {
-  color: #A38EE1;
+  color: #6D3FD9;
 }
 .maxWidth800 {
   max-width: 800px;
