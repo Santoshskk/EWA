@@ -59,8 +59,7 @@
                 <div class="container border rounded-4 mb-4 goals">
                   <img :src="goal.image" class="col-1 goalImage mt-2" alt="...">
                   <h6 class="col-6 goalTitle">{{ goal.title }}</h6>
-                  <i class="bi bi-trash"></i>
-                  <button @click="deleteGoal(goal.id)" class="col-1 btn btn-danger deleteGoalButton">Delete</button>
+                  <img @click="deleteGoal(goal.id)" src="@/assets/img/trashcan/trash-can.png" class="col-2 deleteGoalButton">
                 </div>
               </div>
             </div>
@@ -72,7 +71,7 @@
                 <label for="selectList">Select a goal:</label>
               </div>
               <div class="col">
-                <select class="form-select" v-model="selectedOption" required>
+                <select class="form-select selectGoal" v-model="selectedOption" required>
                   <option v-for="(goal, index) in sdgGoals" :key="index" :value="goal">
                     {{ goal }}
                   </option>
@@ -186,9 +185,9 @@ export default {
      * and add it to the list
      */
     createGoal () {
-      const goalLenght = this.profile.goals.length
+      const goalLength = this.profile.goals.length
       const increment = 1
-      const newId = goalLenght + increment
+      const newId = goalLength + increment
       const selectedSDG = this.sdgGoals.find(goal => goal === this.selectedOption)
       // Validation check
       if (selectedSDG) {
@@ -209,7 +208,6 @@ export default {
      */
     cancelEdit () {
       if (confirm('Are you sure you want to undo your changes?') === true) {
-        console.log('Before reset:', this.profile)
         const name = this.oldProfileData.name
         const photo = this.oldProfileData.photo
         const birth = this.oldProfileData.birth
@@ -305,9 +303,13 @@ export default {
 }
 
 .deleteGoalButton {
-  width: 25%;
+  margin-left: auto;
+  width: auto;
   height: 50%;
   align-self: center;
+}
+.deleteGoalButton:hover {
+  cursor: pointer;
 }
 
 .goalImage {
@@ -324,7 +326,13 @@ export default {
 
 .goalTitle {
   margin-top: 1rem;
+  margin-left: auto;
   text-align: center;
+  align-self: center;
+}
+
+.selectGoal:hover {
+  cursor: pointer;
 }
 
 .error {
