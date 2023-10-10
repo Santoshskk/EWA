@@ -5,7 +5,7 @@
         <div class="container">
             <div class="m-auto row " v-for="option in questionObject.optionsObjectArray" :key="option.option">
                 <div class="col-12 quizButtonSection">
-                    <button @click="handleOptionClicked(option)" type="button" :class="{selectedButton: option.isSelected, quizAnswerButton: !option.isSelected}" class="btn btn-primary my-5 quizMultipleChoiceButton" > {{ option.option }}</button>
+                    <button @click="handleOptionClicked(option)" type="button" :class="{selectedButton: option.isSelected, quizAnswerButton: !option.isSelected}" class="btn my-5 quizMultipleChoiceButton" > {{ option.option }}</button>
                 </div>
             </div>
             <div v-if="isAnswerLimitBiggerThenOne"  class="d-flex justify-content-end"  >
@@ -100,6 +100,7 @@ export default {
         }
       ]
     })
+    document.querySelector('nav').scrollIntoView({ behavior: 'smooth' })
   }
 }
 </script>
@@ -114,10 +115,12 @@ export default {
 .quizNextButton {
     font-size: 1.5rem;
     width: 200px;
-    color: rgb(37, 61, 244) !important;
-    border: 2px solid rgb(37, 61, 244) !important;
-    background-color: transparent !important;
 }
+.quizNextButton:disabled {
+  background-color: #8664d696 !important;
+  border: 2px solid #8664d696 !important;
+}
+
 .quizNextButton:hover {
     color: #fff !important;
     background-color: rgb(37, 61, 244) !important;
@@ -126,7 +129,7 @@ export default {
 
 #tooltip {
   display: inline-block;
-  background: rgb(37, 61, 244);
+  background: #411C97;
   color: white;
   font-weight: bold;
   padding: 5px 10px;
@@ -156,7 +159,7 @@ export default {
   position: absolute;
   width: 100%;
   height: 100%;
-  background-color: rgb(37, 61, 244);  /* The color you want for the arrow */
+  background-color: #411C97;
   transform: rotate(45deg);
 }
 

@@ -17,10 +17,10 @@
                   </div>
                   <div class="d-flex justify-content-center">
                     <button type="button"
-                            @click="logInCheck" class="btn btn-success btn-block btn-lg buttonColor text-body">Log In</button>
+                            @click="logInCheck" class="btn btn-primary btn-block btn-lg buttonColor text-body">Log In</button>
                   </div>
                   <p class="text-center text-muted mt-4 mb-0">Don't have an account?
-                    <router-link class="fw-bold text-body" to="/signup">Sign up here</router-link>
+                    <router-link class="fw-bold text-body signuplink" to="/signup">Sign up here</router-link>
                   </p>
 
                 </form>
@@ -62,13 +62,18 @@ export default {
 </script>
 
 <style scoped>
+.signuplink {
+  text-decoration: none;
+}
+.signuplink:hover {
+  text-decoration: underline;
+}
 .background{
   background: #401B96;
   /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  background: linear-gradient(to bottom,#401B96 , rgba(143, 211, 244, 0.5))
+  background: linear-gradient(359deg, #401B96 4.87%, rgba(129, 180, 239, 0.93) 53.59%, #401B96 94.99%);
 }
 .buttonColor {
   /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  background: linear-gradient(to bottom,#401B96 , rgba(143, 211, 244, 0.5))
 }
 </style>

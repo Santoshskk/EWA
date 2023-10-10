@@ -55,10 +55,10 @@
                   </div>
                   <!-- dateofbirth -->
                   <div class="d-flex justify-content-center">
-                    <button @click.prevent="signUpCheck" class="btn btn-success btn-block btn-lg buttonColor text-body">Sign up</button>
+                    <button @click.prevent="signUpCheck" class="btn btn-primary btn-block btn-lg buttonColor text-body">Sign up</button>
                   </div>
                   <p class="text-center text-muted mt-4 mb-0">Already have an account?
-                    <router-link class="fw-bold text-body" to="/login">Login here</router-link>
+                    <router-link class="fw-bold text-body signuplink" to="/login">Login here</router-link>
                   </p>
                 </form>
               </div>
@@ -139,15 +139,17 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
+.signuplink {
+  text-decoration: none;
+}
+.signuplink:hover {
+  text-decoration: underline;
+}
+
 .background {
   background: #401B96;
   /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  background: linear-gradient(to bottom, #401B96, rgba(143, 211, 244, 0.5))
-}
-
-.buttonColor {
-  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  background: linear-gradient(to bottom, #401B96, rgba(143, 211, 244, 0.5))
+  background: linear-gradient(359deg, #401B96 4.87%, rgba(129, 180, 239, 0.93) 53.59%, #401B96 94.99%);
 }
 </style>

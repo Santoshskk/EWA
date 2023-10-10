@@ -1,26 +1,39 @@
 <template>
   <div class="main-container">
     <!--    our purpose info row-->
-    <div class="row d-flex justify-content-center">
-      <h1 class="text-center text-dark mt-3">Welcome to our webpage!</h1>
-      <div class="card w-50 purpose-card">
-        <div class="card-body">
-          <h1 class="card-title">Our Purpose!</h1>
-          <p class="card-text">Welcome to our interactive platform designed to help you discover which United Nations
-            Sustainable Development Goal (SDG) aligns with your values and interests. The Sustainable Development Goals
-            are a universal call to action to end poverty, protect the planet, and ensure prosperity for all by 2030. By
-            understanding your passions and priorities, we can guide you to the SDG that resonates with you the most,
-            empowering you to make a positive impact on the world. Let's explore together and find your SDG match! More
-            <a class="link about-us-text" @click="goAboutUs">About Us!</a></p>
+    <div class="row d-flex justify-content-center gap-2 w-80 m-auto">
+      <div class="col-lg-6 col-12 m-auto justify-content-center welcomeDiv align-items-lg-start slide-in-animation">
+        <div v-show="showItemSequence[0]" class="slide-in-animation">
+          <h1 class="text-center text-dark my-2 headerText">Welcome to our webpage!</h1>
+          <p class="paragraphText">
+            Unlock your potential for global impact! On this website, you can explore and act on the UN’s Sustainable
+            Development Goals tailored to your field of expertise. Ready to make a difference? Take our quiz now!
+          </p>
+          <button class="btn btn-primary quiz-button" @click="goToQuiz">To Quiz!</button>
+      </div>
+      </div>
+      <div class="col-lg-6 col-12 purpose-card">
+        <div v-show="showItemSequence[1]" class="slide-in-animation card cardSpecific">
+          <div class="card-body">
+            <h1 class="card-title">Our Purpose!</h1>
+            <p class="card-text">Welcome to our interactive platform designed to help you discover which United Nations
+              Sustainable Development Goal (SDG) aligns with your values and interests. The Sustainable Development Goals
+              are a universal call to action to end poverty, protect the planet, and ensure prosperity for all by 2030. By
+              understanding your passions and priorities, we can guide you to the SDG that resonates with you the most,
+              empowering you to make a positive impact on the world. Let's explore together and find your SDG match! More
+              <a class="link about-us-text" @click="goAboutUs">About Us!</a></p>
+          </div>
         </div>
       </div>
       <!--      quiz button row-->
       <div class="row d-flex justify-content-center">
-        <button class="quiz-button" @click="goToQuiz">To Quiz!</button>
       </div>
       <!--      SDG overview field rows -->
-      <div class="row gy-3"><h3>More about the Sustainable Development Goals:</h3></div>
-      <SdgOverview></SdgOverview>
+        <div  v-show="showItemSequence[2]" class="row gy-3 slide-in-animation"><h2 class="headerText2">More about the Sustainable Development Goals:</h2></div>
+        <div class="d-flex m-auto justify-content-center">
+        <div v-show="!showItemSequence[2]" class="spaceForAnimation"></div>
+        <SdgOverview :showItem="showItemSequence[2]" />
+      </div>
     </div>
   </div>
 </template>
@@ -39,7 +52,25 @@ export default {
   components: { SdgOverview },
   data () {
     return {
+      itemShowIndex: 0,
+      textIndex: 0,
+      showItemSequence: [false, false, false, false]
     }
+  },
+  mounted () {
+    /**
+     * This is a function that will be called every 700ms and will show the next item in the showItemSequence array
+     * This is used to show the welcome text in a sequence
+     * @author Marco de Boer
+     */
+    setInterval(() => {
+      if (this.showItemSequence.length === this.textIndex) {
+        clearInterval()
+        return
+      }
+      this.showItemSequence[this.textIndex] = true
+      this.textIndex++
+    }, 500)
   },
   methods: {
     /**
@@ -70,39 +101,97 @@ export default {
 </script>
 
 <style>
-.text-center {
-  animation: fade-up 0.5s;
+.spaceForAnimation {
+  height: 800px;
 }
+.card-title {
+  font-weight: bold;
+}
+.welcomeDiv {
+  margin-top: 100px !important;
+  margin-left: 0 !important;
+}
+
+.headerText {
+  font-size: 2.8rem;
+  font-weight: bold;
+  text-align: start !important;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  color: #292b2e;
+}
+
+.headerText2 {
+  font-size: 2.8rem;
+  font-weight: bold;
+  text-align: center !important;
+  margin-top: 50px;
+  color: #292b2e;
+}
+
+.paragraphText {
+  font-size: 1.2rem;
+  text-align: justify;
+  text-justify: inter-word;
+}
+.w-80 {
+  width: 90%;
+}
+
 .main-container {
   overflow-x: hidden;
   /*background-image: linear-gradient(#401B96, #ddf3f3 3%, #ddf3f3 97%, #401B96);*/
-  background-color: #ddf3f3;
+  background-color: #ffffff;
   padding-bottom: 75px;
 }
 
 .about-us-text {
   cursor: pointer;
+  color: #401B96;
+  text-decoration: none;
 }
 
-.card-body {
-  animation: fade-up 1s;
+.about-us-text:hover {
+  text-decoration: underline;
+  color: #411C97;
 }
+
+.card-text {
+  text-align: justify;
+  text-justify: inter-word;
+  /* color: white !important */
+}
+
+.cardSpecific {
+  background-color: #E0DBF1;
+  border: none;
+  margin-top: 150px !important;
+  border-radius: 10px;
+}
+
 .purpose-card {
   margin-top: 25px;
-  max-width: 500px;
+  max-width: 450px;
   font-size: 18px;
+}
+
+.fadeAnimation {
+  animation: fade-up 2s;
 }
 
 .quiz-button {
   width: 200px;
-  height: 100px;
   margin-top: 50px;
-  border: none;
-  border-radius: 25px;
-  background-color: #401B96;
-  font-size: 26px;
-  color: white;
-  animation: fade-up 1.5s;
+  font-size: 1.6rem;
+}
+
+.slide-in-animation {
+  /* Initial position -50px off the top of its original position */
+  transform: translateY(50px);
+  opacity: 0; /* Initial opacity set to 0 to make it invisible */
+
+  /* Animation configuration */
+  animation: slideIn 1.5s ease-out forwards; /* Name, duration, easing function, fill mode */
 }
 
 @keyframes fade-up {
@@ -113,6 +202,28 @@ export default {
   100% {
     opacity: 1;
     transform: translateY(0px) scale(1);
+  }
+}
+
+.slide-in-animation {
+  /* Initial position -50px off the top of its original position */
+  transform: translateY(50px);
+  opacity: 0; /* Initial opacity set to 0 to make it invisible */
+
+  /* Animation configuration */
+  animation: slideIn 0.8s ease-out forwards; /* Name, duration, easing function, fill mode */
+}
+
+@keyframes slideIn {
+  to {
+    transform: translateY(0); /* Target position */
+    opacity: 1; /* Make it fully visible */
+  }
+}
+
+@media only screen and (max-width: 1000px) {
+  .headerText {
+    text-align: center !important;
   }
 }
 </style>
