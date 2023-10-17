@@ -1,5 +1,6 @@
 package app.models;
 
+import java.time.LocalDate;
 import java.util.Random;
 
 public class User {
@@ -12,6 +13,10 @@ public class User {
     private int security_clearance;
     private String password;
     private String username;
+    private String bio;
+    private String occupation;
+    private LocalDate date_of_birth;
+    private String postalcode;
 
     private static final String[] FIRST_NAMES = {"John", "Mary", "David", "Lisa", "Michael", "Sarah"};
     private static final String[] LAST_NAMES = {"Smith", "Johnson", "Brown", "Taylor", "Clark", "Wilson"};
@@ -30,7 +35,7 @@ public class User {
 
     }
 
-    public User(int user_id, int sector_id, String first_name, String last_name, String email, int security_clearance, String password, String username) {
+    public User(int user_id, int sector_id, String first_name, String last_name, String email, int security_clearance, String password, String username, String bio, String occupation, LocalDate date_of_birth, String postalcode) {
         this.user_id = user_id;
         this.sector_id = sector_id;
         this.first_name = first_name;
@@ -39,8 +44,11 @@ public class User {
         this.security_clearance = security_clearance;
         this.password = password;
         this.username = username;
+        this.bio = bio;
+        this.occupation = occupation;
+        this.date_of_birth = date_of_birth;
+        this.postalcode = postalcode;
     }
-
     public void setUser_id(int user_id) {
         this.user_id = user_id;
     }
@@ -105,5 +113,37 @@ public class User {
 
     public String getUsername() {
         return username;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    public void setOccupation(String occupation) {
+        this.occupation = occupation;
+    }
+
+    public void setDate_of_birth(LocalDate date_of_birth) {
+        this.date_of_birth = date_of_birth;
+    }
+
+    public void setPostalcode(String postalcode) {
+        this.postalcode = postalcode;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public String getOccupation() {
+        return occupation;
+    }
+
+    public LocalDate getDate_of_birth() {
+        return date_of_birth;
+    }
+
+    public String getPostalcode() {
+        return postalcode;
     }
 }
