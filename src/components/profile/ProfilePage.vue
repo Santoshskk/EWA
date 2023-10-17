@@ -103,7 +103,7 @@ export default {
   name: 'ProfilePage',
   data () {
     return {
-      profile: new Profile(1, 'Steve Harold',
+      profile: new Profile(1, 'Santosh Kakkar',
         '/assets/photo/profielfoto-silhouet.jpg',
         '1999-01-01', 'Software Engineer',
         'Hi I\'m a Software Engineer at the HvA!',

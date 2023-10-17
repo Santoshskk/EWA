@@ -15,10 +15,10 @@ export default {
 }
 
 .nav-link{
-  color: white !important;
+  color: white;
 }
 
 .nav-item {
-  color: white !important;
+  color: white;
 }
 </style>

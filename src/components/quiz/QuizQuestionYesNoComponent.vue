@@ -1,7 +1,7 @@
 <template>
     <div>
         <h1 class="fs-1 fs-sd-2">{{ questionObject.question }}</h1>
-        <div class="container">
+        <div class="container quizUnderTextSection">
             <div class=" justify-content-between answerBox m-auto row">
                 <div class="col-md-6 col-12 quizButtonSection">
                     <button @click="clickedYesButton" type="button" :class="{selectedButton: yesIsSelected, quizAnswerButton: !yesIsSelected}"  class="btn btn-primary my-5 quizAnswerButton quizYesNoButton  ">Yes</button>
@@ -33,6 +33,9 @@ export default {
   data () {
     return {
     }
+  },
+  mounted () {
+    document.querySelector('nav').scrollIntoView({ behavior: 'smooth' })
   },
   methods: {
     clickedYesButton () {
@@ -67,6 +70,10 @@ export default {
 </script>
 
 <style>
+.quizUnderTextSection {
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
 .questionHeader {
     font-size: 2.5rem;
     font-weight: 500;
@@ -74,10 +81,15 @@ export default {
 }
 
 .answerBox{
-    max-width: 500px;
+    max-width: 500px !important;
 }
 .quizYesNoButton {
     font-size: 1.5rem;
     width: 200px;
+    height: fit-content;
+    margin-top: 30px !important;
+    margin-bottom: 30px !important;
+    margin-right: 40px;
+    margin-left: 40px;
 }
 </style>
