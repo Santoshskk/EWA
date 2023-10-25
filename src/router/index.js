@@ -67,6 +67,11 @@ const routes = [
       [
         { path: ':id', component: SdgInfoPage, props: true }
       ]
+  },
+  {
+    path: '/admin_dashboard',
+    name: 'admin_dashboard',
+    component: () => import(/* webpackChunkName: "about" */ '../views/AdminDashboardView')
   }
 ]
 
