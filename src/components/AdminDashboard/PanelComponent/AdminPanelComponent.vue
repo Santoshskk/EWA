@@ -8,7 +8,7 @@
         <div class="col-md-8">
           <div class="card-body">
             <h5 class="card-title">{{ title }}</h5>
-            <p class="card-text">{{ cardDescription }}</p>
+            <span class="card-text">{{ cardDescription }}</span>
             <!--          Button to show more info-->
             <div class="card-footer">
               <AdminPanelButtonComponent @click="changeShowDescription" :text="buttonText"/>
