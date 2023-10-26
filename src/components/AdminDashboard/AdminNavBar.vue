@@ -3,6 +3,7 @@
     <AdminNavBarItem text="Intro" route="intro"/>
     <AdminNavBarItem text="Users" route="users"/>
     <AdminNavBarItem text="Content" route="content"/>
+    <AdminNavBarItem text="Quiz" route="quiz"/>
   </ul>
 </template>
 <script>
