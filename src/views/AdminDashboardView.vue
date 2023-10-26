@@ -1,29 +1,24 @@
 <template>
   <div class="card text-center">
     <div class="card-header">
-      <ul class="nav nav-tabs card-header-tabs">
-        <li class="nav-item">
-          <a class="nav-link active" href="#">Active</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
-        </li>
-      </ul>
+<!--      Dashboard navbar-->
+      <AdminNavBar/>
     </div>
     <div class="card-body">
-      <h5 class="card-title">Special title treatment</h5>
-      <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-      <a href="#" class="btn btn-primary">Go somewhere</a>
+      <h5 class="card-title">Welcome to the admin dashboard</h5>
+      <span class="card-text">On this page you will find all the activities an admin can do and a small explanation per activity</span>
+<!--      Loads each section of the admin dashboard as clicked in the admin navbar. -->
+      <router-view/>
     </div>
   </div>
 </template>
 
 <script>
+
+import AdminNavBar from '@/components/AdminDashboard/AdminNavBar'
+
 export default {
-  name: 'AdminDashboardView'
+  name: 'AdminDashboardView',
+  components: { AdminNavBar }
 }
 </script>
-
-<style scoped>
-
-</style>

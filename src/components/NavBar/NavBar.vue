@@ -17,8 +17,7 @@
         <NavBarItem item-text="Quiz" route="/quiz"/>
         <NavBarItem item-text="SDG info" route="/sdg/1"/>
         <NavBarItem item-text="Profile" route="/profile"/>
-<!--        Drop down admin dashboard menu -->
-        <NavBarDropdown v-if="isAdmin" />
+        <NavBarItem v-if="isAdmin" item-text="Admin Dashboard" route="/admin_dashboard"/>
       </ul>
       <NavBarItem class="btn btn-navsignup" v-if="!isLoggedIn" item-text="Sign up" route="/signup"/>
       <NavBarItem class="btn btn-navLogin mx-1" item-text="Log in" route="/login"/>
@@ -28,11 +27,9 @@
 </template>
 <script>
 import NavBarItem from '@/components/NavBar/NavBarItem'
-import NavBarDropdown from '@/components/NavBar/NavBarDropdown'
-
 export default {
   name: 'NavBar',
-  components: { NavBarDropdown, NavBarItem },
+  components: { NavBarItem },
   data () {
     return {
       isAdmin: true,
