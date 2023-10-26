@@ -73,7 +73,7 @@ const routes = [
     name: 'admin_dashboard',
     redirect: '/admin_dashboard/intro',
     children: [
-      { path: 'intro', component: () => import('@/components/AdminDashboard/IntroComponent') }
+      { path: 'intro', component: () => import('@/components/AdminDashboard/AdminIntroComponent') }
     ],
     component: () => import(/* webpackChunkName: "about" */ '../views/AdminDashboardView')
   }
