@@ -16,7 +16,7 @@ export default class QuizQuestoinTrueFalse extends QuizQuestion {
    * @param {String} question
    * @param {Number} SDG
    */
-  constructor (question, SDG) {
+  constructor (question = null, SDG = null) {
     super(question, SDG)
     this.givenAnswer = null
   }
@@ -32,5 +32,11 @@ export default class QuizQuestoinTrueFalse extends QuizQuestion {
     if (answer !== Boolean(answer)) throw new Error('answer is not a boolean')
 
     this.givenAnswer = answer
+  }
+
+  async clone () {
+    const clone = new QuizQuestoinTrueFalse(this.question, this.SDG)
+    clone.givenAnswer = this.givenAnswer
+    return clone
   }
 }

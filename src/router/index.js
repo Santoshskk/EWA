@@ -3,6 +3,8 @@ import HomeView from '../views/HomeView.vue'
 import QuizComponent from '../components/quiz/QuizComponent.vue'
 import QuizResultsView from '@/views/quizResultsView'
 import SdgInfoPage from '@/components/LandingPage/SdgInfoPage.vue'
+import QuizBuilder from '@/components/adminquiz/QuizBuilder.vue'
+import QuizOverview from '@/components/adminquiz/QuizOverview.vue'
 
 const routes = [
   {
@@ -72,6 +74,19 @@ const routes = [
     path: '/admin_dashboard',
     name: 'admin_dashboard',
     component: () => import(/* webpackChunkName: "about" */ '../views/AdminDashboardView')
+  },
+  {
+    path: '/admin_dashboard/quiz',
+    name: 'QuizOverview',
+    component: QuizOverview,
+    children: [
+      {
+        path: 'create',
+        name: 'QuizBuilder',
+        component: QuizBuilder,
+        props: true
+      }
+    ]
   }
 ]
 
