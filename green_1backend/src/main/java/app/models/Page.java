@@ -9,31 +9,31 @@ import jakarta.persistence.Id;
 public class Page {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int page_id;
-    private String page_title;
+    private int pageId;
+    private String pageTitle;
 
-    public Page(int page_id, String page_title) {
-        this.page_id = page_id;
-        this.page_title = page_title;
+    public Page(int pageId, String pageTitle) {
+        this.pageId = pageId;
+        this.pageTitle = pageTitle;
     }
 
     public Page() {
 
     }
 
-    public int getPage_id() {
-        return page_id;
+    public int getPageId() {
+        return pageId;
     }
 
-    public void setPage_id(int page_id) {
-        this.page_id = page_id;
+    public void setPageId(int page_id) {
+        this.pageId = page_id;
     }
 
-    public String getPage_title() {
-        return page_title;
+    public String getPageTitle() {
+        return pageTitle;
     }
 
-    public void setPage_title(String page_title) {
-        this.page_title = page_title;
+    public void setPageTitle(String page_title) {
+        this.pageTitle = page_title;
     }
 }

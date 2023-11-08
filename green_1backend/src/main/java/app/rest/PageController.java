@@ -14,7 +14,7 @@ public class PageController {
     @Autowired
     private PageRepository pageRepository;
 
-    @GetMapping("/all")
+    @GetMapping(value = "/all", produces = "application/json")
     public Iterable<Page> getPages() {
         return pageRepository.findAll();
     }
@@ -22,7 +22,7 @@ public class PageController {
     @PostMapping("/add")
     public ResponseEntity<String> addPage (@RequestParam String pageTitle) {
         Page page = new Page();
-        page.setPage_title(pageTitle);
+        page.setPageTitle(pageTitle);
         pageRepository.save(page);
         return ResponseEntity.status(HttpStatus.CREATED).body("Page Created: " + pageTitle);
     }

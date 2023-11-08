@@ -3,28 +3,33 @@
   <table class="table table-hover">
     <thead>
     <tr>
-      <th scope="col">Page</th>
+      <th scope="col">Page Title</th>
     </tr>
     </thead>
     <tbody>
-    <tr>
-      <th scope="row">Home</th>
+    <tr v-for="page in allPages" :key="page.pageId">
+      <th scope="row">{{ page.pageTitle }}</th>
     </tr>
     </tbody>
   </table></template>
 
 <script>
 
+import { inject, onBeforeMount, ref } from 'vue'
+
 export default {
   name: 'editContentComponent',
-  data () {
-    return {
-      pageEditContent: null,
-      loading: false,
-      error: null
-    }
-  },
-  created () {
+  setup () {
+    const contentService = inject('contentService')
+    const allPages = ref(null)
+    const isPending = ref(false)
+    const error = ref(null)
+
+    onBeforeMount(async () => {
+      allPages.value = await contentService.findAll()
+      console.log(allPages.value)
+    })
+    return { allPages, isPending, error }
   }
 }
 </script>
