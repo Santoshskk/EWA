@@ -26,8 +26,7 @@ export default {
     const error = ref(null)
 
     onBeforeMount(async () => {
-      allPages.value = await contentService.findAll()
-      console.log(allPages.value)
+      allPages.value = await contentService.findAllPages()
     })
     return { allPages, isPending, error }
   }

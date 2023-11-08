@@ -7,13 +7,12 @@ export class RESTContentAdaptor {
     this.resourcesUrl = resourcesUrl
   }
 
-  async findAll () {
+  async findAllPages () {
     const pages = ref([])
     try {
       const response = await fetch(this.resourcesUrl + '/all')
       if (response.ok) {
         pages.value = await response.json()
-        console.log(pages.value)
         return pages.value
       } else {
         // Handle HTTP errors if the response is not 'ok'

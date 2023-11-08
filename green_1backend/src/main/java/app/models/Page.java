@@ -1,15 +1,14 @@
 package app.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
+@Table(name = "Page")
 public class Page {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int pageId;
+    @Column(name = "pageTitle")
     private String pageTitle;
 
     public Page(int pageId, String pageTitle) {
