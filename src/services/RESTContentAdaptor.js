@@ -9,17 +9,23 @@ export class RESTContentAdaptor {
 
   async findAllPages () {
     const pages = ref([])
+    const isPending = ref(true)
+    const error = ref(null)
     try {
       const response = await fetch(this.resourcesUrl + '/all')
       if (response.ok) {
         pages.value = await response.json()
-        return pages.value
+        error.value = null
       } else {
         // Handle HTTP errors if the response is not 'ok'
         return new Error('Network response was not ok.')
       }
-    } catch (error) {
+    } catch (err) {
+      error.value = err.message
       console.error('Error fetching data:', error)
+    } finally {
+      isPending.value = false
     }
+    return { pages, isPending, error }
   }
 }

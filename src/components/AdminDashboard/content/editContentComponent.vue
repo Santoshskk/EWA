@@ -15,7 +15,7 @@
 
 <script>
 
-import { inject, onBeforeMount, ref } from 'vue'
+import { inject, onBeforeMount, ref, watchEffect } from 'vue'
 
 export default {
   name: 'editContentComponent',
@@ -25,8 +25,16 @@ export default {
     const isPending = ref(false)
     const error = ref(null)
 
+    // What happens before this component gets mounted.
     onBeforeMount(async () => {
-      allPages.value = await contentService.findAllPages()
+      const APIResults = await contentService.findAllPages()
+      // Watches for changes  in the values and updated them accordingly.
+      // Without this, it will always wait on a promise and stay empty.
+      watchEffect(() => {
+        allPages.value = APIResults.pages.value
+        isPending.value = APIResults.isPending.value
+        error.value = APIResults.error.value
+      })
     })
     return { allPages, isPending, error }
   }

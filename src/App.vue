@@ -16,7 +16,7 @@ export default {
   components: { NavBar, FooterComponent },
   provide () {
     return {
-      contentService: new RESTContentAdaptor(CONFIG.BACKEND_URL + '/content')
+      contentService: new RESTContentAdaptor(CONFIG.BACKEND_URL + '/page')
     }
   }
 
