@@ -74,9 +74,15 @@ const routes = [
     redirect: '/admin_dashboard/intro',
     children: [
       { path: 'intro', component: () => import('@/components/AdminDashboard/AdminIntroComponent') },
-      { path: 'content', component: () => import('@/components/AdminDashboard/content/editContentComponent') }
+      {
+        path: 'content',
+        component: () => import('@/components/AdminDashboard/content/ContentComponent'),
+        children: [
+          { path: ':id', component: () => import('@/components/AdminDashboard/content/PageEditorComponent') }
+        ]
+      }
     ],
-    component: () => import(/* webpackChunkName: "about" */ '../views/AdminDashboardView')
+    component: () => import('../views/AdminDashboardView')
   }
 ]
 

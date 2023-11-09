@@ -1,4 +1,5 @@
 <template>
+<!--  If the error is !null this will show and not any of the other sections of this page.-->
   <div v-if="error">
     <admin-error-component :error="error"/>
   </div>
@@ -7,7 +8,7 @@
   <table class="table table-hover">
     <thead>
     <tr>
-      <th scope="col">Page Title</th>
+      <th scope="col">{{ isPending ? 'Loading...': 'Page Title'}}</th>
     </tr>
     </thead>
     <tbody>
@@ -19,6 +20,7 @@
       <th scope="row">{{ page.pageTitle }}</th>
     </tr>
     </tbody>
+    <router-view/>
   </table>
   </section>
 </template>
@@ -30,7 +32,7 @@ import AdminLoaderComponent from '@/components/AdminDashboard/AdminLoaderCompone
 import AdminErrorComponent from '@/components/AdminDashboard/AdminErrorComponent'
 
 export default {
-  name: 'editContentComponent',
+  name: 'ContentComponent',
   components: { AdminErrorComponent, AdminLoaderComponent },
   setup () {
     const contentService = inject('contentService')
