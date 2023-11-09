@@ -45,12 +45,12 @@ export default {
       questionObjectArray.value.push(
         await new QuizQuestionTrueFalse(null, null)
       )
-
-      console.log(questionObjectArray.value)
     }
 
     const deleteQuestion = (index) => {
-      questionObjectArray.value.splice(index, 1)
+      console.log(index)
+      // questionObjectArray.value.splice(index, 1)
+      console.log(questionObjectArray.value)
     }
 
     return {

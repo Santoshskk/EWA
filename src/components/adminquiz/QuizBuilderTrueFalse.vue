@@ -70,10 +70,10 @@ export default {
     }
   },
   async setup (props, { emit }) {
-    console.log(props.question)
     const questionClone = await props.question.clone()
 
     const deleteQuestion = () => {
+      console.log(props.numberInArray)
       emit('deleteQuestion', props.numberInArray - 1)
     }
 
