@@ -17,7 +17,7 @@
       <admin-loader-component/>
     </div>
     <tr v-else v-for="page in allPages" :key="page.pageId" @click="pushIdToRoute(page.pageId)"
-        :class="{ 'table-active': isActive(page.pageId) }">
+        role="button" :class="{ 'table-active': isActive(page.pageId) }">
       <th scope="row">{{ page.pageTitle }}</th>
     </tr>
     </tbody>
