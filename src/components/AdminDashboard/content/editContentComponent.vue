@@ -1,5 +1,9 @@
 <template>
-  <h2>Select the page you want to edit the content of</h2>
+  <div v-if="error">
+    <admin-error-component :error="error"/>
+  </div>
+  <section v-else>
+  <h2 >Select the page you want to edit the content of</h2>
   <table class="table table-hover">
     <thead>
     <tr>
@@ -7,22 +11,31 @@
     </tr>
     </thead>
     <tbody>
-    <tr v-for="page in allPages" :key="page.pageId">
+<!--    Shows loader when it is still fetching the Resources-->
+    <div v-if="isPending">
+      <admin-loader-component/>
+    </div>
+    <tr v-else v-for="page in allPages" :key="page.pageId">
       <th scope="row">{{ page.pageTitle }}</th>
     </tr>
     </tbody>
-  </table></template>
+  </table>
+  </section>
+</template>
 
 <script>
 
 import { inject, onBeforeMount, ref, watchEffect } from 'vue'
+import AdminLoaderComponent from '@/components/AdminDashboard/AdminLoaderComponent'
+import AdminErrorComponent from '@/components/AdminDashboard/AdminErrorComponent'
 
 export default {
   name: 'editContentComponent',
+  components: { AdminErrorComponent, AdminLoaderComponent },
   setup () {
     const contentService = inject('contentService')
     const allPages = ref(null)
-    const isPending = ref(false)
+    const isPending = ref(true)
     const error = ref(null)
 
     // What happens before this component gets mounted.

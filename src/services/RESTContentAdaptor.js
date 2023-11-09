@@ -22,7 +22,6 @@ export class RESTContentAdaptor {
       }
     } catch (err) {
       error.value = err.message
-      console.error('Error fetching data:', error)
     } finally {
       isPending.value = false
     }
