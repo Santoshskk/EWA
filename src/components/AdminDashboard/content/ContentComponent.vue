@@ -16,11 +16,12 @@
     <div v-if="isPending">
       <admin-loader-component/>
     </div>
-    <tr v-else v-for="page in allPages" :key="page.pageId">
+    <tr v-else v-for="page in allPages" :key="page.pageId" @click="pushIdToRoute(page.pageId)"
+        :class="{ 'table-active': isActive(page.pageId) }">
       <th scope="row">{{ page.pageTitle }}</th>
     </tr>
     </tbody>
-    <router-view/>
+    <PageEditorComponent/>
   </table>
   </section>
 </template>
@@ -30,15 +31,18 @@
 import { inject, onBeforeMount, ref, watchEffect } from 'vue'
 import AdminLoaderComponent from '@/components/AdminDashboard/AdminLoaderComponent'
 import AdminErrorComponent from '@/components/AdminDashboard/AdminErrorComponent'
+import router from '@/router'
+import PageEditorComponent from '@/components/AdminDashboard/content/PageEditorComponent'
 
 export default {
   name: 'ContentComponent',
-  components: { AdminErrorComponent, AdminLoaderComponent },
+  components: { PageEditorComponent, AdminErrorComponent, AdminLoaderComponent },
   setup () {
     const contentService = inject('contentService')
     const allPages = ref(null)
     const isPending = ref(true)
     const error = ref(null)
+    const basePath = '/admin_dashboard/content'
 
     // What happens before this component gets mounted.
     onBeforeMount(async () => {
@@ -51,7 +55,30 @@ export default {
         error.value = APIResults.error.value
       })
     })
-    return { allPages, isPending, error }
+    return { allPages, isPending, error, basePath }
+  },
+  methods: {
+    pushIdToRoute (pageId) {
+      const currentPath = this.$route.path
+
+      // Check if the current path already contains the pageId
+      if (currentPath.includes(pageId)) {
+        // Empty the path if the pageId is the same
+        router.push({ path: this.basePath })
+      } else {
+        const newPath = this.basePath + `/${pageId}`
+
+        // Push the modified path to the route
+        router.push({ path: newPath })
+      }
+    }
+  },
+  computed: {
+    isActive () {
+      return (pageId) => {
+        return pageId === parseInt(this.$route.params.id)
+      }
+    }
   }
 }
 </script>
