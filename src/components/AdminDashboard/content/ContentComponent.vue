@@ -21,7 +21,7 @@
       <th scope="row">{{ page.pageTitle }}</th>
     </tr>
     </tbody>
-    <PageEditorComponent/>
+    <PageEditorComponent :page-id="this.$route.params.id"/>
   </table>
   </section>
 </template>

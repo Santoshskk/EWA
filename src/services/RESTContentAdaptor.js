@@ -37,4 +37,26 @@ export class RESTContentAdaptor {
     }
     return { pages, isPending, error }
   }
+
+  async findContentByPageId (pageId) {
+    const editableContent = ref([])
+    const isPending = ref(true)
+    const error = ref(null)
+    try {
+      const response = await fetch(this.resourcesUrl + '/content/' + parseInt(pageId) + '/all')
+      if (response.ok) {
+        editableContent.value = await response.json()
+        error.value = null
+      } else {
+        // Handle HTTP errors if the response is not 'ok'
+        return new Error('Network response was not ok.')
+      }
+    } catch (err) {
+      error.value = err.message
+    } finally {
+      isPending.value = false
+    }
+    console.log(editableContent)
+    return { editableContent, isPending, error }
+  }
 }

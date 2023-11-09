@@ -11,8 +11,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * RestController for finding content and updating content per page
+ * @author Romello ten Broeke
+ */
+
 @RestController
-@RequestMapping("/content")
+@RequestMapping("page/content")
 public class PageContentController {
 
     @Autowired
@@ -22,7 +27,7 @@ public class PageContentController {
 
 
 // Gets all the content for one page per the Page ID
-    @GetMapping(path = "/page/{pageId}/all")
+    @GetMapping(path = "/{pageId}/all")
     public ResponseEntity<List<PageContent>> getAllContentByPageId(@PathVariable(value = "pageId") Long pageId) throws ResourceNotFoundException {
         if (!pageRepository.existsById(Math.toIntExact(pageId))) {
             throw new ResourceNotFoundException("Not found Page with id = " + pageId);
