@@ -1,11 +1,21 @@
 import { ref } from 'vue'
 
+/**
+ * RESTContentAdaptor is responsible for fetching pages and their editable content from a specified resource URL.
+ * @author Romello ten Broeke
+ */
+
 export class RESTContentAdaptor {
   resourcesUrl;
 
   constructor (resourcesUrl) {
     this.resourcesUrl = resourcesUrl
   }
+  /**
+   * Fetches all available pages from the specified resources URL.
+   * @returns {Object} An object containing ref objects for pages, isPending, and error.
+   * @author Romello ten Broeke
+   */
 
   async findAllPages () {
     const pages = ref([])

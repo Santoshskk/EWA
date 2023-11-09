@@ -37,9 +37,18 @@ import PageEditorComponent from '@/components/AdminDashboard/content/PageEditorC
 export default {
   name: 'ContentComponent',
   components: { PageEditorComponent, AdminErrorComponent, AdminLoaderComponent },
+  /**
+   * This hook is called before loading this component. It is in charge of getting all the necesseray data.
+   * @returns allPages an array of the pages with ids,
+   *          isPending wether the data is loaded or not,
+   *          error: the error message if something went wrong. Is null when all is good.
+   *          basePath: basepath of this route.
+   * @author Romello ten Broeke
+   */
   setup () {
     const contentService = inject('contentService')
     const allPages = ref(null)
+    // Should be true because the data is not done loading yet.
     const isPending = ref(true)
     const error = ref(null)
     const basePath = '/admin_dashboard/content'
@@ -58,6 +67,11 @@ export default {
     return { allPages, isPending, error, basePath }
   },
   methods: {
+    /**
+     * Method for pushin the selected pageId to a route.
+     * @param pageId to be pushed in the route
+     * @author Romello ten Broeke
+     */
     pushIdToRoute (pageId) {
       const currentPath = this.$route.path
 
@@ -74,6 +88,10 @@ export default {
     }
   },
   computed: {
+    /**
+     * @Returns if the given Id is the same as the Id in the route.params
+     * @author Romello ten Broeke
+     */
     isActive () {
       return (pageId) => {
         return pageId === parseInt(this.$route.params.id)
