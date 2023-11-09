@@ -40,9 +40,9 @@ export default {
   /**
    * This hook is called before loading this component. It is in charge of getting all the necesseray data.
    * @returns allPages an array of the pages with ids,
-   *          isPending wether the data is loaded or not,
+   *          isPending boolean for if the loading is done.
    *          error: the error message if something went wrong. Is null when all is good.
-   *          basePath: basepath of this route.
+   *          basePath: base path of this route.
    * @author Romello ten Broeke
    */
   setup () {
