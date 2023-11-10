@@ -13,7 +13,7 @@
         <!-- Deployed text -->
         <label :for="'Textarea_' + content.contentId">{{ content.contentTitle }}</label>
         <textarea class="form-control" :id="'Textarea_' + content.contentId" rows="3" disabled
-                  :placeholder="content.contentDutch"></textarea>
+                  :placeholder="findContentById(content.contentId).contentDutch"></textarea>
         <!-- Editable Text to be deployed -->
         <label :for="'Textarea_' + content.contentId">CONCEPT Text for {{ content.contentTitle }}</label>
         <textarea class="form-control" :id="'Textarea_' + content.contentId" rows="3"
