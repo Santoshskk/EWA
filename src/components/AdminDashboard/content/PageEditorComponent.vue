@@ -10,8 +10,15 @@
     </div>
     <form v-else-if="pageId">
       <div class="form-group" v-for="content in editableContent" :key="content.contentId">
-        <label :for="'Textarea_' + content.contentId">{{ content.contentTitle }}</label>
-        <textarea class="form-control" :id="'Textarea_' + content.contentId" rows="3"></textarea>
+<!--        Deployed text-->
+        <label :for="'Textarea_' + content.contentId" readonly>{{ content.contentTitle }}</label>
+        <textarea class="form-control" :id="'Textarea_' + content.contentId" rows="3" disabled :placeholder="content.contentDutch"></textarea>
+<!--        Editable Text to be deployed-->
+        <label :for="'Textarea_' + content.contentId">CONCEPT Text for {{content.contentTitle}}</label>
+        <textarea class="form-control" :id="'Textarea_' + content.contentId" rows="3" :value="content.contentConcept"></textarea>
+        <button type="button" class="btn btn-success mx-1">Save concept</button>
+        <button type="button" class="btn btn-info mx-1">Deploy concept</button>
+        <button type="button" class="btn btn-danger mx-1">Reset</button>
       </div>
     </form>
   </section>
@@ -69,12 +76,7 @@ export default {
         }
       }
     )
-
-    return {
-      editableContent,
-      isPending,
-      error
-    }
+    return { editableContent, isPending, error }
   }
 }
 </script>
