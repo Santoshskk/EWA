@@ -17,25 +17,39 @@ public class User {
     private String occupation;
     private LocalDate date_of_birth;
     private String postalcode;
+    private String usergoal;
 
     private static final String[] FIRST_NAMES = {"John", "Mary", "David", "Lisa", "Michael", "Sarah"};
     private static final String[] LAST_NAMES = {"Smith", "Johnson", "Brown", "Taylor", "Clark", "Wilson"};
-
-    public User(int user_id, String first_name, String last_name) {
+    private static final String[] EMAIL_USER = {"Smith@gmail.com", "Johnson@hotmail.com", "Brownlee@live.com", "TaylorA@gmail.com", "Clark123@gmail.com", "Wilsonbaba@gmail.com"};
+    private static final String[] USER_NAMES = {"Johny123", "Mary123", "David123", "Lisa123", "Michael123", "Sarah123"};
+    private static final String[] USER_GOALS = {"No Poverty", "Zero Hunger", "Good Health and Well Being", "Quality Education",
+            "Gender Equality", "Clean Water and Sanitation","Affordable and Clean Energy", "Decent Work and Economic Growth",
+            "Industry, Innovation, and Infrastructure", "Reduced Inequality", "Sustainable Cities and Communities",
+            "Responsible Consumption and Production","Climate Action", "Life Below Water", "Life on Land",
+            "Peace, Justice, and Strong Institutions","Partnerships for the Goals"};
+    public User(int user_id, String first_name, String last_name, String email, String username, String usergoal) {
         this.user_id = user_id;
         this.first_name = first_name;
         this.last_name = last_name;
+        this.email = email;
+        this.username = username;
+        this.usergoal = usergoal;
     }
 
     public static User createSampleUser() {
         Random random = new Random();
-        return new User(random.nextInt(1000),FIRST_NAMES[random.nextInt(FIRST_NAMES.length)],
-                LAST_NAMES[random.nextInt(LAST_NAMES.length)] );
+        return new User(random.nextInt(1000),
+                FIRST_NAMES[random.nextInt(FIRST_NAMES.length)],
+                LAST_NAMES[random.nextInt(LAST_NAMES.length)],
+                EMAIL_USER[random.nextInt(EMAIL_USER.length)],
+                USER_NAMES[random.nextInt(USER_NAMES.length)],USER_GOALS[random.nextInt(USER_GOALS.length)]
+                );
 
 
     }
 
-    public User(int user_id, int sector_id, String first_name, String last_name, String email, int security_clearance, String password, String username, String bio, String occupation, LocalDate date_of_birth, String postalcode) {
+    public User(int user_id, int sector_id, String first_name, String last_name, String email, int security_clearance, String password, String username, String bio, String occupation, LocalDate date_of_birth, String postalcode, String usergoal) {
         this.user_id = user_id;
         this.sector_id = sector_id;
         this.first_name = first_name;
@@ -48,6 +62,7 @@ public class User {
         this.occupation = occupation;
         this.date_of_birth = date_of_birth;
         this.postalcode = postalcode;
+        this.usergoal = usergoal;
     }
     public void setUser_id(int user_id) {
         this.user_id = user_id;
@@ -145,5 +160,13 @@ public class User {
 
     public String getPostalcode() {
         return postalcode;
+    }
+
+    public String getUsergoal() {
+        return usergoal;
+    }
+
+    public void setUsergoal(String usergoal) {
+        this.usergoal = usergoal;
     }
 }
