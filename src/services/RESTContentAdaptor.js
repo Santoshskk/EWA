@@ -64,4 +64,9 @@ export class RESTContentAdaptor {
     console.log(editableContent)
     return { editableContent, isPending, error }
   }
+
+  async saveContentById (content, urlParameter) {
+    console.log(content + 'Function called' + urlParameter)
+    return content
+  }
 }

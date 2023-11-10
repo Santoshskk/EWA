@@ -57,16 +57,23 @@ export default {
     findContentById (id) {
       return this.editableContent.find(content => content.contentId === id)
     },
+    /**
+     * @param id id of the content to be saved.
+     * @param content content to be saved.
+     * @param urlParameter is if only the concept should be saved.
+     */
     saveNewContent (id, content, urlParameter) {
       const indexOfContent = this.editableContent.findIndex(content => content.contentId === id)
       if (indexOfContent !== -1) {
-        // Only overwrites the concept and sends an API request
+        // Only overwrites the concept in the frontend and sends an API request
         if (urlParameter === 'true') {
           this.editableContent[indexOfContent].contentConcept = content.contentConcept
           // Overwrites the whole thing
         } else {
           this.editableContent[indexOfContent] = content
         }
+        // Makes the call to the API to also save it in the backend.
+        this.sendData(content, urlParameter)
       }
     }
   },
@@ -86,6 +93,10 @@ export default {
       error.value = APIResults.error.value
       // Clones all the content to a cloned object so the original stays
       contentClone.value = Object.fromEntries(editableContent.value.map(item => [item.contentId, { ...item }]))
+    }
+    const sendData = async (content, urlParamater) => {
+      const APIResults = await contentService.saveContentById(content, urlParamater)
+      console.log(APIResults)
     }
 
     // Only makes a call if the page id is not null
@@ -111,7 +122,7 @@ export default {
         }
       }
     )
-    return { editableContent, isPending, error, contentClone, contentService }
+    return { editableContent, isPending, error, contentClone, contentService, sendData }
   }
 }
 </script>
