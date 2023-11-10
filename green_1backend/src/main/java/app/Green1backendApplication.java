@@ -11,6 +11,7 @@ public class Green1backendApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(Green1backendApplication.class, args);
+        System.out.println("hello");
     }
 
     @Bean
