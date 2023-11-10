@@ -1,9 +1,9 @@
 <template>
   <ul class="nav nav-tabs card-header-tabs">
-    <AdminNavBarItem text="Intro" route="intro"/>
-    <AdminNavBarItem text="Users" route="users"/>
-    <AdminNavBarItem text="Content" route="content"/>
-    <AdminNavBarItem text="Quiz" route="quiz"/>
+    <AdminNavBarItem text="Intro" route="/admin_dashboard/intro"/>
+    <AdminNavBarItem text="Users" route="/admin_dashboard/users"/>
+    <AdminNavBarItem text="Content" route="/admin_dashboard/content"/>
+    <AdminNavBarItem text="Quiz" route="/admin_dashboard/quiz"/>
   </ul>
 </template>
 <script>

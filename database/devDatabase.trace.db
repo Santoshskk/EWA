@@ -1,0 +1,6 @@
+2023-11-09 16:09:25 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PAGE_ID" not found; SQL statement:
+INSERT INTO PAGE_ID 1 [42102-214]
+2023-11-09 16:10:02 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "INSERT INTO PAGE [*]PAGE_ID = 1"; expected "., (, OVERRIDING USER VALUE, OVERRIDING SYSTEM VALUE, DIRECT, SORTED, DEFAULT VALUES, VALUES, SET, WITH, (, SELECT, TABLE, VALUES"; SQL statement:
+INSERT INTO PAGE PAGE_ID = 1 [42001-214]

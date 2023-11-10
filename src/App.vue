@@ -10,8 +10,15 @@
 <script>
 import NavBar from '@/components/NavBar/NavBar'
 import FooterComponent from '@/components/FooterComponent'
+import { RESTContentAdaptor } from '@/services/RESTContentAdaptor'
+import { CONFIG } from '@/CONFIG'
 export default {
-  components: { NavBar, FooterComponent }
+  components: { NavBar, FooterComponent },
+  provide () {
+    return {
+      contentService: new RESTContentAdaptor(CONFIG.BACKEND_URL + '/page')
+    }
+  }
 
 }
 </script>
