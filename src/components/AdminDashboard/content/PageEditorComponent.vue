@@ -55,13 +55,18 @@ export default {
       content.contentConcept = originalContent.contentConcept
     },
     findContentById (id) {
-      return this.editableContent.find(content => content.contentId === id)
+      if (this.editableContent) {
+        return this.editableContent.find(content => content.contentId === id)
+      } else {
+        return ''
+      }
     },
     /**
      * @param id id of the content to be saved.
      * @param content content to be saved.
      * @param urlParameter is if only the concept should be saved.
-     */ async saveNewContent (id, content, urlParameter) {
+     */
+    async saveNewContent (id, content, urlParameter) {
       const indexOfContent = this.editableContent.findIndex(content => content.contentId === id)
       if (indexOfContent !== -1) {
         // Only overwrites the concept in the frontend and sends an API request
@@ -72,9 +77,12 @@ export default {
           this.editableContent[indexOfContent].contentConcept = content.contentConcept
           this.editableContent[indexOfContent].contentDutch = content.contentConcept
         }
-        // Makes the call to the API to also save it in the backend.
-        const response = await this.sendData(this.editableContent[indexOfContent], urlParameter)
-        console.log(response.succes.value)
+        try {
+          // Makes the call to the API to also save it in the backend.
+          await this.sendData(this.editableContent[indexOfContent], urlParameter)
+        } catch (error) {
+          console.error('Error saving content:', error.message)
+        }
       }
     }
   },

@@ -75,7 +75,6 @@ export class RESTContentAdaptor {
 
   async saveContentById (content, urlParameter) {
     const requestUrl = this.resourcesUrl + '/content/' + content.contentId + '/' + urlParameter
-    console.log(urlParameter)
     const savedContent = ref(null)
     const succes = ref(false)
     const error = ref(null)
@@ -88,18 +87,13 @@ export class RESTContentAdaptor {
       if (response.ok) {
         savedContent.value = await response.json()
         error.value = null
+        succes.value = true
       } else {
-        return new Error('Network response was not ok: ' + response.status)
+        throw new Error('Network response was not ok: ' + response.status)
       }
     } catch (err) {
       error.value = err.message
-    } finally {
-      succes.value = true
     }
-    return {
-      savedContent,
-      succes,
-      error
-    }
+    return { savedContent, succes, error }
   }
 }
