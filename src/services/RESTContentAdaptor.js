@@ -6,11 +6,12 @@ import { ref } from 'vue'
  */
 
 export class RESTContentAdaptor {
-  resourcesUrl;
+  resourcesUrl
 
   constructor (resourcesUrl) {
     this.resourcesUrl = resourcesUrl
   }
+
   /**
    * Fetches all available pages from the specified resources URL.
    * @returns {Object} An object containing ref objects for pages, isPending, and error.
@@ -35,7 +36,11 @@ export class RESTContentAdaptor {
     } finally {
       isPending.value = false
     }
-    return { pages, isPending, error }
+    return {
+      pages,
+      isPending,
+      error
+    }
   }
 
   /**
@@ -61,12 +66,40 @@ export class RESTContentAdaptor {
     } finally {
       isPending.value = false
     }
-    console.log(editableContent)
-    return { editableContent, isPending, error }
+    return {
+      editableContent,
+      isPending,
+      error
+    }
   }
 
   async saveContentById (content, urlParameter) {
-    console.log(content + 'Function called' + urlParameter)
-    return content
+    const requestUrl = this.resourcesUrl + '/content/' + content.contentId + '/' + urlParameter
+    console.log(urlParameter)
+    const savedContent = ref(null)
+    const succes = ref(false)
+    const error = ref(null)
+    try {
+      const response = await fetch(requestUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(content)
+      })
+      if (response.ok) {
+        savedContent.value = await response.json()
+        error.value = null
+      } else {
+        return new Error('Network response was not ok: ' + response.status)
+      }
+    } catch (err) {
+      error.value = err.message
+    } finally {
+      succes.value = true
+    }
+    return {
+      savedContent,
+      succes,
+      error
+    }
   }
 }

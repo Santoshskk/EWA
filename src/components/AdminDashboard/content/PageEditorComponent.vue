@@ -19,7 +19,7 @@
         <textarea class="form-control" :id="'Textarea_' + content.contentId" rows="3"
                   v-model="content.contentConcept"></textarea>
         <button type="button" class="btn btn-success mx-1" @click="saveNewContent(content.contentId, content, 'true')">Save concept</button>
-        <button type="button" class="btn btn-info mx-1" @click="saveNewContent(content.contentId, content, '')">Deploy concept</button>
+        <button type="button" class="btn btn-info mx-1" @click="saveNewContent(content.contentId, content, 'false')">Deploy concept</button>
         <button type="button" class="btn btn-danger mx-1" @click="resetContentToDeployed(content)">
           Reset to original
         </button>
@@ -61,19 +61,20 @@ export default {
      * @param id id of the content to be saved.
      * @param content content to be saved.
      * @param urlParameter is if only the concept should be saved.
-     */
-    saveNewContent (id, content, urlParameter) {
+     */ async saveNewContent (id, content, urlParameter) {
       const indexOfContent = this.editableContent.findIndex(content => content.contentId === id)
       if (indexOfContent !== -1) {
         // Only overwrites the concept in the frontend and sends an API request
         if (urlParameter === 'true') {
           this.editableContent[indexOfContent].contentConcept = content.contentConcept
-          // Overwrites the whole thing
+          // Overwrites Dutch text and concept of the original
         } else {
-          this.editableContent[indexOfContent] = content
+          this.editableContent[indexOfContent].contentConcept = content.contentConcept
+          this.editableContent[indexOfContent].contentDutch = content.contentConcept
         }
         // Makes the call to the API to also save it in the backend.
-        this.sendData(content, urlParameter)
+        const response = await this.sendData(this.editableContent[indexOfContent], urlParameter)
+        console.log(response.succes.value)
       }
     }
   },

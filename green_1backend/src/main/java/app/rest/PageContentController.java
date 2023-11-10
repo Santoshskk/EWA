@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * RestController for finding content and updating content per page
@@ -44,19 +45,19 @@ public class PageContentController {
      * @return if the data is saved succesfully or not.
      * @author Romello ten Broeke
      */
-    @PostMapping("/{contentId}")
+    @PostMapping("/{contentId}/{isConcept}")
     public ResponseEntity<PageContent> updateContent(
             @PathVariable(value = "contentId") Long contentId,
-            @RequestParam(value = "contentConcept", required = false) String contentConcept,
+            @PathVariable(value = "isConcept", required = false) String contentConcept,
             @RequestBody PageContent pageContent
     ) throws ResourceNotFoundException {
         PageContent existingPageContent = pageContentRepository.findById(Math.toIntExact(contentId)).orElse(null);
 
         if (existingPageContent != null) {
             // Check if contentConcept parameter is provided in the URL
-            if (contentConcept != null) {
-                existingPageContent.setContentConcept(contentConcept);
-            } else {
+            if (Objects.equals(contentConcept, "true")) {
+                existingPageContent.setContentConcept(pageContent.getContentConcept());
+            } else if (Objects.equals(contentConcept, "false")) {
                 // Update other fields based on the request body
                 existingPageContent.setContentTitle(pageContent.getContentTitle());
                 existingPageContent.setContentDutch(pageContent.getContentDutch());

@@ -27,7 +27,7 @@
       </div>
 
       <div class="col-md-10">
-        <PageEditorComponent :pageId="this.$route.params.id"/>
+        <PageEditorComponent :pageId="parseInt(this.$route.params.id)"/>
       </div>
     </div>
   </div>
