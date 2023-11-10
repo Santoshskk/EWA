@@ -1,5 +1,7 @@
 <template>
   <section class="container">
+    <h5 class="card-title">Welcome to the admin dashboard</h5>
+    <span class="card-text">On this page you will find all the activities an admin can do and a small explanation per activity</span>
     <div class="row m-0">
       <AdminPanelComponent title="Users" admin-description="This panel provides detailed statistics on user activities, including
     registration date, login history, and user engagement. This information helps administrators make informed decisions
