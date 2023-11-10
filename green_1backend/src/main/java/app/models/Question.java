@@ -12,19 +12,22 @@ import java.util.List;
 @Entity
 @Table(name = "question")
 @Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "type")
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = YesNoQuestion.class, name = "yesno"),
-        @JsonSubTypes.Type(value = MultipleChoiceQuestion.class, name = "multiplechoice")
-})
+//@DiscriminatorColumn(name = "type")
+//@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+//@JsonSubTypes({
+//        @JsonSubTypes.Type(value = YesNoQuestion.class, name = "yesno"),
+//        @JsonSubTypes.Type(value = MultipleChoiceQuestion.class, name = "multiplechoice")
+//})
 public abstract class Question {
 
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    protected Long id;
     private String question;
+
+    @Column(name = "question_index")
+    private int questionIndex;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "quiz_id")
@@ -39,6 +42,13 @@ public abstract class Question {
 
     }
 
+    public int getIndex() {
+        return questionIndex;
+    }
+
+    public void setIndex(int questionIndex) {
+        this.questionIndex = questionIndex;
+    }
 
     public void setId(Long id) {
         this.id = id;

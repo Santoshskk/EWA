@@ -1,17 +1,19 @@
 package app.models;
 
 
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import jakarta.persistence.DiscriminatorValue;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
-@Entity
-@DiscriminatorValue("YES_NO")
+@Entity(name = "YesNoQuestion")
 @Table(name = "yesnoquestion")
-@JsonTypeName("yesno")
 public class YesNoQuestion extends Question {
-    public YesNoQuestion() {
 
+    private static final String TYPE = "yesno";
+    public YesNoQuestion() {}
+    @JsonProperty("type")
+
+    public String getType() {
+        return TYPE;
     }
 }

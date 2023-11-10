@@ -11,11 +11,33 @@ public class Quiz {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String quizName;
+
+    @Column(name = "is_published")
+    private boolean isPublished;
+
+    @Column(name = "is_concept")
+    private boolean isConcept;
     @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Question> quizQuestions;
 
     public Quiz(){}
+
+    public boolean getIsPublished() {
+        return isPublished;
+    }
+
+    public boolean getIsConcept() {
+        return isConcept;
+    }
+
+    public void setIsPublished(boolean isPublished) {
+        this.isPublished = isPublished;
+    }
+
+    public void setIsConcept(boolean isConcept) {
+        this.isConcept = isConcept;
+    }
 
     public void setId(Long id) {
         this.id = id;

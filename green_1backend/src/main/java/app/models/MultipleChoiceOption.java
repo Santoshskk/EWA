@@ -9,6 +9,8 @@ public class MultipleChoiceOption {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "multiplechoice_option")
     private String option;
 
     @ManyToOne(fetch = FetchType.LAZY)

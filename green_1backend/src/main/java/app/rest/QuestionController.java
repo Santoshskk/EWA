@@ -1,31 +1,58 @@
 package app.rest;
 
-import app.models.Question;
-import app.models.Quiz;
-import app.repositories.QuizQuestionRepository;
-import app.repositories.QuizRepository;
-import jakarta.transaction.Transactional;
+import app.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/question")
 public class QuestionController {
-    private final QuizQuestionRepository quizQuestionRepository;
+    private final QuestionService questionService;
 
     @Autowired
-    public QuestionController(QuizQuestionRepository quizQuestionRepository) {
-        this.quizQuestionRepository = quizQuestionRepository;
+    public QuestionController(QuestionService questionService) {
+        this.questionService = questionService;
     }
 
     // Get all quizzes
     @GetMapping
-    @Transactional
     public List<Question> getAllQuizzes() {
-        return quizQuestionRepository.findAll();
+        return questionService.getQuestions();
     }
+
+    // Get a single quiz by ID
+    @GetMapping("/{id}")
+    public ResponseEntity<Question> getQuizById(@PathVariable Long id) {
+        Question question = questionService.getQuestionById(id);
+        if (question == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(question);
+
+    }
+
+    @PostMapping("/create/yesno/{quizindex}")
+    public ResponseEntity<Object> createYesNoQuestion(@PathVariable Long quizindex ,@RequestBody YesNoQuestion question) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(questionService.addYesNoQuestion(quizindex,question));
+    }
+
+    @PostMapping("/create/multiplechoice/{quizindex}")
+    public ResponseEntity<Object> createMultipleChoiceQuestion(@PathVariable Long quizindex ,@RequestBody MultipleChoiceQuestion question) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(questionService.addMultipleChoiceQuestion(quizindex,question));
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Object> deleteQuestion(@PathVariable Long id) {
+        boolean success = questionService.deleteQuestion(id);
+        if (!success) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().build();
+    }
+
+
 }
