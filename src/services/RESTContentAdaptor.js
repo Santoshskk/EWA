@@ -38,6 +38,11 @@ export class RESTContentAdaptor {
     return { pages, isPending, error }
   }
 
+  /**
+   * Fetches all available content for the given pageId from the specified resources URL.
+   * @returns {Object} An object containing ref objects for pages, isPending, and error.
+   * @author Romello ten Broeke
+   */
   async findContentByPageId (pageId) {
     const editableContent = ref([])
     const isPending = ref(true)

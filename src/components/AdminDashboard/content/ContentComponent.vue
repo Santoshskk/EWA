@@ -1,29 +1,36 @@
 <template>
-<!--  If the error is !null this will show and not any of the other sections of this page.-->
-  <div v-if="error">
-    <admin-error-component :error="error"/>
-  </div>
-  <section v-else>
-  <h2 >Select the page you want to edit the content of</h2>
-  <table class="table table-hover">
-    <thead>
-    <tr>
-      <th scope="col">{{ isPending ? 'Loading...': 'Page Title'}}</th>
-    </tr>
-    </thead>
-    <tbody>
-<!--    Shows loader when it is still fetching the Resources-->
-    <div v-if="isPending">
-      <admin-loader-component/>
+  <div>
+    <div class="row">
+      <div class="col-md-2">
+        <div v-if="error">
+          <admin-error-component :error="error"/>
+        </div>
+        <section v-else>
+          <h2>Select the page you want to edit the content of</h2>
+          <table class="table table-hover">
+            <thead>
+            <tr>
+              <th scope="col">{{ isPending ? 'Loading...' : 'Page Title' }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <div v-if="isPending">
+              <admin-loader-component/>
+            </div>
+            <tr v-else v-for="page in allPages" :key="page.pageId" @click="pushIdToRoute(page.pageId)"
+                role="button" :class="{ 'table-active': isActive(page.pageId) }">
+              <th scope="row">{{ page.pageTitle }}</th>
+            </tr>
+            </tbody>
+          </table>
+        </section>
+      </div>
+
+      <div class="col-md-10">
+        <PageEditorComponent :page-id="this.$route.params.id"/>
+      </div>
     </div>
-    <tr v-else v-for="page in allPages" :key="page.pageId" @click="pushIdToRoute(page.pageId)"
-        role="button" :class="{ 'table-active': isActive(page.pageId) }">
-      <th scope="row">{{ page.pageTitle }}</th>
-    </tr>
-    </tbody>
-    <PageEditorComponent :page-id="this.$route.params.id"/>
-  </table>
-  </section>
+  </div>
 </template>
 
 <script>
