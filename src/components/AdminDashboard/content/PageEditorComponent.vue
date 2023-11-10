@@ -87,7 +87,7 @@ export default {
     const pageId = ref(props.pageId)
 
     const fetchData = async () => {
-      const APIResults = await contentService.findContentByPageId(pageId.value)
+      const APIResults = await contentService.findContentByPageId(props.pageId)
 
       editableContent.value = APIResults.editableContent.value
       isPending.value = APIResults.isPending.value
@@ -113,7 +113,7 @@ export default {
     // Watches if the pageId changes before making a new call to the Backend
     // Only makes a call if the page id is not null
     watch(
-      () => pageId.value,
+      () => props.pageId,
       (newPageId, oldPageId) => {
         if (newPageId && newPageId !== oldPageId) {
           fetchData()
