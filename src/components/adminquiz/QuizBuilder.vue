@@ -120,4 +120,8 @@ export default {
     display: flex;
     flex-direction: row;
 }
+
+template {
+    min-height: 100vh;
+}
 </style>

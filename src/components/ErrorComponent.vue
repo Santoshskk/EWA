@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container my-5">
         <h5 class="text-danger mx-3">{{error}}</h5>
     </div>
 </template>

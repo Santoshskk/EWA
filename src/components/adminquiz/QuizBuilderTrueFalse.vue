@@ -15,7 +15,7 @@
                 </select>
             </div> -->
             <div>
-                <button type="button" :class="{ 'disabled' : hasChanged || pendingBusy}" @click="saveScooter(scooterClone)" class="btn btn-success m-1">
+                <button type="button" :class="{ 'disabled' : hasChanged || pendingBusy}" @click="saveQuestion()" class="btn btn-success m-1">
                     <div class="d-flex row">
                         <div class="col">
                         Save
@@ -41,7 +41,7 @@
         <div class="d-flex row">
         <div class="col-10 my-5">
             <label class="justify-content-start h5" :for="questionClone.question">Question:</label>
-            <textarea class="question-text" placeholder="How many of the following SDG goals have you worked on?" v-model="questionClone.question" @input="saveQuestion"></textarea>
+            <textarea class="question-text" placeholder="How many of the following SDG goals have you worked on?" v-model="questionClone.question" ></textarea>
             <div class="question-footer justify-content-center gap-5">
                 <!-- <div>
                     Answers:
@@ -79,7 +79,7 @@
 </template>
 
 <script>
-import { ref, computed, onBeforeMount, inject } from 'vue'
+import { ref, computed, onBeforeMount, inject, watchEffect } from 'vue'
 export default {
   name: 'QuizBuilderTrueFalse',
   props: {
@@ -97,6 +97,7 @@ export default {
     const selectedSDGOptions = ref([])
     const sdgOptions = ref([])
     const saveQuestionIsPending = ref(false)
+    const saveQuestionError = ref(null)
     const deleteQuestionIsPending = ref(false)
 
     const cloneScooter = async () => {
@@ -140,9 +141,14 @@ export default {
     }
 
     const saveQuestion = async () => {
-      saveQuestionIsPending.value = true
-      await questionTrueFalseService.asyncSave(questionClone.value)
-      saveQuestionIsPending.value = false
+      const { isPending, error, load } = await questionTrueFalseService.asyncSave(questionClone.value)
+
+      watchEffect(() => {
+        saveQuestionIsPending.value = isPending.value
+        saveQuestionError.value = error.value
+      })
+
+      load.value()
     }
 
     const isSelected = (sdgOption) => { return selectedSDGOptions.value.includes(sdgOption) }

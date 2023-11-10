@@ -9,7 +9,7 @@ export default class QuizQuestion {
   id
   index
   question
-  SDG
+  SDG = []
 
   /**
    * This constructor is not meant to be used directly, but to be extended by other classes.
@@ -27,7 +27,6 @@ export default class QuizQuestion {
   }
 
   async #instantiateSDG (isInQuizBuilder, SDGJSON) {
-    this.SDG = []
     if (!isInQuizBuilder) {
       if (SDGJSON === undefined || SDGJSON.length === 0) throw new Error('sdg is undefined')
     }
