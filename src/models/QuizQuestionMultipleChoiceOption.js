@@ -6,6 +6,7 @@
  * @author Marco de Boer
  */
 export default class QuizQuestionMultipleChoiceOption {
+  id
   option
   isSelected
 
@@ -15,10 +16,10 @@ export default class QuizQuestionMultipleChoiceOption {
    * @param {Boolean} isSelected
    */
 
-  constructor (option, isSelected = false) {
+  constructor (id = null, option, isSelected = false) {
     if (option === undefined) throw new Error('option is undefined')
     if (isSelected !== Boolean(isSelected)) throw new Error('isSelected is not a boolean')
-
+    this.id = id
     this.option = option
     this.isSelected = isSelected
   }

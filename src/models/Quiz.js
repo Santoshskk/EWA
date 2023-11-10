@@ -15,6 +15,7 @@ import QuizResult from '@/models/QuizResult'
  */
 
 export default class Quiz {
+  id
   quizName
   questionObjectArray
   currentQuestionIndex
@@ -32,21 +33,25 @@ export default class Quiz {
    * @author Marco de Boer
    */
 
-  constructor (questionJSON) {
+  constructor (questionJSON, isInQuizBuilder = false) {
     if (questionJSON === undefined) throw new Error('JSON is undefined')
 
     if (questionJSON.quizName === undefined) throw new Error('quizName is undefined')
 
-    if (questionJSON.questions === undefined) throw new Error('questions is undefined')
+    if (questionJSON.quizQuestions === undefined) throw new Error('questions is undefined')
 
+    this.id = questionJSON.id ? questionJSON.id : null
     this.quizName = questionJSON.quizName
     this.questionObjectArray = []
-    this.#instatiateQuiz(questionJSON.questions).then(() => {
+    this.#instatiateQuiz(questionJSON.quizQuestions, isInQuizBuilder).then(() => {
       this.totalQuestions = this.questionObjectArray.length
     })
-    this.#instantieQuizResults()
-    this.currentQuestionIndex = 0
-    this.totalAnsweredQuestions = 0
+
+    if (!isInQuizBuilder) {
+      this.#instantieQuizResults()
+      this.currentQuestionIndex = 0
+      this.totalAnsweredQuestions = 0
+    }
   }
 
   /**
@@ -55,15 +60,15 @@ export default class Quiz {
    * @param {JSON} questionJSON
    * @author Marco de Boer
    */
-  async #instatiateQuiz (questionJSON) {
+  async #instatiateQuiz (questionJSON, isInQuizBuilder) {
     try {
       if (questionJSON === undefined || questionJSON.length === 0) throw new Error('JSON is undefined or length is 0')
 
       for (const question of questionJSON) {
-        if (question.type === 'multipleChoiceQuestion') {
-          this.questionObjectArray.push(new QuizQuestionMultipleChoice(question.question, question.SDG, question.options, question.answerLimit))
-        } else if (question.type === 'yesNoQuestion') {
-          this.questionObjectArray.push(new QuizQuestionTrueFalse(question.question, question.SDG))
+        if (question.type === 'multiplechoice') {
+          this.questionObjectArray.push(new QuizQuestionMultipleChoice(isInQuizBuilder, question.id, question.index, question.question, question.sdg, question.options, question.answerLimit))
+        } else if (question.type === 'yesno') {
+          this.questionObjectArray.push(new QuizQuestionTrueFalse(isInQuizBuilder, question.id, question.index, question.question, question.sdg))
         } else throw new Error('Question type is not valid')
       }
     } catch (error) {
@@ -141,5 +146,19 @@ export default class Quiz {
       }
     }
     return this.quizResultObjectArray
+  }
+
+  static copyConstructor (quizFromJson) {
+    if (quizFromJson !== null && quizFromJson.length !== 0 && quizFromJson !== undefined) {
+      return new Quiz(quizFromJson)
+    }
+    return null
+  }
+
+  static copyBuilderConstructor (quizFromJson) {
+    if (quizFromJson !== null && quizFromJson.length !== 0 && quizFromJson !== undefined) {
+      return new Quiz(quizFromJson, true)
+    }
+    return null
   }
 }

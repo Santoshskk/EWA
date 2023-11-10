@@ -23,11 +23,10 @@ export default class QuizQuestionMultipleChoice extends QuizQuestion {
    * @param {Array} options array of strings
    * @param {Number} answerLimit number of answers that can be given (default is the amount of options)
    */
-
-  constructor (question, SDG, options, answerLimit = 0) {
+  constructor (isInQuizBuilder, id = null, index, question, SDGJSON, options, answerLimit = 0) {
     if (options === undefined || options.length === 0) throw new Error('options is undefined or length is 0' + options)
     if (answerLimit > options.length) throw new Error('answerLimit is bigger than the amount of options')
-    super(question, SDG)
+    super(isInQuizBuilder, id, index, question, SDGJSON)
     this.#initializeOptions(options)
     this.givenAnswers = []
     if (answerLimit === 0) {
@@ -49,7 +48,7 @@ export default class QuizQuestionMultipleChoice extends QuizQuestion {
     this.optionsObjectArray = []
     for (const option of options) {
       if (option === null) throw new Error('option is null')
-      this.optionsObjectArray.push(new QuizQuestionMultipleChoiceOption(option, false))
+      this.optionsObjectArray.push(new QuizQuestionMultipleChoiceOption(option.id, option.option, false))
     }
   }
 

@@ -16,8 +16,8 @@ export default class QuizQuestoinTrueFalse extends QuizQuestion {
    * @param {String} question
    * @param {Number} SDG
    */
-  constructor (question = null, SDG = null) {
-    super(question, SDG)
+  constructor (isInQuizBuilder, id = null, index, question = null, SDGJSON = null) {
+    super(isInQuizBuilder, id, index, question, SDGJSON)
     this.givenAnswer = null
   }
 
@@ -35,8 +35,30 @@ export default class QuizQuestoinTrueFalse extends QuizQuestion {
   }
 
   async clone () {
-    const clone = new QuizQuestoinTrueFalse(this.question, this.SDG)
+    if (this.SDG === undefined) {
+      this.SDG = []
+    }
+    const clone = new QuizQuestoinTrueFalse(true, this.id, this.index, this.question, this.SDG)
     clone.givenAnswer = this.givenAnswer
     return clone
+  }
+
+  equals (other) {
+    if (super.equals(other) === false) return false
+    return true
+  }
+
+  static copyConstructor (questionFromJson) {
+    if (questionFromJson !== null && questionFromJson && questionFromJson !== undefined) {
+      return new QuizQuestoinTrueFalse(false, questionFromJson.id, questionFromJson.index, questionFromJson.question, questionFromJson.SDG)
+    }
+    return null
+  }
+
+  static copyBuilderConstructor (questionFromJson) {
+    if (questionFromJson !== null && questionFromJson && questionFromJson !== undefined) {
+      return new QuizQuestoinTrueFalse(true, questionFromJson.id, questionFromJson.index, questionFromJson.question, questionFromJson.SDG)
+    }
+    return null
   }
 }
