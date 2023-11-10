@@ -38,6 +38,8 @@
 import { inject, onBeforeMount, ref, watch } from 'vue'
 import AdminErrorComponent from '@/components/AdminDashboard/AdminErrorComponent'
 import AdminLoaderComponent from '@/components/AdminDashboard/AdminLoaderComponent'
+import router from '@/router'
+import { useToast } from 'vue-toast-notification'
 
 export default {
   name: 'PageEditorComponent',
@@ -108,15 +110,23 @@ export default {
     const error = ref(null)
     const contentClone = ref({})
     const pageId = ref(props.pageId)
+    const succes = ref(false)
+    const $toast = useToast()
 
     const fetchData = async () => {
       const APIResults = await contentService.findContentByPageId(props.pageId)
-
-      editableContent.value = APIResults.editableContent.value
-      isPending.value = APIResults.isPending.value
-      error.value = APIResults.error.value
-      // Clones all the content to a cloned object so the original stays
-      contentClone.value = Object.fromEntries(editableContent.value.map(item => [item.contentId, { ...item }]))
+      try {
+        editableContent.value = APIResults.editableContent.value
+        isPending.value = APIResults.isPending.value
+        error.value = APIResults.error.value
+        // Clones all the content to a cloned object so the original stays
+        contentClone.value = Object.fromEntries(editableContent.value.map(item => [item.contentId, { ...item }]))
+        succes.value = true
+      } catch (e) {
+        console.log(e)
+        $toast.error('Could not find content for pageId:' + pageId.value)
+        await router.push('/admin_dashboard/content')
+      }
     }
     const sendData = async (content, urlParamater) => {
       return await contentService.saveContentById(content, urlParamater)
@@ -145,7 +155,7 @@ export default {
         }
       }
     )
-    return { editableContent, isPending, error, contentClone, contentService, sendData }
+    return { editableContent, isPending, error, contentClone, contentService, sendData, succes }
   }
 }
 </script>
