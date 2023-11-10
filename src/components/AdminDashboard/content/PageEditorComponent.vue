@@ -18,8 +18,8 @@
         <label :for="'Textarea_' + content.contentId">CONCEPT Text for {{ content.contentTitle }}</label>
         <textarea class="form-control" :id="'Textarea_' + content.contentId" rows="3"
                   v-model="content.contentConcept"></textarea>
-        <button type="button" class="btn btn-success mx-1">Save concept</button>
-        <button type="button" class="btn btn-info mx-1">Deploy concept</button>
+        <button type="button" class="btn btn-success mx-1" @click="saveNewContent(content.contentId, content, 'true')">Save concept</button>
+        <button type="button" class="btn btn-info mx-1" @click="saveNewContent(content.contentId, content, '')">Deploy concept</button>
         <button type="button" class="btn btn-danger mx-1" @click="resetContentToDeployed(content)">
           Reset to original
         </button>
@@ -42,6 +42,9 @@ export default {
     AdminLoaderComponent,
     AdminErrorComponent
   },
+  props: {
+    pageId: Number
+  },
   methods: {
     resetContentToDeployed (content) {
       const originalContent = this.findContentById(content.contentId)
@@ -53,11 +56,19 @@ export default {
     },
     findContentById (id) {
       return this.editableContent.find(content => content.contentId === id)
+    },
+    saveNewContent (id, content, urlParameter) {
+      const indexOfContent = this.editableContent.findIndex(content => content.contentId === id)
+      if (indexOfContent !== -1) {
+        // Only overwrites the concept and sends an API request
+        if (urlParameter === 'true') {
+          this.editableContent[indexOfContent].contentConcept = content.contentConcept
+          // Overwrites the whole thing
+        } else {
+          this.editableContent[indexOfContent] = content
+        }
+      }
     }
-  },
-
-  props: {
-    pageId: Number
   },
   setup (props) {
     const contentService = inject('contentService')
@@ -65,9 +76,10 @@ export default {
     const isPending = ref(true)
     const error = ref(null)
     const contentClone = ref({})
+    const pageId = ref(props.pageId)
 
     const fetchData = async () => {
-      const APIResults = await contentService.findContentByPageId(props.pageId)
+      const APIResults = await contentService.findContentByPageId(pageId.value)
 
       editableContent.value = APIResults.editableContent.value
       isPending.value = APIResults.isPending.value
@@ -78,7 +90,7 @@ export default {
 
     // Only makes a call if the page id is not null
     onBeforeMount(() => {
-      if (props.pageId) {
+      if (pageId.value) {
         fetchData()
       } else {
         // Reset editableContent if pageId is null
@@ -89,7 +101,7 @@ export default {
     // Watches if the pageId changes before making a new call to the Backend
     // Only makes a call if the page id is not null
     watch(
-      () => props.pageId,
+      () => pageId.value,
       (newPageId, oldPageId) => {
         if (newPageId && newPageId !== oldPageId) {
           fetchData()
@@ -99,13 +111,7 @@ export default {
         }
       }
     )
-    return {
-      editableContent,
-      isPending,
-      error,
-      contentClone,
-      contentService
-    }
+    return { editableContent, isPending, error, contentClone, contentService }
   }
 }
 </script>

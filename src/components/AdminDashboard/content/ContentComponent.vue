@@ -6,7 +6,7 @@
           <admin-error-component :error="error"/>
         </div>
         <section v-else>
-          <h2>Select the page you want to edit the content of</h2>
+          <h2 v-if="!this.$route.params.id">Select the page you want to edit the content of</h2>
           <table class="table table-hover">
             <thead>
             <tr>
@@ -27,7 +27,7 @@
       </div>
 
       <div class="col-md-10">
-        <PageEditorComponent :page-id="this.$route.params.id"/>
+        <PageEditorComponent :pageId="this.$route.params.id"/>
       </div>
     </div>
   </div>
