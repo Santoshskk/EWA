@@ -18,12 +18,15 @@
         <label :for="'Textarea_' + content.contentId">CONCEPT Text for {{ content.contentTitle }}</label>
         <textarea class="form-control" :id="'Textarea_' + content.contentId" rows="3"
                   v-model="content.contentConcept"></textarea>
-        <button type="button" class="btn btn-success mx-1" @click="saveNewContent(content.contentId, content, 'true')">Save concept</button>
-        <button type="button" class="btn btn-info mx-1" @click="saveNewContent(content.contentId, content, 'false')">Deploy concept</button>
-        <button type="button" class="btn btn-danger mx-1" @click="resetContentToDeployed(content)">
+        <button type="button" class="btn btn-success m-1" @click="saveNewContent(content.contentId, content, 'true')">Save concept</button>
+        <button type="button" class="btn btn-info m-1" @click="saveNewContent(content.contentId, content, 'false')">Deploy concept</button>
+        <button type="button" class="btn btn-danger m-1" @click="resetContentToDeployed(content)"
+                :disabled="!isContentChanged(content.contentConcept, findContentById(content.contentId).contentDutch)">
           Reset to original
         </button>
-        <button type="button" class="btn btn-danger mx-1" @click="resetContentToConcept(content)">Reset to Concept
+        <button type="button" class="btn btn-danger mx-1" @click="resetContentToConcept(content)"
+                :disabled="!isContentChanged(content.contentConcept, findContentById(content.contentId).contentConcept)">
+          Reset to saved concept
         </button>
 
       </div>
@@ -49,10 +52,12 @@ export default {
     resetContentToDeployed (content) {
       const originalContent = this.findContentById(content.contentId)
       content.contentConcept = originalContent.contentDutch
+      this.$toast.warning('Restored original')
     },
     resetContentToConcept (content) {
       const originalContent = this.findContentById(content.contentId)
       content.contentConcept = originalContent.contentConcept
+      this.$toast.warning('Restored concept')
     },
     findContentById (id) {
       if (this.editableContent) {
@@ -60,6 +65,9 @@ export default {
       } else {
         return ''
       }
+    },
+    isContentChanged (contentA, contentB) {
+      return contentA !== contentB
     },
     /**
      * @param id id of the content to be saved.
@@ -79,7 +87,14 @@ export default {
         }
         try {
           // Makes the call to the API to also save it in the backend.
-          await this.sendData(this.editableContent[indexOfContent], urlParameter)
+          const APIResult = await this.sendData(this.editableContent[indexOfContent], urlParameter)
+          console.log(APIResult.succes.value)
+
+          if (APIResult.succes.value) {
+            this.$toast.success('Saved successfully')
+          } else {
+            this.$toast.warning('Couldn\'t save')
+          }
         } catch (error) {
           console.error('Error saving content:', error.message)
         }
@@ -104,8 +119,7 @@ export default {
       contentClone.value = Object.fromEntries(editableContent.value.map(item => [item.contentId, { ...item }]))
     }
     const sendData = async (content, urlParamater) => {
-      const APIResults = await contentService.saveContentById(content, urlParamater)
-      console.log(APIResults)
+      return await contentService.saveContentById(content, urlParamater)
     }
 
     // Only makes a call if the page id is not null

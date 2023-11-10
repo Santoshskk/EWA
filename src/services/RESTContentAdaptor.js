@@ -94,6 +94,8 @@ export class RESTContentAdaptor {
     } catch (err) {
       error.value = err.message
     }
-    return { savedContent, succes, error }
+    console.log(succes.value + ' succes value')
+    console.log(error.value + ' error value')
+    return { succes, error }
   }
 }
