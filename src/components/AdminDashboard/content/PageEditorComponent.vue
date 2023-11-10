@@ -9,16 +9,23 @@
       <AdminLoaderComponent/>
     </div>
     <form v-else-if="pageId">
-      <div class="form-group" v-for="content in editableContent" :key="content.contentId">
-<!--        Deployed text-->
-        <label :for="'Textarea_' + content.contentId" readonly>{{ content.contentTitle }}</label>
-        <textarea class="form-control" :id="'Textarea_' + content.contentId" rows="3" disabled :placeholder="content.contentDutch"></textarea>
-<!--        Editable Text to be deployed-->
-        <label :for="'Textarea_' + content.contentId">CONCEPT Text for {{content.contentTitle}}</label>
-        <textarea class="form-control" :id="'Textarea_' + content.contentId" rows="3" :value="content.contentConcept"></textarea>
+      <div class="form-group" v-for="content in contentClone" :key="content.contentId">
+        <!-- Deployed text -->
+        <label :for="'Textarea_' + content.contentId">{{ content.contentTitle }}</label>
+        <textarea class="form-control" :id="'Textarea_' + content.contentId" rows="3" disabled
+                  :placeholder="content.contentDutch"></textarea>
+        <!-- Editable Text to be deployed -->
+        <label :for="'Textarea_' + content.contentId">CONCEPT Text for {{ content.contentTitle }}</label>
+        <textarea class="form-control" :id="'Textarea_' + content.contentId" rows="3"
+                  v-model="content.contentConcept"></textarea>
         <button type="button" class="btn btn-success mx-1">Save concept</button>
         <button type="button" class="btn btn-info mx-1">Deploy concept</button>
-        <button type="button" class="btn btn-danger mx-1">Reset</button>
+        <button type="button" class="btn btn-danger mx-1" @click="resetContentToDeployed(content)">
+          Reset to original
+        </button>
+        <button type="button" class="btn btn-danger mx-1" @click="resetContentToConcept(content)">Reset to Concept
+        </button>
+
       </div>
     </form>
   </section>
@@ -35,15 +42,29 @@ export default {
     AdminLoaderComponent,
     AdminErrorComponent
   },
+  methods: {
+    resetContentToDeployed (content) {
+      const originalContent = this.findContentById(content.contentId)
+      content.contentConcept = originalContent.contentDutch
+    },
+    resetContentToConcept (content) {
+      const originalContent = this.findContentById(content.contentId)
+      content.contentConcept = originalContent.contentConcept
+    },
+    findContentById (id) {
+      return this.editableContent.find(content => content.contentId === id)
+    }
+  },
 
   props: {
     pageId: Number
   },
   setup (props) {
     const contentService = inject('contentService')
-    const editableContent = ref(null)
+    const editableContent = ref([])
     const isPending = ref(true)
     const error = ref(null)
+    const contentClone = ref({})
 
     const fetchData = async () => {
       const APIResults = await contentService.findContentByPageId(props.pageId)
@@ -51,6 +72,8 @@ export default {
       editableContent.value = APIResults.editableContent.value
       isPending.value = APIResults.isPending.value
       error.value = APIResults.error.value
+      // Clones all the content to a cloned object so the original stays
+      contentClone.value = Object.fromEntries(editableContent.value.map(item => [item.contentId, { ...item }]))
     }
 
     // Only makes a call if the page id is not null
@@ -76,7 +99,13 @@ export default {
         }
       }
     )
-    return { editableContent, isPending, error }
+    return {
+      editableContent,
+      isPending,
+      error,
+      contentClone,
+      contentService
+    }
   }
 }
 </script>
