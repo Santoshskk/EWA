@@ -49,6 +49,10 @@ public class User {
         this.date_of_birth = date_of_birth;
         this.postalcode = postalcode;
     }
+    public User(String username, String password){
+        this.username = username;
+        this.password = password;
+    }
     public void setUser_id(int user_id) {
         this.user_id = user_id;
     }

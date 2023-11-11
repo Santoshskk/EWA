@@ -17,7 +17,7 @@
                   </div>
                   <div class="d-flex justify-content-center">
                     <button type="button"
-                            @click="logInCheck" class="btn btn-primary btn-block btn-lg buttonColor text-body">Log In</button>
+                            @click="handleLogin" class="btn btn-primary btn-block btn-lg buttonColor text-body">Log In</button>
                   </div>
                   <p class="text-center text-muted mt-4 mb-0">Don't have an account?
                     <router-link class="fw-bold text-body signuplink" to="/signup">Sign up here</router-link>
@@ -35,7 +35,8 @@
 
 <script>
 import router from '@/router'
-
+import eventBus from 'vue-toast-notification/src/js/bus'
+import { CONFIG } from '@/CONFIG'
 export default {
   name: 'LogInView',
   data () {
@@ -47,15 +48,46 @@ export default {
   },
 
   methods: {
-    // A hardcoded account that redirects to the profile page
-    logInCheck () {
-      if (this.userName === 'Santosh1234' && this.password === 'santosh') {
-        this.errorMessage = ''
-        router.push({ name: 'profile' })
-      } else {
-        this.errorMessage = 'Please check that you have used the correct email address and password and try again.'
+    /**
+     * This method is responsible for handling user-login
+     * @author Jiaming Yan
+     * @return {Promise<void>}
+     */
+    async handleLogin () {
+      const userData = {
+        userName: this.userName,
+        passWord: this.password
+      }
+      try {
+        const response = await fetch(CONFIG.BACKEND_URL + '/users/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(userData)
+        })
+        if (response.ok) {
+          console.log('Login successful:', response.status)
+          sessionStorage.setItem('userName', this.userName)
+          // Emitting the username to NavBar so the NavBar knows the user is logged in
+          eventBus.emit('change-data', this.username)
+          // Redirects the user back to home after successful login
+          await router.push({ name: 'home' })
+        } else {
+          throw new Error('Something went wrong: ' + await response.text())
+        }
+      } catch (error) {
+        console.error()
+        this.errorMessage = error.message
       }
     }
+    // A hardcoded account that redirects to the profile page
+    // logInCheck () {
+    //   if (this.userName === 'Santosh1234' && this.password === 'santosh') {
+    //     this.errorMessage = ''
+    //     router.push({ name: 'profile' })
+    //   } else {
+    //     this.errorMessage = 'Please check that you have used the correct email address and password and try again.'
+    //   }
+    // }
   }
 }
 
