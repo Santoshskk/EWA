@@ -9,4 +9,6 @@ public interface UsersRepository<E> {
 
     User findById(int id);
 
+    User findByUserName(String userName);
+
 }
