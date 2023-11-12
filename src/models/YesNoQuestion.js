@@ -1,24 +1,28 @@
-import QuizQuestion from './QuizQuestion'
+import Question from './Question'
 
 /**
  * QuizQuestionTrueFalse model class.
  * @class QuizQuestionTrueFalse
- * @extends QuizQuestion
+ * @extends Question
  * @property {Boolean} givenAnswer
  * @author Marco de Boer
  */
 
-export default class QuizQuestoinTrueFalse extends QuizQuestion {
+export default class YesNoQuestion extends Question {
   givenAnswer
+  type = 'yesno'
+  sdg
+  sdgIsEmpty
 
   /**
    * This class is for questions that only have 2 options as answers
    * @param {String} question
    * @param {Number} SDG
    */
-  constructor (isInQuizBuilder, id = null, index, question = null, SDGJSON = null) {
-    super(isInQuizBuilder, id, index, question, SDGJSON)
+  constructor (id = null, index, question = null, sdg = null) {
+    super(id, index, question)
     this.givenAnswer = null
+    this.sdg = sdg
   }
 
   /**
@@ -35,29 +39,21 @@ export default class QuizQuestoinTrueFalse extends QuizQuestion {
   }
 
   async clone () {
-    if (this.SDG === undefined) {
-      this.SDG = []
-    }
-    const clone = new QuizQuestoinTrueFalse(true, this.id, this.index, this.question, this.SDG)
+    const clone = new YesNoQuestion(this.id, this.index, this.question, this.sdg)
     clone.givenAnswer = this.givenAnswer
     return clone
   }
 
   equals (other) {
+    if (other === null || other === undefined) return false
     if (super.equals(other) === false) return false
+    if (this.sdg !== other.sdg) return false
     return true
   }
 
   static copyConstructor (questionFromJson) {
     if (questionFromJson !== null && questionFromJson && questionFromJson !== undefined) {
-      return new QuizQuestoinTrueFalse(false, questionFromJson.id, questionFromJson.index, questionFromJson.question, questionFromJson.SDG)
-    }
-    return null
-  }
-
-  static copyBuilderConstructor (questionFromJson) {
-    if (questionFromJson !== null && questionFromJson && questionFromJson !== undefined) {
-      return new QuizQuestoinTrueFalse(true, questionFromJson.id, questionFromJson.index, questionFromJson.question, questionFromJson.SDG)
+      return new YesNoQuestion(questionFromJson.id, questionFromJson.index, questionFromJson.question, questionFromJson.SDG)
     }
     return null
   }

@@ -3,6 +3,7 @@ package app.rest;
 import app.models.Quiz;
 import app.repositories.QuizRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,15 +15,18 @@ public class QuizController {
 
     private final QuizRepository quizRepository;
 
+    private final QuizService quizService;
+
     @Autowired
-    public QuizController(QuizRepository quizRepository) {
+    public QuizController(QuizRepository quizRepository, QuizService quizService) {
         this.quizRepository = quizRepository;
+        this.quizService = quizService;
     }
 
     // Get all quizzes
     @GetMapping
     public List<Quiz> getAllQuizzes() {
-        return quizRepository.findAll();
+        return quizService.getQuizzes();
     }
 
     // Get a single quiz by ID
@@ -40,16 +44,9 @@ public class QuizController {
     }
 
     // Update a quiz
-    @PutMapping("/{id}")
-    public ResponseEntity<Quiz> updateQuiz(@PathVariable Long id, @RequestBody Quiz quizDetails) {
-        return quizRepository.findById(id)
-                .map(existingQuiz -> {
-                    // Copy properties from quizDetails to existingQuiz
-                    existingQuiz.setQuizName(quizDetails.getQuizName());
-                    // Add more properties as needed
-                    return ResponseEntity.ok(quizRepository.save(existingQuiz));
-                })
-                .orElse(ResponseEntity.notFound().build());
+    @PostMapping("/{id}")
+    public ResponseEntity<Quiz> updateQuiz(@PathVariable Long id, @RequestBody Quiz quiz) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(quizService.addQuiz(quiz));
     }
 
     // Delete a quiz

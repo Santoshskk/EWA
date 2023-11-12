@@ -15,6 +15,8 @@ public class QuestionService {
     private final QuizService quizService;
 
 
+
+
     @Autowired
     public QuestionService(QuizQuestionRepository quizQuestionRepository,
                            QuizService quizService) {
@@ -45,7 +47,10 @@ public class QuestionService {
             throw new RuntimeException("Quiz not found");
         }
         question.setQuiz(quiz);
-        return question;
+        for (MultipleChoiceOption option : question.getOptions()) {
+            option.setMultipleChoiceQuestion(question);
+        }
+        return quizQuestionRepository.save(question);
     }
 
     public boolean deleteQuestion(Long id) {

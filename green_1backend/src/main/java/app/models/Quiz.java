@@ -2,6 +2,7 @@ package app.models;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import org.hibernate.type.NumericBooleanConverter;
 
 import java.util.List;
 @Entity
@@ -12,13 +13,14 @@ public class Quiz {
     private Long id;
     private String quizName;
 
-    @Column(name = "is_published")
+    @Column(name = "is_published", columnDefinition = "TINYINT", length = 1)
     private boolean isPublished;
 
-    @Column(name = "is_concept")
+    @Column(name = "is_concept", columnDefinition = "TINYINT", length = 1)
     private boolean isConcept;
     @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
+    @OrderBy("questionIndex ASC")
     private List<Question> quizQuestions;
 
     public Quiz(){}

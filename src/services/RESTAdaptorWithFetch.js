@@ -1,5 +1,6 @@
 import { ref, watch, watchEffect } from 'vue'
 import useFetch from '@/utils/useFetch'
+import Question from '@/models/Question'
 
 /**
  * Provides utility methods for performing asynchronous CRUD operations via RESTful API using Vue.js Composition API
@@ -48,6 +49,7 @@ export class RESTAdaptorWithFetch /* <E> */ {
       load(this.resourcesUrl + '/' + newId)
     }
     watchEffect(() => {
+      if (data.value === null || data.value.length === 0) return
       entity.value = this.copyConstructor(data.value)
     })
 
@@ -67,13 +69,31 @@ export class RESTAdaptorWithFetch /* <E> */ {
 
   async asyncSave (entityToSave) {
     const entity = ref(entityToSave)
+    let endpoint = this.resourcesUrl + '/' + entity.value.id
 
-    const { data, isPending, error, load, abort, isAborted } = await useFetch(this.resourcesUrl + '/' + entity.value.id, entity.value, 'POST')
+    console.log(entity.value)
+    if (entity.value instanceof Question) {
+      switch (entity.value.type) {
+        case 'yesno':
+          endpoint = this.resourcesUrl + '/yesno/' + 1
+          break
+        case 'multiplechoice':
+          endpoint = this.resourcesUrl + '/multiplechoice/' + 1
+          break
+        default:
+          throw new Error('invalid type')
+      }
+    }
+
+    const { data, isPending, error, load, abort, isAborted } = await useFetch(endpoint, entity.value, 'POST')
+
     watchEffect(() => {
-      entity.value = this.copyConstructor(data.value)
+      if (isPending.value === false && error.value === null) {
+        entity.value = this.copyConstructor(data.value)
+      }
     })
 
-    return { entity, isPending, error, load, abort, isAborted }
+    return { isPending, error, load, abort, isAborted }
   }
 
   /**

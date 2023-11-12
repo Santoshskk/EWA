@@ -55,7 +55,7 @@ export default {
     /**
      * This is a function that will be called when the user clicks on an option and will toggle the selected value of the option
      * If the answer limit is 1 then the question will be answered immediately after the option is clicked
-     * @param {QuizQuestionMultipleChoiceOption} option
+     * @param {MultipleChoiceOption} option
      * @author Marco de Boer
      */
     async handleOptionClicked (option) {

@@ -35,17 +35,17 @@ public class QuestionController {
 
     }
 
-    @PostMapping("/create/yesno/{quizindex}")
+    @PostMapping("/yesno/{quizindex}")
     public ResponseEntity<Object> createYesNoQuestion(@PathVariable Long quizindex ,@RequestBody YesNoQuestion question) {
         return ResponseEntity.status(HttpStatus.CREATED).body(questionService.addYesNoQuestion(quizindex,question));
     }
 
-    @PostMapping("/create/multiplechoice/{quizindex}")
+    @PostMapping("/multiplechoice/{quizindex}")
     public ResponseEntity<Object> createMultipleChoiceQuestion(@PathVariable Long quizindex ,@RequestBody MultipleChoiceQuestion question) {
         return ResponseEntity.status(HttpStatus.CREATED).body(questionService.addMultipleChoiceQuestion(quizindex,question));
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteQuestion(@PathVariable Long id) {
         boolean success = questionService.deleteQuestion(id);
         if (!success) {

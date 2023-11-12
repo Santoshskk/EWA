@@ -1,5 +1,5 @@
-import QuizQuestionTrueFalse from '@/models/QuizQuestionTrueFalse'
-import QuizQuestionMultipleChoice from '@/models/QuizQuestionMultipleChoice'
+import QuizQuestionTrueFalse from '@/models/YesNoQuestion'
+import MultipleChoiceQuestion from '@/models/MultipleChoiceQuestion'
 import QuizResult from '@/models/QuizResult'
 
 /**
@@ -17,11 +17,14 @@ import QuizResult from '@/models/QuizResult'
 export default class Quiz {
   id
   quizName
-  questionObjectArray
+  quizNameIsEmpty
+  quizQuestions
   currentQuestionIndex
   totalQuestions
   totalAnsweredQuestions
   quizResultObjectArray
+  isConcept
+  isPublished
 
   /**
    * For the constructor is only json needed the json needs to be in the following format:
@@ -42,10 +45,13 @@ export default class Quiz {
 
     this.id = questionJSON.id ? questionJSON.id : null
     this.quizName = questionJSON.quizName
-    this.questionObjectArray = []
-    this.#instatiateQuiz(questionJSON.quizQuestions, isInQuizBuilder).then(() => {
-      this.totalQuestions = this.questionObjectArray.length
+    this.quizQuestions = []
+    this.#instatiateQuiz(questionJSON.quizQuestions).then(() => {
+      this.totalQuestions = this.quizQuestions.length
     })
+
+    this.isConcept = questionJSON.isConcept
+    this.isPublished = questionJSON.isPublished
 
     if (!isInQuizBuilder) {
       this.#instantieQuizResults()
@@ -55,20 +61,20 @@ export default class Quiz {
   }
 
   /**
-   * This functions is used to make from each question a QuizQuestion object
+   * This functions is used to make from each question a Question object
    * The JSON only contains the questions from the original JSON send to the contructor
    * @param {JSON} questionJSON
    * @author Marco de Boer
    */
-  async #instatiateQuiz (questionJSON, isInQuizBuilder) {
+  async #instatiateQuiz (questionJSON) {
     try {
       if (questionJSON === undefined || questionJSON.length === 0) throw new Error('JSON is undefined or length is 0')
 
       for (const question of questionJSON) {
         if (question.type === 'multiplechoice') {
-          this.questionObjectArray.push(new QuizQuestionMultipleChoice(isInQuizBuilder, question.id, question.index, question.question, question.sdg, question.options, question.answerLimit))
+          this.quizQuestions.push(new MultipleChoiceQuestion(question.id, question.index, question.question, question.options, question.answerLimit))
         } else if (question.type === 'yesno') {
-          this.questionObjectArray.push(new QuizQuestionTrueFalse(isInQuizBuilder, question.id, question.index, question.question, question.sdg))
+          this.quizQuestions.push(new QuizQuestionTrueFalse(question.id, question.index, question.question, question.sdg))
         } else throw new Error('Question type is not valid')
       }
     } catch (error) {
@@ -90,21 +96,21 @@ export default class Quiz {
   }
 
   async getCurrentQuestion () {
-    return this.questionObjectArray[this.currentQuestionIndex]
+    return this.quizQuestions[this.currentQuestionIndex]
   }
 
   async getNextQuestion () {
-    if (this.currentQuestionIndex >= this.questionObjectArray.length) throw new Error('Cant get Next Question, there are no more questions')
+    if (this.currentQuestionIndex >= this.quizQuestions.length) throw new Error('Cant get Next Question, there are no more questions')
 
     this.currentQuestionIndex++
-    return this.questionObjectArray[this.currentQuestionIndex]
+    return this.quizQuestions[this.currentQuestionIndex]
   }
 
   async getPreviousQuestion () {
     if (this.currentQuestionIndex <= 0) throw new Error('Cant get Previous Question, there are no more questions')
 
     this.currentQuestionIndex--
-    return this.questionObjectArray[this.currentQuestionIndex]
+    return this.quizQuestions[this.currentQuestionIndex]
   }
 
   /**
@@ -114,10 +120,10 @@ export default class Quiz {
    */
   async getTotalAnsweredQuestions () {
     this.totalAnsweredQuestions = 0
-    for (const question of this.questionObjectArray) {
+    for (const question of this.quizQuestions) {
       if (question instanceof QuizQuestionTrueFalse && question.givenAnswer !== null) {
         this.totalAnsweredQuestions++
-      } else if (question instanceof QuizQuestionMultipleChoice && question.givenAnswers.length !== 0) {
+      } else if (question instanceof MultipleChoiceQuestion && question.givenAnswers.length !== 0) {
         this.totalAnsweredQuestions++
       }
     }
@@ -132,12 +138,12 @@ export default class Quiz {
    */
 
   async setQuizResultObjectArray () {
-    for (const question of this.questionObjectArray) {
+    for (const question of this.quizQuestions) {
       if (question instanceof QuizQuestionTrueFalse) {
         if (question.givenAnswer === true) {
           this.quizResultObjectArray[question.SDG - 1].score += 1
         }
-      } else if (question instanceof QuizQuestionMultipleChoice) {
+      } else if (question instanceof MultipleChoiceQuestion) {
         for (let i = 0; i < question.givenAnswers.length; i++) {
           if (question.givenAnswers[i] === true) {
             this.quizResultObjectArray[question.SDG[i] - 1].score += 1
@@ -160,5 +166,27 @@ export default class Quiz {
       return new Quiz(quizFromJson, true)
     }
     return null
+  }
+
+  async clone () {
+    const clone = new Quiz(this)
+    return clone
+  }
+
+  equals (other) {
+    if (other === null || other === undefined) return false
+    if (this.quizName !== other.quizName) return false
+    if (this.isConcept !== other.isConcept) return false
+    if (this.isPublished !== other.isPublished) return false
+    if (this.quizQuestionsArrayEquals(other.quizQuestions) === false) return false
+    return true
+  }
+
+  quizQuestionsArrayEquals (otherQuizQuestionsObjectArray) {
+    if (this.quizQuestions.length !== otherQuizQuestionsObjectArray.length) return false
+    for (let i = 0; i < this.quizQuestions.length; i++) {
+      if (this.quizQuestions[i].equals(otherQuizQuestionsObjectArray[i]) === false) return false
+    }
+    return true
   }
 }

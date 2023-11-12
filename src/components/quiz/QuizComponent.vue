@@ -36,7 +36,7 @@ import QuizQuestionMultipleChoiceComponent from '@/components/quiz/QuizQuestionM
 import quizQuestionsJSON from '@/assets/quizQuestions.json'
 import QuizProgressBarComponent from './QuizProgressBarComponent.vue'
 import Quiz from '@/models/Quiz.js'
-import QuizQuestionTrueFalse from '@/models/QuizQuestionTrueFalse.js'
+import QuizQuestionTrueFalse from '@/models/YesNoQuestion.js'
 
 export default {
   name: 'QuizComponent',

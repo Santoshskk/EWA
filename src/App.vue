@@ -14,13 +14,15 @@ import FooterComponent from '@/components/FooterComponent'
 import { RESTAdaptorWithFetch } from '@/services/RESTAdaptorWithFetch'
 import CONFIG from '../app-config'
 import Quiz from '@/models/Quiz'
-import QuizQuestionTrueFalse from '@/models/QuizQuestionTrueFalse'
+import YesNoQuestion from '@/models/YesNoQuestion'
+import MultipleChoiceQuestion from '@/models/MultipleChoiceQuestion'
 export default {
   components: { NavBar, FooterComponent },
   provide () {
     return {
       quizService: new RESTAdaptorWithFetch(CONFIG.BACKEND_URL + '/quiz', Quiz.copyBuilderConstructor),
-      questionTrueFalseService: new RESTAdaptorWithFetch(CONFIG.BACKEND_URL + '/quiz', QuizQuestionTrueFalse.copyBuilderConstructor)
+      questionTrueFalseService: new RESTAdaptorWithFetch(CONFIG.BACKEND_URL + '/question', YesNoQuestion.copyConstructor),
+      questionMultipleChoiceService: new RESTAdaptorWithFetch(CONFIG.BACKEND_URL + '/question', MultipleChoiceQuestion.copyConstructor)
     }
   }
 

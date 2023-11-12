@@ -9,7 +9,6 @@ public class MultipleChoiceOption {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column(name = "multiplechoice_option")
     private String option;
 
@@ -17,6 +16,20 @@ public class MultipleChoiceOption {
     @JoinColumn(name = "multiplechoicequestion_id")
     @JsonBackReference
     private MultipleChoiceQuestion multipleChoiceQuestion;
+
+    private int sdg;
+
+    public MultipleChoiceOption() {
+
+    }
+
+    public int getSDG() {
+        return sdg;
+    }
+
+    public void setSDG(int SDG) {
+        this.sdg = SDG;
+    }
 
 
     public void setId(Long id) {

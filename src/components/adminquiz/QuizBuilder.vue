@@ -8,15 +8,42 @@
       </div>
       <div v-else>
         <section v-if="quiz != null">
-          <h1>Start Creating a new quiz</h1>
+          <h1>QuizBuilder</h1>
           <div class="container d-flex justify-content-center">
-              <div class="d-inline-flex my-4">
-                  <label for="quizName" class="quizBuilderLabel col-4">Quiz Name:</label>
-                  <input v-model="quiz.quizName" type="text" autocomplete="off" class="form-control col-8" id="quizName">
+              <div class="flexRow m-auto my-4 w-75 justify-content-between" justify-content-between>
+                  <div class="flexRow text-start m-auto">
+                    <label for="quizName" class="quizBuilderLabel text-start">Quiz Name:</label>
+                    <input v-model="quiz.quizName" type="text" autocomplete="off" class="form-control quizNameInput" id="quizName">
+                  </div>
+                  <div class="justify-content-center m-auto">
+                    <button type="button" :class="{ 'disabled' : !hasChanged || pendingBusy}" @click="saveQuiz()" class="btn btn-success m-1">
+                      <div class="d-flex row">
+                          <div class="col">
+                          {{saveButtonText}}
+                          </div>
+                          <div v-if="saveQuizIsPending" class="col spinnerInButton p-0">
+                              <div class="spinner-border text-light spinnerInButton" role="status">
+                                  <span class="sr-only"></span>
+                              </div>
+                          </div>
+                      </div>
+                    </button>
+                </div>
+                  <div class="col-2">
+                    <div class="flexRow justify-content-between">
+                      <label class="radioButtonLabel" for="statusConcept">Concept</label>
+                      <input v-model="selectedValue" class="radioButton" type="radio" id="statusConcept" name="status" value="Concept" >
+                    </div>
+                    <div class="flexRow justify-content-between">
+                      <label class="radioButtonLabel" for="statusPublished">Published</label>
+                      <input v-model="selectedValue" class="radioButton" type="radio" id="statusPublished" name="status" value="Published">
+                    </div>
+                  </div>
               </div>
           </div>
-          <div v-for="(value, key) in quiz.questionObjectArray" :key="key">
-                  <QuizBuilderTrueFalse class="my-2" v-if="isTrueFalseQuesetion(value)" :question="value" @deleteQuestion="deleteQuestion"/>
+          <div v-for="(value, key) in quiz.quizQuestions" :key="key">
+                  <QuizBuilderTrueFalse class="my-2" v-if="isTrueFalseQuesetion(value)" :question="value" @deleteQuestion="deleteQuestion" @saveQuestion="saveQuestion" @moveQuestion="moveQuestion"/>
+                  <QuizBuilderMultipleChoice class="my-2" v-else-if="isMultipleChoiceQuestion(value)" :question="value" @deleteQuestion="deleteQuestion" @saveQuestion="saveQuestion" @moveQuestion="moveQuestion"/>
           </div>
           <div class="d-flex justify-content-center flexRow">
               <div class="quizBuilderQuestionType">
@@ -35,9 +62,11 @@
     </div>
 </template>
 <script>
-import { ref, inject, onBeforeMount, watchEffect } from 'vue'
+import { ref, inject, onBeforeMount, watchEffect, computed, watch } from 'vue'
 import QuizBuilderTrueFalse from './QuizBuilderTrueFalse.vue'
-import QuizQuestionTrueFalse from '@/models/QuizQuestionTrueFalse'
+import YesNoQuestion from '@/models/YesNoQuestion'
+import QuizBuilderMultipleChoice from './QuizBuilderMultipleChoice.vue'
+import MultipleChoiceQuestion from '@/models/MultipleChoiceQuestion'
 import ErrorComponent from '@/components/ErrorComponent'
 import LoadingComponent from '@/components/LoadingComponent'
 
@@ -46,17 +75,25 @@ export default {
   components: {
     QuizBuilderTrueFalse,
     ErrorComponent,
-    LoadingComponent
+    LoadingComponent,
+    QuizBuilderMultipleChoice
   },
   setup () {
     const quizService = inject('quizService')
-    const questionObjectArray = ref([])
-    const questionTypes = ref(['True/false', 'MultipleChoice'])
+    const questionTypes = ref(['Yes/No', 'MultipleChoice'])
     const selectedQuestionType = ref('')
+    const saveButtonText = ref('Saved')
     const load = ref(null)
     const quiz = ref(null)
     const isPending = ref(false)
     const error = ref(null)
+    const quizOriginal = ref(null)
+    const saveQuizIsPending = ref(false)
+    const saveQuizError = ref(null)
+
+    const cloneQuiz = async (quizOriginal) => {
+      quiz.value = await quizOriginal.clone()
+    }
 
     onBeforeMount(async () => {
       const results = await quizService.asyncFindById(1)
@@ -64,12 +101,13 @@ export default {
       load.value = results.load
 
       watchEffect(() => {
-        quiz.value = results.entity.value
+        quizOriginal.value = results.entity.value
         isPending.value = results.isPending.value
         error.value = results.error.value
       })
 
-      load.value().then(() => {
+      load.value().then(async () => {
+        await cloneQuiz(quizOriginal.value)
         console.log(quiz.value)
         if (error.value === 'Could not fetch the data for that resource') {
           error.value = 'Could not find quiz with id: '
@@ -77,25 +115,112 @@ export default {
       })
     })
 
-    const addQuestion = async (questoinType) => {
-      questionObjectArray.value.push(
-        await new QuizQuestionTrueFalse(null, null)
-      )
+    function setIndexOrder () {
+      for (let i = 0; i < quiz.value.quizQuestions.length; i++) {
+        quiz.value.quizQuestions[i].index = i + 1
+      }
+      quiz.value.totalQuestions = quiz.value.quizQuestions.length
+    }
+
+    function validateValues () {
+      let valid = true
+      quiz.value.quizNameIsEmpty = quiz.value.quizName === null || quiz.value.quizName === ''
+      if (quiz.value.quizNameIsEmpty) {
+        valid = false
+      }
+
+      return valid
+    }
+
+    const moveQuestion = (index, newIndex) => {
+      if (newIndex <= 0 || newIndex === quiz.value.quizQuestions.length) {
+        return
+      }
+      const question = quiz.value.quizQuestions[index]
+      quiz.value.quizQuestions.splice(index, 1)
+      quiz.value.quizQuestions.splice(newIndex, 0, question)
+      setIndexOrder()
+    }
+
+    const addQuestion = async (questionType) => {
+      if (questionType === 'Yes/No') {
+        quiz.value.quizQuestions.push(
+          await new YesNoQuestion(null, quiz.value.totalQuestions + 1, null, null)
+        )
+      } else if (questionType === 'MultipleChoice') {
+        quiz.value.quizQuestions.push(
+          await new MultipleChoiceQuestion(null, quiz.value.totalQuestions + 1, null, null)
+        )
+      }
+      quiz.value.totalQuestions = quiz.value.quizQuestions.length
     }
 
     const deleteQuestion = (index) => {
-      console.log(index)
-      // questionObjectArray.value.splice(index, 1)
-      console.log(questionObjectArray.value)
+      console.log(quiz.value.quizQuestions)
+      quiz.value.quizQuestions.splice(index, 1)
+      setIndexOrder()
+      console.log(quiz.value.quizQuestions)
     }
 
+    const saveQuiz = async () => {
+      if (validateValues() === false) {
+        return
+      }
+
+      const { isPending, error, load } = await quizService.asyncSave(quiz.value)
+
+      watchEffect(() => {
+        saveQuizIsPending.value = isPending.value
+        saveQuizError.value = error.value
+        if (saveQuizIsPending.value) {
+          saveButtonText.value = 'Saving'
+        }
+      })
+
+      load().then(() => {
+        if (saveQuizError.value === null) {
+          saveButtonText.value = 'Saved'
+          quizOriginal.value = quiz.value
+        }
+      })
+    }
+
+    const saveQuestion = (question) => {
+      quiz.value.quizQuestions[question.index - 1] = question
+    }
+
+    const hasChanged = computed(() => { return quizOriginal.value !== null && !quizOriginal.value.equals(quiz.value) && quizOriginal.value.id !== null })
+
+    const pendingBusy = computed(() => { return saveQuizIsPending.value })
+
+    const selectedValue = computed({
+      get () {
+        return quiz.value.isConcept ? 'Concept' : 'Published'
+      },
+      set (value) {
+        quiz.value.isConcept = value === 'Concept'
+        quiz.value.isPublished = value === 'Published'
+      }
+    })
+
+    watch(hasChanged, (newValue) => {
+      if (newValue && quiz.value !== null) {
+        saveButtonText.value = 'Save'
+      } else {
+        saveButtonText.value = 'Saved'
+      }
+    })
+
     return {
-      questionObjectArray, questionTypes, addQuestion, selectedQuestionType, deleteQuestion, error, isPending, quiz
+      questionTypes, addQuestion, selectedQuestionType, deleteQuestion, error, isPending, quiz, saveQuestion, moveQuestion, saveButtonText, hasChanged, pendingBusy, saveQuiz, saveQuizIsPending, selectedValue
     }
   },
   methods: {
     isTrueFalseQuesetion (question) {
-      return question instanceof QuizQuestionTrueFalse
+      return question instanceof YesNoQuestion
+    },
+    isMultipleChoiceQuestion (question) {
+      return question instanceof MultipleChoiceQuestion
     }
   }
 }
@@ -105,10 +230,6 @@ export default {
     font-size: 20px;
     font-weight: 600;
     margin-right: 10px;
-}
-
-.quizBuilderNameInput {
-
 }
 
 .quizBuilderQuestionType {
@@ -121,7 +242,26 @@ export default {
     flex-direction: row;
 }
 
+.quizNameInput {
+    width: 300px;
+}
+
 template {
     min-height: 100vh;
+}
+
+.red-border {
+  border: 1px solid red !important;
+}
+
+.radioButtonLabel {
+    font-size: 20px;
+    font-weight: 600;
+    margin-right: 10px;
+}
+
+.radioButton {
+    margin-right: 10px;
+    color: #6D3FD9;
 }
 </style>

@@ -13,11 +13,11 @@ import java.util.List;
 @Table(name = "question")
 @Inheritance(strategy = InheritanceType.JOINED)
 //@DiscriminatorColumn(name = "type")
-//@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-//@JsonSubTypes({
-//        @JsonSubTypes.Type(value = YesNoQuestion.class, name = "yesno"),
-//        @JsonSubTypes.Type(value = MultipleChoiceQuestion.class, name = "multiplechoice")
-//})
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = YesNoQuestion.class, name = "yesno"),
+        @JsonSubTypes.Type(value = MultipleChoiceQuestion.class, name = "multiplechoice")
+})
 public abstract class Question {
 
 
@@ -33,10 +33,6 @@ public abstract class Question {
     @JoinColumn(name = "quiz_id")
     @JsonBackReference
     private Quiz quiz;
-
-    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    private List<QuestionSDG> sdg = new ArrayList<>();
 
     public Question() {
 
@@ -70,17 +66,11 @@ public abstract class Question {
         this.quiz = quiz;
     }
 
-    public void setSdg(List<QuestionSDG> sdg) {
-        this.sdg = sdg;
-    }
 
     public Quiz getQuiz() {
         return quiz;
     }
 
-    public List<QuestionSDG> getSdg() {
-        return sdg;
-    }
 
 
 }

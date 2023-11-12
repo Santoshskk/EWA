@@ -4,8 +4,8 @@
         <div class="question-header">
             <div class="d-flex gap-1">
                 <span class="question-number">{{ questionClone.index }}</span>
-                <button class="btn btn-primary questionArrowButton">&#8595;</button>
-                <button class="btn btn-primary questionArrowButton">&#8593;</button>
+                <button class="btn btn-primary questionArrowButton" @click="moveQuestionDown">&#8595;</button>
+                <button class="btn btn-primary questionArrowButton" @click="moveQuestionUp">&#8593;</button>
             </div>
             <!-- <div>
                 Type:
@@ -18,7 +18,7 @@
                 <button type="button" :class="{ 'disabled' : hasChanged || pendingBusy}" @click="saveQuestion()" class="btn btn-success m-1">
                     <div class="d-flex row">
                         <div class="col">
-                        Save
+                        {{saveButtonText}}
                         </div>
                         <div v-if="saveQuestionIsPending" class="col spinnerInButton p-0">
                             <div class="spinner-border text-light spinnerInButton" role="status">
@@ -41,7 +41,7 @@
         <div class="d-flex row">
         <div class="col-10 my-5">
             <label class="justify-content-start h5" :for="questionClone.question">Question:</label>
-            <textarea class="question-text" placeholder="How many of the following SDG goals have you worked on?" v-model="questionClone.question" ></textarea>
+            <textarea class="question-text" placeholder="How many of the following SDG goals have you worked on?" v-model="questionClone.question" :class="{ 'red-border': questionClone.questionIsEmpty }"></textarea>
             <div class="question-footer justify-content-center gap-5">
                 <!-- <div>
                     Answers:
@@ -63,14 +63,12 @@
                 </div>
             </div>
         </div>
-        <div class="col-2">
+        <div class="col-2 my-5">
             <div class="sdgSelecter">
                 SDG:
-                <div class="dropdown">
-                    <div v-for="sdgOption in sdgOptions" :key="sdgOption" class="dropdown-item m-1" :class="{ 'selected': isSelected(sdgOption) }" @click="toggleSelectedSDG(sdgOption)">
-                        {{ sdgOption }}
-                    </div>
-                </div>
+                <select v-model="questionClone.sdg" @change="handleSDGChange" class="dropdown" :class="{ 'red-border': questionClone.sdgIsEmpty }">
+                    <option v-for="(value,key) in sdgOptions" :key="key">{{ value }}</option>
+                </select>
             </div>
         </div>
         </div>
@@ -79,7 +77,7 @@
 </template>
 
 <script>
-import { ref, computed, onBeforeMount, inject, watchEffect } from 'vue'
+import { ref, computed, onBeforeMount, inject, watchEffect, watch } from 'vue'
 export default {
   name: 'QuizBuilderTrueFalse',
   props: {
@@ -94,71 +92,98 @@ export default {
   setup (props, { emit }) {
     const questionTrueFalseService = inject('questionTrueFalseService')
     const questionClone = ref()
-    const selectedSDGOptions = ref([])
     const sdgOptions = ref([])
     const saveQuestionIsPending = ref(false)
     const saveQuestionError = ref(null)
+    const saveButtonText = ref('Saved')
     const deleteQuestionIsPending = ref(false)
+
+    watch(() => props.question, async (newQuestion) => {
+      questionClone.value = await newQuestion.clone()
+    }, { deep: true })
 
     const cloneScooter = async () => {
       questionClone.value = await props.question.clone()
     }
 
-    function setSelected () {
-      for (const sdg of questionClone.value.SDG) {
-        selectedSDGOptions.value.push('SDG ' + sdg)
-      }
+    if (props.question.id === null) {
+      saveButtonText.value = 'Save'
     }
 
     onBeforeMount(async () => {
       for (let i = 1; i <= 17; i++) {
-        sdgOptions.value.push('SDG ' + i)
+        sdgOptions.value.push(i)
       }
       await cloneScooter()
-      await setSelected()
     })
 
-    function updateSDGs () {
-      questionClone.value.SDG = []
-      selectedSDGOptions.value.sort()
-      for (const sdg of selectedSDGOptions.value) {
-        questionClone.value.SDG.push(sdg.split(' ')[1])
-      }
-    }
+    function validateQuestion () {
+      questionClone.value.questionIsEmpty = questionClone.value.question === null || questionClone.value.question === ''
+      questionClone.value.sdgIsEmpty = questionClone.value.sdg === null
 
-    const toggleSelectedSDG = (sdgOption) => {
-      if (isSelected(sdgOption)) {
-        selectedSDGOptions.value.splice(selectedSDGOptions.value.indexOf(sdgOption), 1)
-        updateSDGs()
-      } else {
-        selectedSDGOptions.value.push(sdgOption)
-        updateSDGs()
+      console.log(questionClone.value.sdgIsEmpty)
+
+      if (questionClone.value.questionIsEmpty || questionClone.value.sdgIsEmpty) {
+        return false
       }
+
+      return true
     }
 
     const deleteQuestion = () => {
-      emit('deleteQuestion')
+      emit('deleteQuestion', props.question.index - 1)
+    }
+
+    const moveQuestionUp = () => {
+      emit('moveQuestion', props.question.index - 1, props.question.index - 2)
+    }
+
+    const moveQuestionDown = () => {
+      emit('moveQuestion', props.question.index - 1, props.question.index)
+    }
+
+    const handleSDGChange = (event) => {
+      questionClone.value.sdg = parseInt(questionClone.value.sdg)
     }
 
     const saveQuestion = async () => {
+      if (validateQuestion() === false) {
+        return
+      }
+
+      console.log(questionClone.value)
       const { isPending, error, load } = await questionTrueFalseService.asyncSave(questionClone.value)
 
       watchEffect(() => {
         saveQuestionIsPending.value = isPending.value
         saveQuestionError.value = error.value
+        if (saveQuestionIsPending.value) {
+          saveButtonText.value = 'Saving'
+        }
       })
 
-      load.value()
+      load().then(() => {
+        if (saveQuestionError.value === null) {
+          saveButtonText.value = 'Saved'
+          emit('saveQuestion', questionClone.value)
+        }
+      })
     }
 
-    const isSelected = (sdgOption) => { return selectedSDGOptions.value.includes(sdgOption) }
-
-    const hasChanged = computed(() => { return props.question.equals(questionClone.value) })
+    const hasChanged = computed(() => { return props.question.equals(questionClone.value) && props.question.id !== null })
 
     const pendingBusy = computed(() => { return deleteQuestionIsPending.value || saveQuestionIsPending.value })
 
+    watch(hasChanged, (newValue) => {
+      if (!newValue && questionClone.value !== null) {
+        saveButtonText.value = 'Save'
+      } else {
+        saveButtonText.value = 'Saved'
+      }
+    })
+
     return {
-      questionClone, deleteQuestion, sdgOptions, selectedSDGOptions, isSelected, toggleSelectedSDG, hasChanged, pendingBusy, saveQuestionIsPending, deleteQuestionIsPending, saveQuestion
+      questionClone, deleteQuestion, sdgOptions, hasChanged, pendingBusy, saveQuestionIsPending, deleteQuestionIsPending, saveQuestion, handleSDGChange, saveButtonText, moveQuestionUp, moveQuestionDown
     }
   }
 }

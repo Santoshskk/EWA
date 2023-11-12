@@ -2,6 +2,7 @@ package app.models;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
@@ -10,10 +11,20 @@ import jakarta.persistence.Table;
 public class YesNoQuestion extends Question {
 
     private static final String TYPE = "yesno";
+
+    private int sdg;
     public YesNoQuestion() {}
     @JsonProperty("type")
 
     public String getType() {
         return TYPE;
+    }
+
+    public int getSDG() {
+        return sdg;
+    }
+
+    public void setSDG(int SDG) {
+        this.sdg = SDG;
     }
 }
