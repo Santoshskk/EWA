@@ -71,7 +71,6 @@ export class RESTAdaptorWithFetch /* <E> */ {
     const entity = ref(entityToSave)
     let endpoint = this.resourcesUrl + '/' + entity.value.id
 
-    console.log(entity.value)
     if (entity.value instanceof Question) {
       switch (entity.value.type) {
         case 'yesno':

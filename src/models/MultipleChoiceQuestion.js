@@ -15,6 +15,7 @@ export default class MultipleChoiceQuestion extends Question {
   options
   givenAnswers
   answerLimit
+  answerLimitIsValid = true
   type = 'multiplechoice'
 
   /**
@@ -28,6 +29,7 @@ export default class MultipleChoiceQuestion extends Question {
     super(id, index, question)
     this.#initializeOptions(options)
     this.givenAnswers = []
+    this.answerLimit = answerLimit
   }
 
   /**

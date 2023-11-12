@@ -27,6 +27,16 @@ public class QuizService {
     }
 
     public Quiz addQuiz(Quiz quiz) {
+        if (quiz.getIsLive()){
+            List<Quiz> quizzes = quizRepository.findAll();
+            for (Quiz q : quizzes) {
+                if (q.getIsLive()){
+                    q.setIsLive(false);
+                    quizRepository.save(q);
+                }
+            }
+        }
+
         return quizRepository.save(quiz);
     }
 

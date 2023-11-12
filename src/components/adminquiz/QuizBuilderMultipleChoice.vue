@@ -42,6 +42,10 @@
         <div class="my-5">
             <label class="justify-content-start h5" :for="questionClone.question">Question:</label>
             <textarea class="question-text" placeholder="Write a question" v-model="questionClone.question" :class="{ 'red-border': questionClone.questionIsEmpty }"></textarea>
+            <div class="col-9 quizButtonSection p-0 justify-content-center m-auto mx-0">
+                  <label class="justify-content-start h5 m-auto col" :for="questionClone.answerLimit">Amount of options can select:</label>
+                  <input class="col mx-2 answerLimit" v-model="questionClone.answerLimit" :class="{ 'red-border': !questionClone.answerLimitIsValid }" />
+            </div>
             <div class="m-auto row optionListBuilder" v-for="option in questionClone.options" :key="option.id">
               <div class="m-auto row multipleChoiceBuilderQuestionButton">
                 <div class="col-9 quizButtonSection p-0 justify-content-center m-auto mx-0">
@@ -84,6 +88,8 @@
 <script>
 import { ref, computed, onBeforeMount, inject, watchEffect, watch } from 'vue'
 import MultipleChoiceOption from '@/models/MultipleChoiceOption'
+import { useToast } from 'vue-toast-notification'
+
 export default {
   name: 'QuizBuilderTrueFalse',
   props: {
@@ -103,6 +109,7 @@ export default {
     const saveQuestionError = ref(null)
     const saveButtonText = ref('Saved')
     const deleteQuestionIsPending = ref(false)
+    const $toast = useToast()
 
     // In the setup function of your child component
     watch(() => props.question, async (newQuestion) => {
@@ -134,6 +141,11 @@ export default {
         valid = false
       } else {
         questionClone.value.questionIsEmpty = false
+      }
+
+      questionClone.value.answerLimitIsValid = answerLimitIsValid.value
+      if (answerLimitIsValid.value === false) {
+        valid = false
       }
 
       return valid
@@ -178,6 +190,8 @@ export default {
         if (saveQuestionError.value === null) {
           saveButtonText.value = 'Saved'
           emit('saveQuestion', questionClone.value)
+        } else {
+          $toast.error('Could not save question ' + questionClone.value.index)
         }
       })
     }
@@ -190,6 +204,8 @@ export default {
 
     const pendingBusy = computed(() => { return deleteQuestionIsPending.value || saveQuestionIsPending.value })
 
+    const answerLimitIsValid = computed(() => { return questionClone.value.answerLimit >= 1 && questionClone.value.answerLimit <= questionClone.value.options.length })
+
     watch(hasChanged, (newValue) => {
       if (!newValue && questionClone.value !== null) {
         saveButtonText.value = 'Save'
@@ -199,7 +215,7 @@ export default {
     })
 
     return {
-      questionClone, deleteQuestion, sdgOptions, hasChanged, pendingBusy, saveQuestionIsPending, deleteQuestionIsPending, saveQuestion, handleSDGChange, saveButtonText, addOptionToList, deleteOption, moveQuestionUp, moveQuestionDown
+      questionClone, deleteQuestion, sdgOptions, hasChanged, pendingBusy, saveQuestionIsPending, deleteQuestionIsPending, saveQuestion, handleSDGChange, saveButtonText, addOptionToList, deleteOption, moveQuestionUp, moveQuestionDown, answerLimitIsValid
     }
   }
 }
@@ -228,6 +244,10 @@ export default {
 
 .margin31 {
   margin-top: 31px;
+}
+
+.answerLimit {
+  width: 70px;
 }
 
 </style>

@@ -24,7 +24,7 @@ public class QuizController {
     }
 
     // Get all quizzes
-    @GetMapping
+    @GetMapping("/all")
     public List<Quiz> getAllQuizzes() {
         return quizService.getQuizzes();
     }

@@ -81,7 +81,7 @@ const routes = [
     component: QuizOverview,
     children: [
       {
-        path: 'builder',
+        path: 'builder/:id',
         name: 'QuizBuilder',
         component: QuizBuilder,
         props: true

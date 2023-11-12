@@ -8,7 +8,15 @@
       </div>
       <div v-else>
         <section v-if="quiz != null">
-          <h1>QuizBuilder</h1>
+          <div class="row">
+            <button class="btn btn-primary col-1" @click="backToOverview" :class="{ 'disabled' : hasChanged || pendingBusy}">
+              <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-box-arrow-left" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0v2z"/>
+                <path fill-rule="evenodd" d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
+              </svg>
+            </button>
+            <h1>QuizBuilder</h1>
+          </div>
           <div class="container d-flex justify-content-center">
               <div class="flexRow m-auto my-4 w-75 justify-content-between" justify-content-between>
                   <div class="flexRow text-start m-auto">
@@ -70,6 +78,8 @@ import QuizBuilderMultipleChoice from './QuizBuilderMultipleChoice.vue'
 import MultipleChoiceQuestion from '@/models/MultipleChoiceQuestion'
 import ErrorComponent from '@/components/ErrorComponent'
 import LoadingComponent from '@/components/LoadingComponent'
+import router from '@/router'
+import { useToast } from 'vue-toast-notification'
 
 export default {
   name: 'QuizBuilder',
@@ -79,7 +89,7 @@ export default {
     LoadingComponent,
     QuizBuilderMultipleChoice
   },
-  setup () {
+  setup (props, { emit }) {
     const quizService = inject('quizService')
     const questionTypes = ref(['Yes/No', 'MultipleChoice'])
     const selectedQuestionType = ref('')
@@ -92,6 +102,7 @@ export default {
     const saveQuizIsPending = ref(false)
     const saveQuizError = ref(null)
     const route = useRoute()
+    const $toast = useToast()
 
     const cloneQuiz = async (quizOriginal) => {
       quiz.value = await quizOriginal.clone()
@@ -184,12 +195,19 @@ export default {
         if (saveQuizError.value === null) {
           saveButtonText.value = 'Saved'
           quizOriginal.value = quiz.value
+          emit('updateQuizzes')
+        } else if (saveQuizError.value !== null) {
+          $toast.error('Could not save quiz ' + quiz.value.quizName)
         }
       })
     }
 
     const saveQuestion = (question) => {
       quiz.value.quizQuestions[question.index - 1] = question
+    }
+
+    const backToOverview = () => {
+      router.push({ path: '/admin_dashboard/quiz' })
     }
 
     const hasChanged = computed(() => { return quizOriginal.value !== null && !quizOriginal.value.equals(quiz.value) && quizOriginal.value.id !== null })
@@ -215,7 +233,7 @@ export default {
     })
 
     return {
-      questionTypes, addQuestion, selectedQuestionType, deleteQuestion, error, isPending, quiz, saveQuestion, moveQuestion, saveButtonText, hasChanged, pendingBusy, saveQuiz, saveQuizIsPending, selectedValue
+      questionTypes, addQuestion, selectedQuestionType, deleteQuestion, error, isPending, quiz, saveQuestion, moveQuestion, saveButtonText, hasChanged, pendingBusy, saveQuiz, saveQuizIsPending, selectedValue, backToOverview
     }
   },
   methods: {

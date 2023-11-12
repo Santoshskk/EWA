@@ -18,12 +18,40 @@ public class Quiz {
 
     @Column(name = "is_concept", columnDefinition = "TINYINT", length = 1)
     private boolean isConcept;
+
+    @Column(name = "is_live", columnDefinition = "TINYINT", length = 1)
+    private boolean isLive;
+
     @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     @OrderBy("questionIndex ASC")
     private List<Question> quizQuestions;
 
     public Quiz(){}
+
+    public void setPublished(boolean published) {
+        isPublished = published;
+    }
+
+    public void setConcept(boolean concept) {
+        isConcept = concept;
+    }
+
+    public void setIsLive(boolean live) {
+        isLive = live;
+    }
+
+    public boolean isPublished() {
+        return isPublished;
+    }
+
+    public boolean isConcept() {
+        return isConcept;
+    }
+
+    public boolean getIsLive() {
+        return isLive;
+    }
 
     public boolean getIsPublished() {
         return isPublished;

@@ -71,6 +71,8 @@
 
 <script>
 import { ref, computed, onBeforeMount, inject, watchEffect, watch } from 'vue'
+import { useToast } from 'vue-toast-notification'
+
 export default {
   name: 'QuizBuilderTrueFalse',
   props: {
@@ -90,6 +92,7 @@ export default {
     const saveQuestionError = ref(null)
     const saveButtonText = ref('Saved')
     const deleteQuestionIsPending = ref(false)
+    const $toast = useToast()
 
     watch(() => props.question, async (newQuestion) => {
       questionClone.value = await newQuestion.clone()
@@ -113,8 +116,6 @@ export default {
     function validateQuestion () {
       questionClone.value.questionIsEmpty = questionClone.value.question === null || questionClone.value.question === ''
       questionClone.value.sdgIsEmpty = questionClone.value.sdg === null
-
-      console.log(questionClone.value.sdgIsEmpty)
 
       if (questionClone.value.questionIsEmpty || questionClone.value.sdgIsEmpty) {
         return false
@@ -159,6 +160,8 @@ export default {
         if (saveQuestionError.value === null) {
           saveButtonText.value = 'Saved'
           emit('saveQuestion', questionClone.value)
+        } else {
+          $toast.error('Could not save question ' + questionClone.value.index)
         }
       })
     }

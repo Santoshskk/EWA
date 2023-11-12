@@ -25,6 +25,7 @@ export default class Quiz {
   quizResultObjectArray
   isConcept
   isPublished
+  isLive
 
   /**
    * For the constructor is only json needed the json needs to be in the following format:
@@ -52,6 +53,7 @@ export default class Quiz {
 
     this.isConcept = questionJSON.isConcept
     this.isPublished = questionJSON.isPublished
+    this.isLive = questionJSON.isLive
 
     if (!isInQuizBuilder) {
       this.#instantieQuizResults()
