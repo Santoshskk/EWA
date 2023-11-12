@@ -63,6 +63,7 @@
 </template>
 <script>
 import { ref, inject, onBeforeMount, watchEffect, computed, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import QuizBuilderTrueFalse from './QuizBuilderTrueFalse.vue'
 import YesNoQuestion from '@/models/YesNoQuestion'
 import QuizBuilderMultipleChoice from './QuizBuilderMultipleChoice.vue'
@@ -90,13 +91,14 @@ export default {
     const quizOriginal = ref(null)
     const saveQuizIsPending = ref(false)
     const saveQuizError = ref(null)
+    const route = useRoute()
 
     const cloneQuiz = async (quizOriginal) => {
       quiz.value = await quizOriginal.clone()
     }
 
     onBeforeMount(async () => {
-      const results = await quizService.asyncFindById(1)
+      const results = await quizService.asyncFindById(route.params.id)
 
       load.value = results.load
 
@@ -107,10 +109,11 @@ export default {
       })
 
       load.value().then(async () => {
-        await cloneQuiz(quizOriginal.value)
-        console.log(quiz.value)
+        if (error.value === null) {
+          await cloneQuiz(quizOriginal.value)
+        }
         if (error.value === 'Could not fetch the data for that resource') {
-          error.value = 'Could not find quiz with id: '
+          error.value = 'Could not find quiz with id: ' + route.params.id
         }
       })
     })

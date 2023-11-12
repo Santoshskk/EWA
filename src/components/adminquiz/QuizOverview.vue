@@ -1,12 +1,14 @@
 <template>
     <div class="my-5">
-        <h1>Quiz Overview</h1>
-        <div class="d-flex justify-content-center">
-            <ul class="quizBuilder navbar-nav">
-                <li class="quizOverviewCards">
-                    <router-link :to="{name: 'QuizBuilder'}" class="nav-link">Quiz Builder</router-link>
-                </li>
-            </ul>
+        <div>
+            <h1>Quiz Overview</h1>
+            <div class="d-flex justify-content-center">
+                <ul class="quizBuilder navbar-nav">
+                    <li class="quizOverviewCards">
+                        <router-link :to="{name: 'QuizBuilder'}" class="nav-link">Quiz Builder</router-link>
+                    </li>
+                </ul>
+            </div>
         </div>
         <router-view />
     </div>
@@ -34,11 +36,8 @@ export default {
 }
 
 .quizOverviewCards {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    margin-top: 50px;
-    background-color: grey;
+    width: 241px;
+    height: 162px;
+    flex-shrink: 0;
 }
 </style>

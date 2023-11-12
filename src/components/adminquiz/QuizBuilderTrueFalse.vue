@@ -7,13 +7,6 @@
                 <button class="btn btn-primary questionArrowButton" @click="moveQuestionDown">&#8595;</button>
                 <button class="btn btn-primary questionArrowButton" @click="moveQuestionUp">&#8593;</button>
             </div>
-            <!-- <div>
-                Type:
-                <select class="question-type">
-                    <option value="true-false">True False</option>
-                    <option value="multiple-choice">Multiple Choice</option>
-                </select>
-            </div> -->
             <div>
                 <button type="button" :class="{ 'disabled' : hasChanged || pendingBusy}" @click="saveQuestion()" class="btn btn-success m-1">
                     <div class="d-flex row">

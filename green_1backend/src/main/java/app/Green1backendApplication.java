@@ -14,7 +14,6 @@ public class Green1backendApplication {
     }
 
     @Bean
-
     public WebMvcConfigurer corsConfigurer(){
         return new WebMvcConfigurer() {
             @Override
