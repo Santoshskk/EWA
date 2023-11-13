@@ -70,7 +70,7 @@ public class UserController {
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<User> deleteOffer(@PathVariable long id) {
-        User offer = usersRepository.deletedById(id);
+        User offer = usersRepository.deleteById(id);
         if (offer != null) {
             return ResponseEntity.ok(offer);
         } else {

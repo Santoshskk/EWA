@@ -37,7 +37,7 @@ public class UsersRepositoryMock implements UsersRepository {
     }
 
     @Override
-    public User deletedById(long id) {
+    public User deleteById(long id) {
         for (User user : users) {
             if (user.getUser_id() == id) {
                 users.remove(user);
