@@ -15,7 +15,8 @@ import Quiz from '@/models/Quiz'
 import YesNoQuestion from '@/models/YesNoQuestion'
 import MultipleChoiceQuestion from '@/models/MultipleChoiceQuestion'
 import { RESTContentAdaptor } from '@/services/RESTContentAdaptor'
-import { CONFIG } from '@/CONFIG'
+import { UsersAdaptor } from '@/services/users-adaptor'
+import CONFIG from '@/services/app-config.js'
 export default {
   components: { NavBar, FooterComponent },
   provide () {
@@ -24,7 +25,8 @@ export default {
       quizLiveService: new RESTAdaptorWithFetch(CONFIG.BACKEND_URL + '/quiz', Quiz.copyConstructor),
       questionTrueFalseService: new RESTAdaptorWithFetch(CONFIG.BACKEND_URL + '/question', YesNoQuestion.copyConstructor),
       questionMultipleChoiceService: new RESTAdaptorWithFetch(CONFIG.BACKEND_URL + '/question', MultipleChoiceQuestion.copyConstructor),
-      contentService: new RESTContentAdaptor(CONFIG.BACKEND_URL + '/page')
+      contentService: new RESTContentAdaptor(CONFIG.BACKEND_URL + '/page'),
+      usersServices: new UsersAdaptor(CONFIG.BACKEND_URL)
     }
   },
 

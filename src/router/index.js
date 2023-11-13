@@ -95,10 +95,12 @@ const routes = [
             props: true
           }
         ]
-      }
+      },
 
+      { path: 'intro', component: () => import('@/components/AdminDashboard/AdminIntroComponent') },
+      { path: 'users', component: () => import('@/components/AdminDashboard/AdminUserComponent') }
     ],
-    component: () => import('../views/AdminDashboardView')
+    component: () => import(/* webpackChunkName: "about" */ '../views/AdminDashboardView')
   }
 ]
 
