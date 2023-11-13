@@ -26,6 +26,14 @@ export default {
       questionMultipleChoiceService: new RESTAdaptorWithFetch(CONFIG.BACKEND_URL + '/question', MultipleChoiceQuestion.copyConstructor),
       contentService: new RESTContentAdaptor(CONFIG.BACKEND_URL + '/page')
     }
+  },
+
+  created () {
+    // set language to english in sessionStorage, set default language to english (en-US)
+    if (sessionStorage.getItem('language') === null) {
+      sessionStorage.setItem('language', 'en-US')
+    }
+    // sessionStorage.setItem('language', 'nl-NL')
   }
 }
 </script>
