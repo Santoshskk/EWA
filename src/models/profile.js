@@ -2,7 +2,8 @@
  * Profile model class
  * @class Profile
  * @property {Number} id
- * @property {String} name
+ * @property {String} firstName
+ * @property {String} lastName
  * @property {String} photo
  * @property {Date} birth
  * @property {String} occupation
@@ -12,19 +13,25 @@
  */
 
 export class Profile {
-  id
-  name
+  // eslint-disable-next-line camelcase
+  user_id
+  // eslint-disable-next-line camelcase
+  first_name
+  // eslint-disable-next-line camelcase
+  last_name
   photo
-  birth
+  // eslint-disable-next-line camelcase
+  date_of_birth
   occupation
   bio
   goals
 
-  constructor (id, name, photo, birth, occupation, bio, goals = []) {
-    this.id = id
-    this.name = name
+  constructor (id, firstName, lastName, photo, birth, occupation, bio, goals = []) {
+    this.user_id = id
+    this.first_name = firstName
+    this.last_name = lastName
     this.photo = photo
-    this.birth = birth
+    this.date_of_birth = birth
     this.occupation = occupation
     this.bio = bio
     this.goals = goals

@@ -17,9 +17,18 @@ const routes = [
     name: 'about_us',
     redirect: '/about_us/team',
     children: [
-      { path: 'client', component: () => import('../components/AboutUs/ClientComponent') },
-      { path: 'team', component: () => import('../components/AboutUs/TeamComponent') },
-      { path: 'purpose', component: () => import('../components/AboutUs/PurposeComponent') }
+      {
+        path: 'client',
+        component: () => import('../components/AboutUs/ClientComponent')
+      },
+      {
+        path: 'team',
+        component: () => import('../components/AboutUs/TeamComponent')
+      },
+      {
+        path: 'purpose',
+        component: () => import('../components/AboutUs/PurposeComponent')
+      }
     ],
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
@@ -49,6 +58,9 @@ const routes = [
   {
     path: '/profile',
     name: 'profile',
+    // children: [
+    //   { path: ':id', component: () => import('@/components/result/ResultPage') }
+    // ],
     component: () => import('../components/profile/ProfilePage')
   },
   {
@@ -67,7 +79,11 @@ const routes = [
     component: SdgInfoPage,
     children:
       [
-        { path: ':id', component: SdgInfoPage, props: true }
+        {
+          path: ':id',
+          component: SdgInfoPage,
+          props: true
+        }
       ]
   },
   {
@@ -101,6 +117,17 @@ const routes = [
       { path: 'users', component: () => import('@/components/AdminDashboard/AdminUserComponent') }
     ],
     component: () => import(/* webpackChunkName: "about" */ '../views/AdminDashboardView')
+  },
+  {
+    path: '/results',
+    name: 'results',
+    children: [
+      {
+        path: ':goalId',
+        component: () => import('@/components/result/ActionPlanPage')
+      }
+    ],
+    component: () => import('@/components/result/ResultPage')
   }
 ]
 
