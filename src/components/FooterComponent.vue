@@ -2,7 +2,7 @@
 <!--  This is the whole footer -->
   <div class="card card-body text-center removeBorderRadius" id="footerBody">
     <div class="card-body m-auto w-100">
-      <h5 class="card-title">Looks like you have reached the end...</h5>
+<!--      <h5 class="card-title">Looks like you have reached the end...</h5>-->
       <div class="card-container">
         <!--  This is the section for potential questions of the users -->
         <div class="card" id="footerBox">
@@ -34,8 +34,15 @@
         <img class="rounded float-end" src="../assets/img/logos/SDG_UN_LOGO.png" alt="sdg-un-logo" id="footerLogo">
       </div>
       <!--  This button allows the user to go back to the top of the page -->
-      <p class="card-text">Or just simply go back to the top of this page with the button below</p>
+<!--      <p class="card-text">Or just simply go back to the top of this page with the button below</p>-->
       <button class="btn btn-footer" id="scroll-to-top" @click="scrollToTop">Go back to top</button>
+      <div class="language-selector">
+      <label for="set-language">Language:</label>
+        <select id="set-language" name="language" @change="setLanguage($event)">
+          <option value="english">English</option>
+          <option value="dutch">Nederlands</option>
+        </select>
+        </div>
     </div>
     <div class="card-footer text-body-secondary">
       <p class="card-text">Presented to you by: HvA HBO-ICT, S206-Green Office Team 1</p>
@@ -60,6 +67,13 @@ export default {
         top: 0,
         behavior: 'smooth'
       })
+    },
+    setLanguage (event) {
+      if (event.target.value === 'english') {
+        sessionStorage.setItem('language', 'en-US')
+      } else if (event.target.value === 'dutch') {
+        sessionStorage.setItem('language', 'nl-NL')
+      }
     }
   },
   mounted () {
@@ -72,6 +86,13 @@ export default {
 </script>
 
 <style scoped>
+
+.language-selector {
+  color: white;
+  position: absolute;
+  right: 10px;
+  bottom: 42px;
+}
 
 .card-container {
   margin-top: 20px;

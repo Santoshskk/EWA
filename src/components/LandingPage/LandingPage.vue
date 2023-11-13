@@ -4,24 +4,20 @@
     <div class="row d-flex justify-content-center gap-2 w-80 m-auto">
       <div class="col-lg-6 col-12 m-auto justify-content-center welcomeDiv align-items-lg-start slide-in-animation">
         <div v-show="showItemSequence[0]" class="slide-in-animation">
-          <h1 class="text-center text-dark my-2 headerText">Welcome to our webpage!</h1>
-          <p class="paragraphText">
-            Unlock your potential for global impact! On this website, you can explore and act on the UN’s Sustainable
-            Development Goals tailored to your field of expertise. Ready to make a difference? Take our quiz now!
-          </p>
+          <h1 class="text-center text-dark my-2 headerText">{{ contentData.welcomeTitle }}</h1>
+<!--          <p class="paragraphText">-->
+<!--            Unlock your potential for global impact! On this website, you can explore and act on the UN’s Sustainable-->
+<!--            Development Goals tailored to your field of expertise. Ready to make a difference? Take our quiz now!-->
+<!--          </p>-->
+          <p class="paragraphText">{{ contentData.welcomeText }}</p>
           <button class="btn btn-primary quiz-button" @click="goToQuiz">To Quiz!</button>
       </div>
       </div>
       <div class="col-lg-6 col-12 purpose-card">
         <div v-show="showItemSequence[1]" class="slide-in-animation card cardSpecific">
           <div class="card-body">
-            <h1 class="card-title">Our Purpose!</h1>
-            <p class="card-text">Welcome to our interactive platform designed to help you discover which United Nations
-              Sustainable Development Goal (SDG) aligns with your values and interests. The Sustainable Development Goals
-              are a universal call to action to end poverty, protect the planet, and ensure prosperity for all by 2030. By
-              understanding your passions and priorities, we can guide you to the SDG that resonates with you the most,
-              empowering you to make a positive impact on the world. Let's explore together and find your SDG match! More
-              <a class="link about-us-text" @click="goAboutUs">About Us!</a></p>
+            <h1 class="card-title">{{ contentData.purposeTitle }}</h1>
+            <p class="card-text">{{ contentData.purposeText }}</p>
           </div>
         </div>
       </div>
@@ -29,7 +25,7 @@
       <div class="row d-flex justify-content-center">
       </div>
       <!--      SDG overview field rows -->
-        <div  v-show="showItemSequence[2]" class="row gy-3 slide-in-animation"><h2 class="headerText2">More about the Sustainable Development Goals:</h2></div>
+        <div  v-show="showItemSequence[2]" class="row gy-3 slide-in-animation"><h2 class="headerText2">{{ contentData.SdgInfoTitle }}</h2></div>
         <div class="d-flex m-auto justify-content-center">
         <div v-show="!showItemSequence[2]" class="spaceForAnimation"></div>
         <SdgOverview :showItem="showItemSequence[2]" />
@@ -41,6 +37,7 @@
 <script>
 
 import SdgOverview from '@/components/LandingPage/SdgOverview.vue'
+import { inject } from 'vue'
 
 /**
  * LandingPage Component
@@ -49,12 +46,21 @@ import SdgOverview from '@/components/LandingPage/SdgOverview.vue'
  */
 export default {
   name: 'LandingPage',
+  inject: ['contentService'],
   components: { SdgOverview },
   data () {
     return {
       itemShowIndex: 0,
       textIndex: 0,
-      showItemSequence: [false, false, false, false]
+      showItemSequence: [false, false, false, false],
+      // content data
+      contentData: {
+        welcomeTitle: '',
+        welcomeText: '',
+        purposeTitle: '',
+        purposeText: '',
+        SdgInfoTitle: ''
+      }
     }
   },
   mounted () {
@@ -95,7 +101,38 @@ export default {
         top: 0,
         behavior: 'smooth'
       })
+    },
+    /**
+     * Using the content adaptor, find all content data for a given page
+     * @returns {Promise<void>} an object with content data retrieved from the database
+     */
+    async loadContent () {
+      const contentService = inject('contentService')
+      const APIResults = await contentService.findContentByPageId(1)
+      this.setContent(APIResults)
+    },
+    /**
+     * Fill content fields with the correct data
+     * @param data object that holds content data for given page
+     */
+    setContent (data) {
+      let counter = 0
+      for (const content in this.contentData) {
+        switch (sessionStorage.getItem('language')) {
+          case 'en-US':
+            this.contentData[content] = data.editableContent.value[counter].contentEnglish
+            break
+          case 'nl-NL':
+            this.contentData[content] = data.editableContent.value[counter].contentDutch
+            break
+        }
+        counter++
+      }
     }
+  },
+  beforeMount () {
+    // load content data from db
+    this.loadContent()
   }
 }
 </script>

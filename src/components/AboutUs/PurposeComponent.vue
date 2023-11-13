@@ -1,24 +1,62 @@
 <template>
-  <h1 class="text-center headerText1"> What we want to achieve </h1>
+  <h1 class="text-center headerText1">{{ contentData.purposeTitle }}</h1>
   <div class="card-body justify-content-center d-flex flex-row gap-5" id="body">
     <div class="card2">
       <img alt="purpose" class="team card-img align-self-center" src='../../assets/img/about-us/target.jpg' id="purpose-component">
-      <p class="text-center">
-        Our main goal is to build a simple webpage for students and teachers of the Hogeschool van Amsterdam where they can all learn more about the Sustainable Development and how to contribute to a better environment.
-      </p>
-      <p class="text-center">
-        We would also like to create a community where we can inspire each other with different ideas for improving the climate.
-      </p>
+      <p class="text-center">{{ contentData.purposeText }}</p>
     </div>
   </div>
 </template>
 
 <script>
+import { inject } from 'vue'
+
 /**
  * This is the component that is responsible for showing the purpose of our web-page
  */
 export default {
-  name: 'PurposeComponent'
+  name: 'PurposeComponent',
+  data () {
+    return {
+      contentData: {
+        purposeTitle: '',
+        purposeText: ''
+      }
+    }
+  },
+  methods: {
+    /**
+     * Using the content adaptor, find all content data for a given page
+     * @returns {Promise<void>} an object with content data retrieved from the database
+     */
+    async loadContent () {
+      const contentService = inject('contentService')
+      const APIResults = await contentService.findContentByPageId(4)
+      this.setContent(APIResults)
+    },
+    /**
+     * Fill content fields with the correct data
+     * @param data object that holds content data for given page
+     */
+    setContent (data) {
+      let counter = 0
+      for (const content in this.contentData) {
+        switch (sessionStorage.getItem('language')) {
+          case 'en-US':
+            this.contentData[content] = data.editableContent.value[counter].contentEnglish
+            break
+          case 'nl-NL':
+            this.contentData[content] = data.editableContent.value[counter].contentDutch
+            break
+        }
+        counter++
+      }
+    }
+  },
+  beforeMount () {
+    // load content from db
+    this.loadContent()
+  }
 }
 </script>
 
