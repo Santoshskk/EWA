@@ -1,18 +1,15 @@
 <template>
   <div>
+    <div id="searchbar">
     <form class="form">
       <button class="searchButton">
         <svg width="17" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="search">
           <path d="M7.667 12.667A5.333 5.333 0 107.667 2a5.333 5.333 0 000 10.667zM14.334 14l-2.9-2.9" stroke="currentColor" stroke-width="1.333" stroke-linecap="round" stroke-linejoin="round"></path>
         </svg>
       </button>
-      <input class="input" placeholder="Type your text" required="" type="text">
-      <button class="reset" type="reset">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
-        </svg>
-      </button>
+      <input class="input" placeholder="Type your text" required="" type="text" v-model="searchUser">
     </form>
+    </div>
     <table class="table table-sm table-dark">
       <thead>
       <tr>
@@ -23,20 +20,19 @@
       </tr>
       </thead>
       <tbody>
-      <tr v-for="user in users" :key="user.id">
+      <tr v-for="user in users && filteredSearch " :key="user.user_id" >
         <td >{{ user.username }}</td>
         <td >{{ user.email }}</td>
         <td >{{ user.usergoal }}</td>
         <td>
-          <button @click="() => ToggelPopUp('isEditing')">Edit</button>
+          <button id="editButton" @click="() => ToggelPopUp('isEditing', user)">Edit</button>
         </td>
       </tr>
       <!-- Edit dropdown that is displayed when the "Edit" button is clicked -->
       </tbody>
+      <EditPopUp @updateUser="updateUser" v-if="popUpTrigger.isEditing" :user="selectedUser" :toggelPopUp="() => ToggelPopUp('isEditing')">
+      </EditPopUp>
     </table>
-    <EditPopUp v-if="popUpTrigger.isEditing" :ToggelPopUp="() => ToggelPopUp('isEditing')">
-      <p>hoi</p>
-    </EditPopUp>
   </div>
 </template>
 
@@ -49,37 +45,72 @@ export default {
   inject: ['usersServices'],
 
   data () {
+    return {
+      users: [],
+      searchUser: ''
+    }
+  },
+  setup () {
+    const selectedUser = ref(null)
     const popUpTrigger = ref({
       isEditing: false
     })
 
-    const ToggelPopUp = (trigger) => {
+    const ToggelPopUp = (trigger, user) => {
       popUpTrigger.value[trigger] = !popUpTrigger.value[trigger]
+      console.log(user)
+      selectedUser.value = user
+      console.log(selectedUser.value)
     }
     return {
-      users: [],
       EditPopUp,
       popUpTrigger,
-      ToggelPopUp
+      ToggelPopUp,
+      selectedUser
+    }
+  },
+  computed: {
+    filteredSearch () {
+      return this.users.filter(user => {
+        return (
+          user.username.toLowerCase().indexOf(this.searchUser.toLowerCase()) > -1 ||
+          user.email.toLowerCase().indexOf(this.searchUser.toLowerCase()) > -1 ||
+          user.usergoal.toLowerCase().indexOf(this.searchUser.toLowerCase()) > -1
+        )
+      })
     }
   },
   async created () {
     this.users = await this.usersServices.asyncFindAll()
   },
   methods: {
-    toggleEdit () {
-      this.isEditing = !this.isEditing
-    },
     saveEdit () {
       this.isEditing = false
+    },
+    updateUser (updatedUser) {
+      console.log(updatedUser)
+      console.log(this.users)
+      const index = this.users.findIndex(o => o.userId === updatedUser.userId)
+      console.log(updatedUser)
+      if (index !== -1) {
+        this.users.splice(index, 1, updatedUser)
+      }
     }
+    // updateOffer (updatedUser) {
+    //   console.log(updatedUser)
+    //   console.log(updatedUser)
+    //   const index = this.users.findIndex(o => o.id === updatedUser.id)
+    //   if (index !== -1) {
+    //     this.users.splice(index, 1, updatedUser)
+    //   }
+    // }
   }
 }
 
 </script>
 
 <style scoped>
-button {
+#editButton {
   --color: #560bad;
   font-family: inherit;
   display: inline-block;
@@ -97,7 +128,7 @@ button {
   color: var(--color);
 }
 
-button:before {
+#editButton:before {
   content: "";
   position: absolute;
   z-index: -1;
@@ -107,22 +138,22 @@ button:before {
   border-radius: 50%;
 }
 
-button:hover {
+#editButton:hover {
   color: #fff;
 }
 
-button:before {
+#editButton:before {
   top: 100%;
   left: 100%;
   transition: all .7s;
 }
 
-button:hover:before {
+#editButton:hover:before {
   top: -30px;
   left: -30px;
 }
 
-button:active:before {
+#editButton:active:before {
   background: #3a0ca3;
   transition: background 0s;
 }
@@ -149,7 +180,6 @@ button:active:before {
   width: 500px;
   height: var(--height-of-input);
   display: flex;
-  align-items: center;
   padding-inline: 0.8em;
   border-radius: var(--border-radius);
   transition: border-radius 0.5s ease;
@@ -209,5 +239,12 @@ input:not(:placeholder-shown) ~ .reset {
 .form svg {
   width: 17px;
   margin-top: 3px;
+}
+
+#searchbar{
+  background-color: gray;
+  height: 50px;
+  padding: 1px;
+
 }
 </style>

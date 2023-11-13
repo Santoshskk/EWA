@@ -1,3 +1,5 @@
+import { User } from '@/models/user'
+
 export class UsersAdaptor {
   resourcesUrl;
 
@@ -17,8 +19,10 @@ export class UsersAdaptor {
   }
 
   async asyncFindAll () {
+    let response = []
     const url = `${this.resourcesUrl}/users/all`
-    return this.fetchJson(url)
+    response = await this.fetchJson(url)
+    return response.map(user => User.copyConstructor(user))
   }
 
   async asyncFindById (id) {

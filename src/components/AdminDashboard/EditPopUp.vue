@@ -1,18 +1,70 @@
 <template>
-  <div class="popup">
+  <div class="popup" v-if="clonedUser">
     <div class="popup-inner">
       <slot />
-      <button class="popup-close" @click="ToggelPopUp()">
+      <table>
+        <tr>
+          <td>Username: </td>
+          <td><input type="text" v-model="clonedUser.username" /></td>
+        </tr>
+        <tr>
+          <td>Email: </td>
+          <td><input type="text" v-model="clonedUser.email"/></td>
+        </tr>
+        <tr>
+          <td>Admin: </td>
+          <td>
+            <div class="form-check">
+              <input type="checkbox" class="form-check-input" v-model="clonedUser.isAdmin">
+            </div>
+          </td>
+        </tr>
+      </table>
+      <button class="popup-close" @click="toggelPopUp()">
         Close Popup
       </button>
+      <button @click="save" :disabled="!hasChanged">Save</button>
+
     </div>
   </div>
 </template>
 
 <script>
+import { User } from '@/models/user'
+
 export default {
   name: 'EditPopUp',
-  props: ['ToggelPopUp']
+  props: {
+    toggelPopUp: Function,
+    user: {
+      type: User,
+      required: true
+    }
+  },
+  data () {
+    return {
+      clonedUser: null
+    }
+  },
+  async created () {
+    if (this.user) {
+      this.clonedUser = await this.user.clone()
+    }
+  },
+  methods: {
+    save () {
+      this.$emit('updateUser', this.clonedUser)
+      this.toggelPopUp()
+    }
+  },
+  computed: {
+    hasChanged () {
+      return !User.equals(this.user, this.clonedUser)
+    }
+  },
+  methode: {
+
+  }
 }
 </script>
 
@@ -35,5 +87,4 @@ export default {
   background: #FFF;
   padding: 32px;
 }
-
 </style>
