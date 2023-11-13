@@ -17,6 +17,10 @@ import MultipleChoiceQuestion from '@/models/MultipleChoiceQuestion'
 import { RESTContentAdaptor } from '@/services/RESTContentAdaptor'
 import { UsersAdaptor } from '@/services/users-adaptor'
 import CONFIG from '@/services/app-config.js'
+import CONFIG from '@/app-config'
+import { ProfilesAdaptor } from '@/services/ProfilesAdaptor'
+import { GoalsAdaptor } from '@/services/GoalsAdaptor'
+import { ActionPlansAdaptor } from '@/services/ActionPlansAdaptor'
 export default {
   components: { NavBar, FooterComponent },
   provide () {
@@ -26,7 +30,10 @@ export default {
       questionTrueFalseService: new RESTAdaptorWithFetch(CONFIG.BACKEND_URL + '/question', YesNoQuestion.copyConstructor),
       questionMultipleChoiceService: new RESTAdaptorWithFetch(CONFIG.BACKEND_URL + '/question', MultipleChoiceQuestion.copyConstructor),
       contentService: new RESTContentAdaptor(CONFIG.BACKEND_URL + '/page'),
-      usersServices: new UsersAdaptor(CONFIG.BACKEND_URL)
+      usersServices: new UsersAdaptor(CONFIG.BACKEND_URL),
+      profileService: new ProfilesAdaptor(CONFIG.BACKEND_URL + '/profiles'),
+      goalService: new GoalsAdaptor(CONFIG.BACKEND_URL + '/goals'),
+      actionPlanService: new ActionPlansAdaptor(CONFIG.BACKEND_URL + '/actionplans')
     }
   },
 
