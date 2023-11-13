@@ -92,7 +92,7 @@ export class RESTAdaptorWithFetch /* <E> */ {
       }
     })
 
-    return { isPending, error, load, abort, isAborted }
+    return { entity, isPending, error, load, abort, isAborted }
   }
 
   /**

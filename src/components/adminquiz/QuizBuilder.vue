@@ -2,6 +2,12 @@
     <div class="container">
       <div v-if="error">
         <ErrorComponent :error="error"/>
+        <button class="btn btn-primary col-1" @click="backToOverview" :class="{ 'disabled' : hasChanged || pendingBusy}">
+              <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-box-arrow-left" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0v2z"/>
+                <path fill-rule="evenodd" d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
+              </svg>
+        </button>
       </div>
       <div v-else-if="isPending">
         <LoadingComponent/>
@@ -36,14 +42,25 @@
                           </div>
                       </div>
                     </button>
-                </div>
+                  </div>
+                  <div class="justify-content-center m-auto">
+                    <button class="questionDeleteButton m-auto" @mouseenter="deleteButtonHover = true" @mouseleave="deleteButtonHover = false" @click="deleteQuiz">
+                    <svg v-if="!deleteButtonHover" xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="red" class="bi bi-trash" viewBox="0 0 20 20">
+                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>
+                        <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/>
+                    </svg>
+                    <svg v-if="deleteButtonHover"  xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="red" class="bi bi-trash-fill" viewBox="0 0 20 20">
+                        <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
+                    </svg>
+                    </button>
+                  </div>
                   <div class="col-2">
                     <div class="flexRow justify-content-between">
                       <label class="radioButtonLabel" for="statusConcept">Concept</label>
                       <input v-model="selectedValue" class="radioButton" type="radio" id="statusConcept" name="status" value="Concept" >
                     </div>
                     <div class="flexRow justify-content-between">
-                      <label class="radioButtonLabel" for="statusPublished">Published</label>
+                      <label class="radioButtonLabel" for="statusPublished">Publishable</label>
                       <input v-model="selectedValue" class="radioButton" type="radio" id="statusPublished" name="status" value="Published">
                     </div>
                   </div>
@@ -103,6 +120,7 @@ export default {
     const saveQuizError = ref(null)
     const route = useRoute()
     const $toast = useToast()
+    const deleteButtonHover = ref(false)
 
     const cloneQuiz = async (quizOriginal) => {
       quiz.value = await quizOriginal.clone()
@@ -210,6 +228,24 @@ export default {
       router.push({ path: '/admin_dashboard/quiz' })
     }
 
+    const deleteQuiz = async () => {
+      if (!window.confirm('Are you sure you want to delete this quiz?')) {
+        return
+      }
+      const result = await quizService.asyncDeleteById(quiz.value.id)
+
+      result.load().then(() => {
+        console.log(result.error.value)
+        if (result.error.value === null || result.error.value === 'Unexpected end of JSON input') {
+          $toast.success('Quiz ' + quiz.value.quizName + ' deleted')
+          emit('updateQuizzes')
+          backToOverview()
+        } else {
+          $toast.error('Could not delete quiz ' + quiz.value.quizName)
+        }
+      })
+    }
+
     const hasChanged = computed(() => { return quizOriginal.value !== null && !quizOriginal.value.equals(quiz.value) && quizOriginal.value.id !== null })
 
     const pendingBusy = computed(() => { return saveQuizIsPending.value })
@@ -233,7 +269,7 @@ export default {
     })
 
     return {
-      questionTypes, addQuestion, selectedQuestionType, deleteQuestion, error, isPending, quiz, saveQuestion, moveQuestion, saveButtonText, hasChanged, pendingBusy, saveQuiz, saveQuizIsPending, selectedValue, backToOverview
+      questionTypes, addQuestion, selectedQuestionType, deleteQuestion, error, isPending, quiz, saveQuestion, moveQuestion, saveButtonText, hasChanged, pendingBusy, saveQuiz, saveQuizIsPending, selectedValue, backToOverview, deleteButtonHover, deleteQuiz
     }
   },
   methods: {

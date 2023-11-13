@@ -33,13 +33,19 @@
                                 </li>
                                 <li class="quizOverviewCards col">
                                     <div class="d-flex align-top m-auto quizOverviewCardContent flex-column align-items-center gap-3">
-                                        <div class="quizOverViewCardContentText">QuizBuilder</div>
+                                        <div class="quizOverViewCardContentText">Edit quiz</div>
                                         <select v-model="selectedQuizForBuilder" class="form-select ">
                                             <option value="" selected disabled>Select a quiz</option>
                                             <!-- #todo autoload from available options -->
                                             <option v-for="quiz in quizzes" :key="quiz.id" :value="quiz"> {{ quiz.quizName}}</option>
                                         </select>
-                                        <button @click="gotoQuizBuilder" class="btn btn-primary" :disabled="!selectedQuizForBuilder">Go to quiz</button>
+                                        <button @click="gotoQuizBuilder" class="btn btn-primary" :disabled="!selectedQuizForBuilder">Edit quiz</button>
+                                    </div>
+                                </li>
+                                <li class="quizOverviewCards col">
+                                    <div class="d-flex align-top m-auto quizOverviewCardContent flex-column align-items-center gap-3">
+                                        <div class="quizOverViewCardContentText">Create Quiz</div>
+                                        <button @click="createQuiz" class="btn btn-primary" >Create quiz</button>
                                     </div>
                                 </li>
                             </ul>
@@ -58,6 +64,7 @@ import { useRoute } from 'vue-router'
 import ErrorComponent from '@/components/ErrorComponent'
 import LoadingComponent from '@/components/LoadingComponent'
 import router from '@/router'
+import Quiz from '@/models/Quiz'
 
 export default {
   name: 'QuizOverview',
@@ -141,12 +148,24 @@ export default {
       })
     }
 
+    const createQuiz = async () => {
+      const result = await quizService.asyncSave(new Quiz({ id: 0 }))
+
+      result.load().then(() => {
+        if (result.error.value) {
+          return
+        }
+        updateQuizzes()
+        router.push({ name: 'QuizBuilder', params: { id: result.entity.value.id } })
+      })
+    }
+
     const isBuilderRoute = computed(() => {
       return route.path.includes('/quiz/builder')
     })
 
     return {
-      quizzes, conceptQuizzes, publishedQuizzes, liveQuiz, isPending, error, isBuilderRoute, selectedQuizForBuilder, gotoQuizBuilder, selectedQuizForLive, setQuizLive, updateQuizzes
+      quizzes, conceptQuizzes, publishedQuizzes, liveQuiz, isPending, error, isBuilderRoute, selectedQuizForBuilder, gotoQuizBuilder, selectedQuizForLive, setQuizLive, updateQuizzes, createQuiz
     }
   }
 }

@@ -40,6 +40,12 @@ export default class Quiz {
   constructor (questionJSON, isInQuizBuilder = false) {
     if (questionJSON === undefined) throw new Error('JSON is undefined')
 
+    if (questionJSON.id === 0) {
+      this.id = 0
+      this.isConcept = true
+      return
+    }
+
     if (questionJSON.quizName === undefined) throw new Error('quizName is undefined')
 
     if (questionJSON.quizQuestions === undefined) throw new Error('questions is undefined')
@@ -47,16 +53,20 @@ export default class Quiz {
     this.id = questionJSON.id ? questionJSON.id : null
     this.quizName = questionJSON.quizName
     this.quizQuestions = []
-    this.#instatiateQuiz(questionJSON.quizQuestions).then(() => {
-      this.totalQuestions = this.quizQuestions.length
-    })
+    if (questionJSON.quizQuestions !== null && questionJSON.quizQuestions.length !== 0) {
+      this.#instatiateQuiz(questionJSON.quizQuestions).then(() => {
+        this.totalQuestions = this.quizQuestions.length
+      })
+    }
 
     this.isConcept = questionJSON.isConcept
     this.isPublished = questionJSON.isPublished
     this.isLive = questionJSON.isLive
 
     if (!isInQuizBuilder) {
-      this.#instantieQuizResults()
+      if (questionJSON.quizQuestions !== null && questionJSON.quizQuestions.length !== 0) {
+        this.#instantieQuizResults()
+      }
       this.currentQuestionIndex = 0
       this.totalAnsweredQuestions = 0
     }

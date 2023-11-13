@@ -29,14 +29,6 @@ public class Quiz {
 
     public Quiz(){}
 
-    public void setPublished(boolean published) {
-        isPublished = published;
-    }
-
-    public void setConcept(boolean concept) {
-        isConcept = concept;
-    }
-
     public void setIsLive(boolean live) {
         isLive = live;
     }
@@ -53,13 +45,6 @@ public class Quiz {
         return isLive;
     }
 
-    public boolean getIsPublished() {
-        return isPublished;
-    }
-
-    public boolean getIsConcept() {
-        return isConcept;
-    }
 
     public void setIsPublished(boolean isPublished) {
         this.isPublished = isPublished;
