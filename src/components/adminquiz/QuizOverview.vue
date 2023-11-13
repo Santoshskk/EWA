@@ -7,7 +7,7 @@
             <LoadingComponent/>
         </div>
         <div v-else>
-            <section v-if="quizzes != null">
+            <section v-if="quizzes !== null">
                 <div class="my-5">
                     <div v-if="!isBuilderRoute">
                         <h1>Quiz Overview</h1>
@@ -16,8 +16,8 @@
                                 <li class="quizOverviewCards col">
                                     <div class="d-flex align-top m-auto quizOverviewCardContent flex-column align-items-center gap-3">
                                         <div class="quizOverViewCardContentText">Current quiz for users:</div>
-                                        <div v-if="liveQuiz !== null">{{ liveQuiz.quizName }}</div>
-                                        <div v-else>No quiz is live</div>
+                                        <div class="liveQuizText" v-if="liveQuiz !== null">{{ liveQuiz.quizName }}</div>
+                                        <div class="liveQuizText" v-else>No quiz is live</div>
                                     </div>
                                 </li>
                                 <li class="quizOverviewCards col">
@@ -28,7 +28,16 @@
                                             <!-- #todo autoload from available options -->
                                             <option v-for="quiz in publishedQuizzes" :key="quiz.id" :value="quiz"> {{ quiz.quizName}}</option>
                                         </select>
-                                        <button @click="setQuizLive" class="btn btn-primary" :disabled="!selectedQuizForLive">Set Live</button>
+                                        <button @click="setQuizLive" class="btn btn-primary" :disabled="!selectedQuizForLive || setLiveIsPending">
+                                          <div class="d-flex row">
+                                            <div class="col">Set Live</div>
+                                            <div v-if="setLiveIsPending" class="col spinnerInButton p-0">
+                                              <div class="spinner-border text-light spinnerInButton" role="status">
+                                                  <span class="sr-only"></span>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </button>
                                     </div>
                                 </li>
                                 <li class="quizOverviewCards col">
@@ -39,13 +48,24 @@
                                             <!-- #todo autoload from available options -->
                                             <option v-for="quiz in quizzes" :key="quiz.id" :value="quiz"> {{ quiz.quizName}}</option>
                                         </select>
-                                        <button @click="gotoQuizBuilder" class="btn btn-primary" :disabled="!selectedQuizForBuilder">Edit quiz</button>
+                                        <button @click="gotoQuizBuilder" class="btn btn-primary" :disabled="!selectedQuizForBuilder">
+                                          Edit quiz
+                                        </button>
                                     </div>
                                 </li>
                                 <li class="quizOverviewCards col">
                                     <div class="d-flex align-top m-auto quizOverviewCardContent flex-column align-items-center gap-3">
-                                        <div class="quizOverViewCardContentText">Create Quiz</div>
-                                        <button @click="createQuiz" class="btn btn-primary" >Create quiz</button>
+                                      <div class="quizOverViewCardContentText">Create Quiz</div>
+                                      <button @click="createQuiz" class="btn btn-primary" :disabled="createIsPending" >
+                                        <div class="d-flex row">
+                                          <div class="col">Create quiz</div>
+                                          <div v-if="createIsPending" class="col spinnerInButton p-0">
+                                            <div class="spinner-border text-light spinnerInButton" role="status">
+                                                <span class="sr-only"></span>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </button>
                                     </div>
                                 </li>
                             </ul>
@@ -65,6 +85,7 @@ import ErrorComponent from '@/components/ErrorComponent'
 import LoadingComponent from '@/components/LoadingComponent'
 import router from '@/router'
 import Quiz from '@/models/Quiz'
+import { useToast } from 'vue-toast-notification'
 
 export default {
   name: 'QuizOverview',
@@ -84,6 +105,11 @@ export default {
     const route = useRoute()
     const selectedQuizForBuilder = ref('')
     const selectedQuizForLive = ref('')
+    const createIsPending = ref(false)
+    const createError = ref(null)
+    const $toast = useToast()
+    const setLiveIsPending = ref(false)
+    const setLiveError = ref(null)
 
     onBeforeMount(async () => {
       const results = await quizService.asyncFindAll()
@@ -97,10 +123,9 @@ export default {
       })
 
       load.value().then(() => {
-        if (error.value) {
-          console.log(error.value)
+        if (error.value === null) {
+          filterQuizzes()
         }
-        filterQuizzes()
       })
     })
 
@@ -140,6 +165,11 @@ export default {
       selectedQuizForLive.value.isLive = true
       const results = await quizService.asyncSave(selectedQuizForLive.value)
 
+      watchEffect(() => {
+        setLiveIsPending.value = results.isPending.value
+        setLiveError.value = results.error.value
+      })
+
       results.load().then(() => {
         if (results.error.value) {
           return
@@ -151,8 +181,14 @@ export default {
     const createQuiz = async () => {
       const result = await quizService.asyncSave(new Quiz({ id: 0 }))
 
+      watchEffect(() => {
+        createIsPending.value = result.isPending.value
+        createError.value = result.error.value
+      })
+
       result.load().then(() => {
         if (result.error.value) {
+          $toast.error('Unable to create quiz, please try again later')
           return
         }
         updateQuizzes()
@@ -165,7 +201,7 @@ export default {
     })
 
     return {
-      quizzes, conceptQuizzes, publishedQuizzes, liveQuiz, isPending, error, isBuilderRoute, selectedQuizForBuilder, gotoQuizBuilder, selectedQuizForLive, setQuizLive, updateQuizzes, createQuiz
+      quizzes, conceptQuizzes, publishedQuizzes, liveQuiz, isPending, error, isBuilderRoute, selectedQuizForBuilder, gotoQuizBuilder, selectedQuizForLive, setQuizLive, updateQuizzes, createQuiz, createIsPending, setLiveIsPending
     }
   }
 }
@@ -190,11 +226,22 @@ export default {
     list-style: none;
 }
 
+.liveQuizText {
+  color: #411C97 !important;
+  font-weight: 600;
+  font-size: 1.3rem;
+}
+
+.quizCardTitles {
+  font-weight: 600;
+  font-size: 1.3rem;
+}
+
 .quizOverviewCards {
-    width: 241px;
-    height: 162px;
+    width: 250px;
+    height: 200px;
     flex-shrink: 0;
-    background-color: #a5a5a5;
+    background-color: #C5B2F0;
     border-radius: 10px;
     padding: 5px;
 }
@@ -204,9 +251,12 @@ export default {
     height: 100%;
     text-align: center;
     align-items: top;
+    margin-top: 10px;
     justify-content: center;
     margin: auto;
     color: white !important;
+    font-weight: 500;
+    font-size: 1.3rem;
 }
 
 .minvh100 {

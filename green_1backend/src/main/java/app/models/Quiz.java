@@ -33,11 +33,11 @@ public class Quiz {
         isLive = live;
     }
 
-    public boolean isPublished() {
+    public boolean getIsPublished() {
         return isPublished;
     }
 
-    public boolean isConcept() {
+    public boolean getIsConcept() {
         return isConcept;
     }
 

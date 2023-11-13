@@ -43,6 +43,8 @@ export default class Quiz {
     if (questionJSON.id === 0) {
       this.id = 0
       this.isConcept = true
+      this.isPublished = false
+      this.totalQuestions = 0
       return
     }
 
@@ -53,6 +55,7 @@ export default class Quiz {
     this.id = questionJSON.id ? questionJSON.id : null
     this.quizName = questionJSON.quizName
     this.quizQuestions = []
+    this.totalQuestions = 0
     if (questionJSON.quizQuestions !== null && questionJSON.quizQuestions.length !== 0) {
       this.#instatiateQuiz(questionJSON.quizQuestions).then(() => {
         this.totalQuestions = this.quizQuestions.length

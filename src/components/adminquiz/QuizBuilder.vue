@@ -139,6 +139,7 @@ export default {
 
       load.value().then(async () => {
         if (error.value === null) {
+          console.log(quizOriginal.value)
           await cloneQuiz(quizOriginal.value)
         }
         if (error.value === 'Could not fetch the data for that resource') {
