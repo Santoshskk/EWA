@@ -3,7 +3,6 @@ export class ActionPlansAdaptor {
 
   constructor (resourcesUrl) {
     this.resourcesUrl = resourcesUrl
-    console.log(this.resourcesUrl)
   }
 
   async fetchJson (url, options = null) {
@@ -23,9 +22,7 @@ export class ActionPlansAdaptor {
   }
 
   async asyncFindBySdgId (id) {
-    console.log('ActionPlansAdaptor.asyncFindBySdgId(' + id + ')...')
     const actionPlansData = await this.fetchJson(this.resourcesUrl + '/sdg/' + parseInt(id))
-    console.log(actionPlansData)
     return actionPlansData
   }
 }

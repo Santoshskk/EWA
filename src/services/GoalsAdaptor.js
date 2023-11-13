@@ -5,7 +5,6 @@ export class GoalsAdaptor {
 
   constructor (resourcesUrl) {
     this.resourcesUrl = resourcesUrl
-    console.log(this.resourcesUrl)
   }
 
   async fetchJson (url, options = null) {
@@ -25,14 +24,11 @@ export class GoalsAdaptor {
   }
 
   async asyncFindById (id) {
-    console.log('GoalsAdaptor.asyncFindById(' + id + ')...')
     const goalsData = await this.fetchJson(this.resourcesUrl + '/' + parseInt(id))
-    console.log(goalsData)
     return goalsData
   }
 
   async asyncSave (goal) {
-    console.log('GoalsAdaptor.asyncSave(goal)...')
     if (!goal.id || goal.id === 0) {
       const response = await this.fetchJson(this.resourcesUrl, {
         method: 'POST',
@@ -55,7 +51,6 @@ export class GoalsAdaptor {
   }
 
   async asyncDeleteById (id) {
-    console.log('GoalsAdaptor.asyncDeleteById(' + id + ')...')
     const response = await this.fetchJson(this.resourcesUrl + '/' + id,
       {
         method: 'DELETE'
