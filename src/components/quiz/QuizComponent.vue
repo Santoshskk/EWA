@@ -9,7 +9,7 @@
        <!-- This is where the quiz progress bar will be displayed -->
       <!-- This is where the quiz questions will be displayed with the answers -->
       <div v-else-if="quizStarted && !quizEnded">
-        <QuizProgressBarComponent :currentQuestionIndex="this.quizIndex + 1" :totalQuestions="this.quiz.totalQuestions"
+        <QuizProgressBarComponent :currentQuestionIndex="quizIndex + 1" :totalQuestions="quiz.totalQuestions"
         :totalQuestionsAnswered="totalQuestionsAnswered" v-on:changeQuestion="handleChangeQuestion"/>
         <div v-if="(isCurrentQuestionYesNo)">
           <QuizQuestionYesNoComponent :questionObject="currentQuestion" v-on:questionAnswered="handleQuestionAnswered"/>
@@ -33,10 +33,11 @@
 <script>
 import QuizQuestionYesNoComponent from '@/components/quiz/QuizQuestionYesNoComponent.vue'
 import QuizQuestionMultipleChoiceComponent from '@/components/quiz/QuizQuestionMultipleChoiceComponent.vue'
-import quizQuestionsJSON from '@/assets/quizQuestions.json'
 import QuizProgressBarComponent from './QuizProgressBarComponent.vue'
-import Quiz from '@/models/Quiz.js'
-import QuizQuestionTrueFalse from '@/models/QuizQuestionTrueFalse.js'
+import QuizQuestionTrueFalse from '@/models/YesNoQuestion.js'
+import { onMounted, computed, watchEffect, onBeforeUnmount, ref, inject, onBeforeMount } from 'vue'
+import { useRoute, onBeforeRouteLeave } from 'vue-router'
+import router from '@/router'
 
 export default {
   name: 'QuizComponent',
@@ -45,50 +46,108 @@ export default {
     QuizQuestionMultipleChoiceComponent,
     QuizProgressBarComponent
   },
-  data () {
-    return {
-      quizStarted: false,
-      quizEnded: false,
-      quizIndex: 0,
-      totalQuestionsAnswered: 0,
-      currentQuestion: null,
-      textIndex: 0,
-      characterIndex: 0,
-      showItemSequence: [false, false, false, false]
-    }
-  },
-  mounted () {
+  setup () {
+    const quizStarted = ref(false)
+    const quizEnded = ref(false)
+    const quizIndex = ref(0)
+    const quiz = ref(null)
+    const totalQuestionsAnswered = ref(0)
+    const currentQuestion = ref(null)
+    const textIndex = ref(0)
+    const characterIndex = ref(0)
+    const showItemSequence = ref([false, false, false, false])
+    const questionAnswered = ref(null)
+    const quizLiveService = inject('quizLiveService')
+    const route = useRoute()
+
+    onBeforeMount(async () => {
+      const results = await quizLiveService.asyncCustom('live')
+
+      watchEffect(() => {
+        quiz.value = results.entity.value
+      })
+
+      results.load()
+    })
     /**
      * This is a function that will be called every 700ms and will show the next item in the showItemSequence array
      * This is used to show the welcome text in a sequence
      * @author Marco de Boer
      */
-    window.addEventListener('beforeunload', this.beforeWindowUnload)
-    setInterval(() => {
-      if (this.showItemSequence.length === this.textIndex) {
-        clearInterval()
+    onMounted(() => {
+      window.addEventListener('beforeunload', beforeWindowUnload)
+      setInterval(() => {
+        if (showItemSequence.value.length === textIndex.value) {
+          clearInterval()
+          return
+        }
+        showItemSequence.value[textIndex.value] = true
+        textIndex.value++
+      }, 500)
+    })
+
+    /**
+     * This function will be called when the user tries to leave the quiz page when they have not finished the quiz
+     * @param {*} to you dont have to give these parameters, they are given by vue router
+     * @param {*} from you dont have to give these parameters, they are given by vue router
+     * @param {*} next you dont have to give these parameters, they are given by vue router
+     * @author Marco de Boer
+     */
+
+    onBeforeRouteLeave((to, from, next) => {
+      if (quizStarted.value && totalQuestionsAnswered.value !== 0) {
+        if (window.confirm('You have not finished the quiz, your progress will be lost')) {
+          totalQuestionsAnswered.value = 0
+          next()
+        } else {
+          next(false)
+        }
+      }
+      next()
+    })
+
+    onBeforeUnmount(() => {
+      window.removeEventListener('beforeunload', beforeWindowUnload)
+    })
+
+    /**
+     *  This method is called when the user tries to leave the page. It will ask the user if they want to discard the changes.
+     * @param {*} e event you dont have to give this parameter, it will be given automatically
+     * @autor Marco de Boer
+     */
+    function beforeWindowUnload (e) {
+      if (!quizStarted.value && totalQuestionsAnswered.value === 0) {
         return
       }
-      this.showItemSequence[this.textIndex] = true
-      this.textIndex++
-    }, 500)
-  },
-  methods: {
+      e.preventDefault()
+      e.returnValue = 'You have not finished the quiz, your progress will be lost.'
+    }
+
+    watchEffect(() => {
+      if (!quiz.value) return
+      quizIndex.value = quiz.value.currentQuestionIndex
+      questionAnswered.value = quiz.value.totalAnsweredQuestions
+    })
+    /**
+     * This will be called when the quizIndexChanges and displays the appropriate question in the quizQuestionsObjectArray
+     * @author Marco de Boer
+     */
+
     /**
      * This function will start the quiz and set the quizStarted to true and the quizEnded to false
      * it will also create a new quiz object and set the currentQuestion to the first question in the quizQuestionsObjectArray
      * @author Marco de Boer
      */
-    async startQuiz () {
+    const startQuiz = async () => {
       try {
-        this.quiz = await new Quiz(quizQuestionsJSON)
-        this.currentQuestion = await this.quiz.getCurrentQuestion()
-        this.quizStarted = true
-        this.quizEnded = false
+        currentQuestion.value = await quiz.value.getCurrentQuestion()
+        quizStarted.value = true
+        quizEnded.value = false
       } catch (error) {
         console.error(error)
       }
-    },
+    }
+
     /**
      * This function will handle the question answered event from the QuizQuestionYesNoComponent and QuizQuestionMultipleChoiceComponent
      * It will check if the quiz is ended and if it is it will set the quizEnded to true and the quizStarted to false
@@ -96,93 +155,52 @@ export default {
      * if the quiz ended it will calculate the results
      * @author Marco de Boer
      */
-    async handleQuestionAnswered () {
+    const handleQuestionAnswered = async () => {
       try {
-        if (this.quizIndex + 1 === this.quiz.totalQuestions) {
-          this.quizStarted = false
-          this.quizEnded = true
+        if (quizIndex.value + 1 === quiz.value.totalQuestions) {
+          quizStarted.value = false
+          quizEnded.value = true
         }
-        this.currentQuestion = await this.quiz.getNextQuestion()
-        this.totalQuestionsAnswered = await this.quiz.getTotalAnsweredQuestions()
-        if (this.quizEnded) {
-          const quizanswers = await this.quiz.setQuizResultObjectArray()
-          this.$router.push({
-            path: `${this.$route.matched[0].path}/results`,
+        currentQuestion.value = await quiz.value.getNextQuestion()
+        totalQuestionsAnswered.value = await quiz.value.getTotalAnsweredQuestions()
+        if (quizEnded.value) {
+          const quizanswers = await quiz.value.setQuizResultObjectArray()
+          router.push({
+            path: `${route.matched[0].path}/results`,
             query: { quizanswers: encodeURIComponent(JSON.stringify(quizanswers)) }
           })
         }
       } catch (error) {
         console.error(error)
       }
-    },
-    skipAnimation () {
-      this.showItemSequence = [true, true, true, true]
-    },
+    }
+
+    const skipAnimation = () => {
+      showItemSequence.value = [true, true, true, true]
+    }
+
     /**
      * This function will handle the change question event from the QuizProgressBarComponent
      * @param {Number} change is either 1 or -1 to change to next or previous question
      * @author Marco de Boer
      */
-    async handleChangeQuestion (change) {
+    const handleChangeQuestion = async (change) => {
       try {
         if (change === 1) {
-          this.currentQuestion = await this.quiz.getNextQuestion()
+          currentQuestion.value = await quiz.value.getNextQuestion()
         } else {
-          this.currentQuestion = await this.quiz.getPreviousQuestion()
+          currentQuestion.value = await quiz.value.getPreviousQuestion()
         }
       } catch (error) {
         console.error(error)
       }
-    },
-    /**
-     *  This method is called when the user tries to leave the page. It will ask the user if they want to discard the changes.
-     * @param {*} e event you dont have to give this parameter, it will be given automatically
-     * @autor Marco de Boer
-     */
-    beforeWindowUnload (e) {
-      if (!this.quizStarted && this.totalQuestionsAnswered === 0) {
-        return
-      }
-      e.preventDefault()
-      e.returnValue = 'You have not finished the quiz, your progress will be lost.'
     }
-  },
-  /**
-   * This function will be called when the user tries to leave the quiz page when they have not finished the quiz
-   * @param {*} to you dont have to give these parameters, they are given by vue router
-   * @param {*} from you dont have to give these parameters, they are given by vue router
-   * @param {*} next you dont have to give these parameters, they are given by vue router
-   * @author Marco de Boer
-   */
-  beforeRouteLeave (to, from, next) {
-    if (this.quizStarted && this.totalQuestionsAnswered !== 0) {
-      if (window.confirm('You have not finished the quiz, your progress will be lost')) {
-        this.totalQuestionsAnswered = 0
-        next()
-      } else {
-        next(false)
-      }
-    }
-    next()
-  },
-  computed: {
-    isCurrentQuestionYesNo () {
-      return this.currentQuestion instanceof QuizQuestionTrueFalse
-    }
-  },
-  watch: {
-    /**
-     * This will be called when the quizIndexChanges and displays the appropriate question in the quizQuestionsObjectArray
-     * @author Marco de Boer
-     */
 
-    currentQuestion () {
-      this.quizIndex = this.quiz.currentQuestionIndex
-      this.questionAnswered = this.quiz.totalAnsweredQuestions
+    const isCurrentQuestionYesNo = computed(() => { return currentQuestion.value instanceof QuizQuestionTrueFalse })
+
+    return {
+      startQuiz, handleQuestionAnswered, skipAnimation, handleChangeQuestion, isCurrentQuestionYesNo, quizStarted, quizEnded, quizIndex, quiz, totalQuestionsAnswered, currentQuestion, showItemSequence, textIndex, characterIndex
     }
-  },
-  beforeUnmount () {
-    window.removeEventListener('beforeunload', this.beforeWindowUnload)
   }
 }
 </script>

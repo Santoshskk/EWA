@@ -12,6 +12,10 @@
     border: 2px solid #6D3FD9 !important;
 }
 
+.primary-color {
+    color: #6D3FD9 !important;
+}
+
 .btn-secondary:hover {
     color: #fff !important;
     background-color: #411C97 !important;

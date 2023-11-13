@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import QuizQuestionTrueFalse from '@/models/QuizQuestionTrueFalse.js'
+import QuizQuestionTrueFalse from '@/models/YesNoQuestion.js'
 
 export default {
   name: 'QuizQuestionYesNoComponent',

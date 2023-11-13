@@ -1,5 +1,5 @@
 <template>
-  <section class="container">
+  <section class="container minvh100">
     <h5 class="card-title">Welcome to the admin dashboard</h5>
     <span class="card-text">On this page you will find all the activities an admin can do and a small explanation per activity</span>
     <div class="row m-0">

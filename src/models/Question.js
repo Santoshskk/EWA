@@ -1,23 +1,30 @@
 /**
- * QuizQuestion model class.
- * @class QuizQuestion
+ * Question model class.
+ * @class Question
  * @property {String} question
  * @property {Number} SDG can be an array of numbers
  * @author Marco de Boer
  */
-export default class QuizQuestion {
+export default class Question {
+  id
+  index
   question
-  SDG
+  questionIsEmpty
 
   /**
    * This constructor is not meant to be used directly, but to be extended by other classes.
    * @param {String} question
    * @param {Number} SDG can be an array of numbers
    */
-  constructor (question, SDG) {
-    if (question === undefined || SDG === undefined) throw new Error('question or SDG is undefined')
-
+  constructor (id = null, index, question) {
+    this.id = id
+    this.index = index
     this.question = question
-    this.SDG = SDG
+  }
+
+  equals (other) {
+    if (this.question !== other.question) return false
+    if (this.index !== other.index) return false
+    return true
   }
 }

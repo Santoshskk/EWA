@@ -3,6 +3,8 @@ import HomeView from '../views/HomeView.vue'
 import QuizComponent from '../components/quiz/QuizComponent.vue'
 import QuizResultsView from '@/views/quizResultsView'
 import SdgInfoPage from '@/components/LandingPage/SdgInfoPage.vue'
+import QuizBuilder from '@/components/adminquiz/QuizBuilder.vue'
+import QuizOverview from '@/components/adminquiz/QuizOverview.vue'
 
 const routes = [
   {
@@ -80,7 +82,21 @@ const routes = [
         children: [
           { path: ':id', component: () => import('@/components/AdminDashboard/content/PageEditorComponent') }
         ]
+      },
+      {
+        path: '/admin_dashboard/quiz',
+        name: 'QuizOverview',
+        component: QuizOverview,
+        children: [
+          {
+            path: 'builder/:id',
+            name: 'QuizBuilder',
+            component: QuizBuilder,
+            props: true
+          }
+        ]
       }
+
     ],
     component: () => import('../views/AdminDashboardView')
   }
