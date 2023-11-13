@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="minvh100">
     <div id="searchbar">
     <form class="form">
       <button class="searchButton">
@@ -72,10 +72,11 @@ export default {
   computed: {
     filteredSearch () {
       return this.users.filter(user => {
+        console.log(this.user)
         return (
-          user.username.toLowerCase().indexOf(this.searchUser.toLowerCase()) > -1 ||
-          user.email.toLowerCase().indexOf(this.searchUser.toLowerCase()) > -1 ||
-          user.usergoal.toLowerCase().indexOf(this.searchUser.toLowerCase()) > -1
+          (user.username && user.username.toLowerCase().indexOf(this.searchUser.toLowerCase()) > -1) ||
+          (user.email && user.email.toLowerCase().indexOf(this.searchUser.toLowerCase()) > -1) ||
+          (user.usergoal && user.usergoal.toLowerCase().indexOf(this.searchUser.toLowerCase()) > -1)
         )
       })
     }
