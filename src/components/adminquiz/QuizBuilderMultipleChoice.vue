@@ -43,7 +43,7 @@
             <label class="justify-content-start h5" :for="questionClone.question">Question:</label>
             <textarea class="question-text" placeholder="Write a question" v-model="questionClone.question" :class="{ 'red-border': questionClone.questionIsEmpty }"></textarea>
             <div class="col-9 quizButtonSection p-0 justify-content-center m-auto mx-0">
-                  <label class="justify-content-start h5 m-auto col" :for="questionClone.answerLimit">Amount of options can select:</label>
+                  <label class="justify-content-start h5 m-auto col" :for="questionClone.answerLimit">How many answers can be given:</label>
                   <input class="col mx-2 answerLimit" v-model="questionClone.answerLimit" :class="{ 'red-border': !questionClone.answerLimitIsValid }" />
             </div>
             <div class="m-auto row optionListBuilder" v-for="option in questionClone.options" :key="option.id">
@@ -53,7 +53,7 @@
                   <input class="multipleChoiceBuilderQuestionInput" v-model="option.option" :class="{ 'red-border': option.optionIsEmpty }" />
                 </div>
                 <div class="sdgSelecter col-2 d-flex row m-auto">
-                  <div class="col-2 h5 m-0">
+                  <div class="col h5 m-0">
                     SDG:
                   </div>
                   <select v-model="option.sdg" @change="handleSDGChange(option)" class="dropdown col-10" :class="{ 'red-border': option.optionIsEmpty }">
