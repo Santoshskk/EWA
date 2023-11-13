@@ -23,6 +23,11 @@ public class QuizController {
         this.quizService = quizService;
     }
 
+    @GetMapping("/live")
+    public Quiz getLiveQuiz(){
+        return quizService.getQuizByIsLive();
+    }
+
     // Get all quizzes
     @GetMapping("/all")
     public List<Quiz> getAllQuizzes() {

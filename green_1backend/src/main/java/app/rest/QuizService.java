@@ -26,6 +26,10 @@ public class QuizService {
         return quizRepository.findById(id).orElse(null);
     }
 
+    public Quiz getQuizByIsLive() {
+        return quizRepository.findByIsLive(true);
+    }
+
     public Quiz addQuiz(Quiz quiz) {
         if (quiz.getIsLive()){
             List<Quiz> quizzes = quizRepository.findAll();

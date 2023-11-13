@@ -143,12 +143,12 @@ export default class Quiz {
     for (const question of this.quizQuestions) {
       if (question instanceof QuizQuestionTrueFalse) {
         if (question.givenAnswer === true) {
-          this.quizResultObjectArray[question.SDG - 1].score += 1
+          this.quizResultObjectArray[question.sdg - 1].score += 1
         }
       } else if (question instanceof MultipleChoiceQuestion) {
         for (let i = 0; i < question.givenAnswers.length; i++) {
           if (question.givenAnswers[i] === true) {
-            this.quizResultObjectArray[question.SDG[i] - 1].score += 1
+            this.quizResultObjectArray[question.options[i].sdg - 1].score += 1
           }
         }
       }

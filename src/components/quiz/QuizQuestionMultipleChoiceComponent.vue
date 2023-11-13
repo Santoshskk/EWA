@@ -3,7 +3,7 @@
         <h1 class="fs-1 fs-sd-2">{{ questionObject.question }}</h1>
         <h5 v-show="isAnswerLimitBiggerThenOne">&#40;You can select {{ questionObject.answerLimit }} answers&#41;</h5>
         <div class="container">
-            <div class="m-auto row " v-for="option in questionObject.optionsObjectArray" :key="option.option">
+            <div class="m-auto row " v-for="option in questionObject.options" :key="option.option">
                 <div class="col-12 quizButtonSection">
                     <button @click="handleOptionClicked(option)" type="button" :class="{selectedButton: option.isSelected, quizAnswerButton: !option.isSelected}" class="btn my-5 quizMultipleChoiceButton" > {{ option.option }}</button>
                 </div>
@@ -76,7 +76,7 @@ export default {
       return !this.nextIsButtonEnabled && this.nextButtonHover
     },
     nextIsButtonEnabled () {
-      return this.questionObject.optionsObjectArray.some(option => option.isSelected)
+      return this.questionObject.options.some(option => option.isSelected)
     },
     isAnswerLimitBiggerThenOne () {
       return this.questionObject.answerLimit > 1

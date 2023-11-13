@@ -9,6 +9,8 @@ public interface QuizRepository extends JpaRepository<Quiz, Long> {
     List<Quiz> findAll();
     Quiz findById(int id);
 
+    Quiz findByIsLive(boolean isLive);
+
     Quiz save(Quiz quiz);
 
     void delete(Quiz quiz);
