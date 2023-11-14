@@ -85,7 +85,8 @@ export default {
           // Overwrites Dutch text and concept of the original
         } else {
           this.editableContent[indexOfContent].contentConcept = content.contentConcept
-          this.editableContent[indexOfContent].contentDutch = content.contentConcept
+          // this.editableContent[indexOfContent].contentDutch = content.contentConcept // temporary edit
+          this.editableContent[indexOfContent].contentEnglish = content.contentConcept
         }
         try {
           // Makes the call to the API to also save it in the backend.
