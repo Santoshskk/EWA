@@ -58,12 +58,6 @@ const routes = [
   {
     path: '/profile',
     name: 'profile',
-    beforeEnter: (to, from) => {
-      // reject the navigation
-      if (!(sessionStorage.getItem('userName') === '' || sessionStorage.getItem('userName') === undefined)) {
-        router.push('/login')
-      }
-    },
     // children: [
     //   { path: ':id', component: () => import('@/components/result/ResultPage') }
     // ],
@@ -95,12 +89,6 @@ const routes = [
   {
     path: '/admin_dashboard',
     name: 'admin_dashboard',
-    beforeEnter: (to, from) => {
-      // reject the navigation
-      if (!(sessionStorage.getItem('userName') === '' || sessionStorage.getItem('userName') === undefined)) {
-        router.push('/login')
-      }
-    },
     redirect: '/admin_dashboard/intro',
     children: [
       { path: 'intro', component: () => import('@/components/AdminDashboard/AdminIntroComponent') },
