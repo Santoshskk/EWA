@@ -53,7 +53,7 @@
                   <input class="multipleChoiceBuilderQuestionInput" v-model="option.option" :class="{ 'red-border': option.optionIsEmpty }" />
                 </div>
                 <div class="sdgSelecter col-2 d-flex row m-auto">
-                  <div class="col-2 h5 m-0">
+                  <div class="h5 m-0">
                     SDG:
                   </div>
                   <select v-model="option.sdg" @change="handleSDGChange(option)" class="dropdown col-10" :class="{ 'red-border': option.optionIsEmpty }">
