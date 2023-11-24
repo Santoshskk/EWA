@@ -166,7 +166,7 @@ export default {
     }
 
     const moveQuestion = (index, newIndex) => {
-      if (newIndex <= 0 || newIndex === quiz.value.quizQuestions.length) {
+      if (newIndex < 0 || newIndex === quiz.value.quizQuestions.length) {
         return
       }
       const question = quiz.value.quizQuestions[index]

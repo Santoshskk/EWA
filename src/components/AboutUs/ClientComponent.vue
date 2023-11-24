@@ -44,16 +44,20 @@ export default {
      */
     setContent (data) {
       let counter = 0
-      for (const content in this.contentData) {
-        switch (sessionStorage.getItem('language')) {
-          case 'en-US':
-            this.contentData[content] = data.editableContent.value[counter].contentEnglish
-            break
-          case 'nl-NL':
-            this.contentData[content] = data.editableContent.value[counter].contentDutch
-            break
+      try {
+        for (const content in this.contentData) {
+          switch (sessionStorage.getItem('language')) {
+            case 'en-US':
+              this.contentData[content] = data.editableContent.value[counter].contentEnglish
+              break
+            case 'nl-NL':
+              this.contentData[content] = data.editableContent.value[counter].contentDutch
+              break
+          }
+          counter++
         }
-        counter++
+      } catch (err) {
+        alert('No connection to database...')
       }
     }
   },
