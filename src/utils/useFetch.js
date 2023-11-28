@@ -11,7 +11,7 @@ import { ref } from 'vue'
  * @returns {data, isPending, error, load} you need to make a const and destructure the return value
  * @author Marco de Boer
  */
-export function useFetch (url, object, method = 'GET') {
+export function useFetch (url, object, method = 'GET', params = null) {
   const data = ref([])
   const isPending = ref(true)
   const error = ref(null)
@@ -42,6 +42,12 @@ export function useFetch (url, object, method = 'GET') {
   const load = async (newUrl = url) => {
     isAborted.value = false
     isPending.value = true
+
+    if (method === 'GET' && params) {
+      const queryParams = new URLSearchParams(params).toString()
+      newUrl = newUrl + '?' + queryParams
+    }
+
     try {
       const response = await fetch(newUrl, fetchOptions)
 

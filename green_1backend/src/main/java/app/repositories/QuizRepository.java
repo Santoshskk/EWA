@@ -12,7 +12,7 @@ public interface QuizRepository extends JpaRepository<Quiz, Long> {
     List<Quiz> findAllBySector(Sector sector);
     Quiz findById(int id);
 
-    Quiz findByIsLive(boolean isLive);
+    Quiz findByIsLiveAndSectorId(boolean isLive, long sectorId);
 
     Quiz save(Quiz quiz);
 

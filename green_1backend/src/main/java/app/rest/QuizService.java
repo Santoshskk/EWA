@@ -26,8 +26,8 @@ public class QuizService {
         return quizRepository.findById(id).orElse(null);
     }
 
-    public Quiz getQuizByIsLive() {
-        return quizRepository.findByIsLive(true);
+    public Quiz getQuizByIsLive(long id) {
+        return quizRepository.findByIsLiveAndSectorId(true, id);
     }
 
     public Quiz addQuiz(Quiz quiz) {

@@ -24,6 +24,13 @@ import ErrorComponent from '../ErrorComponent.vue'
 import LoadingComponent from '../LoadingComponent.vue'
 import Sector from '@/models/Sector'
 
+/**
+ * This sector dropdown can be used to select a sector
+ * The sectors gets fetched from backend and are shown in the dropdown
+ * You can give a sector as prop to set the selected sector in the dropdown
+ * When you select a sector a event will be emitted with the selected sector as payload
+ * @author Marco de Boer
+ */
 export default {
   name: 'SectorDropDownComponent',
   components: { ErrorComponent, LoadingComponent },
@@ -40,6 +47,7 @@ export default {
     const isPending = ref(true)
     const error = ref(null)
     const sectors = ref([])
+
     onBeforeMount(async () => {
       const results = await sectorService.asyncFindAll()
       load.value = results.load
