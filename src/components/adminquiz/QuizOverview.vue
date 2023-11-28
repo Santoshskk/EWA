@@ -40,7 +40,7 @@
             <div class="table-responsive mtop-50" v-if="sectors">
               <table class="table table-ligth">
                 <thead>
-                  <tr>
+                  <tr class="sectorQuizTableLabels">
                     <th scope="col">Sector:</th>
                     <th scope="col">Quizzes</th>
                     <th scope="col">Ready for Live</th>
@@ -55,7 +55,7 @@
                     <LoadingComponent />
                   </div>
                   <tr v-else v-for="sector in sectors" :key="sector.id">
-                    <QuizOverviewTabelRow :sector="sector" :quizzes="quizzes" @updateQuizzes="updateQuizzes" />
+                    <QuizOverviewTabelRow :sector="sector" :quizzes="quizzes"/>
                   </tr>
                 </tbody>
               </table>
@@ -195,7 +195,7 @@ export default {
     const isBuilderRoute = computed(() => { return route.path.includes('/quiz/builder') })
 
     return {
-      quizzes, conceptQuizzes, isPending, error, isBuilderRoute, selectedQuizForBuilder, gotoQuizBuilder, updateQuizzes, createQuiz, createIsPending, sectors, getConcept
+      quizzes, conceptQuizzes, isPending, error, isBuilderRoute, selectedQuizForBuilder, gotoQuizBuilder, updateQuizzes, createQuiz, createIsPending, sectors, getConcept, sectorsError, sectorsIsPending
     }
   }
 }
@@ -267,5 +267,10 @@ export default {
 
 .minvh100 {
   min-height: 100vh;
+}
+
+.sectorQuizTableLabels {
+  font-weight: 600;
+  font-size: 1.3rem;
 }
 </style>

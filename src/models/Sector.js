@@ -4,6 +4,7 @@
  * @property {Number} id
  * @property {String} name
  * @property {String} discription
+ * @author Marco de Boer
  */
 
 export default class Sector {

@@ -1,14 +1,14 @@
 <template>
-    <th class="selectorData">{{ sector.name }}</th>
+    <th class="selectorData sectorName">{{ sector.name }}</th>
     <td class="selectorData">
-        <div class="flexRow">
-        <div class="col-9">
-            <select v-model="selectedQuizForBuilder" class="form-select ">
+        <div class="flexRow justify-content-center">
+        <div class="">
+            <select v-model="selectedQuizForBuilder" class="form-select quizSelect">
             <option value="" selected disabled>Select a quiz</option>
             <option v-for="quiz in sector.quizzes" :key="quiz.id" :value="quiz"> {{ quiz.quizName}}</option>
             </select>
         </div>
-        <div class="col-3">
+        <div class="">
             <button @click="gotoQuizBuilder" class="btn btn-primary" :disabled="!selectedQuizForBuilder">
                 Edit quiz
             </button>
@@ -16,15 +16,15 @@
         </div>
     </td>
     <td class="selectorData">
-        <div class="flexRow">
-            <div class="col-9">
-                <select v-model="selectedQuizForLive" class="form-select ">
+        <div class="flexRow justify-content-center">
+            <div class="">
+                <select v-model="selectedQuizForLive" class="form-select quizSelect">
                     <option value="" selected disabled>Select a quiz</option>
                     <option value="None" class="text-danger">None</option>
                     <option v-for="quiz in publishedQuizzes" :key="quiz.id" :value="quiz"> {{ quiz.quizName}}</option>
                 </select>
             </div>
-            <div class="col-3">
+            <div class="">
                 <button @click="setQuizLive" class="btn btn-primary" :disabled="!selectedQuizForLive || setLiveIsPending">
                     <div class="d-flex row">
                         <div class="col">Set Live</div>
@@ -83,15 +83,15 @@ export default {
 
     onBeforeMount(async () => {
       await props.sector.setQuizzes(props.quizzes)
-      await setLiveQuiz()
+      liveQuiz.value = await getLiveQuiz()
     })
 
     /**
      * This function sets the live quiz for this sector to display it in the table
      * @Author Marco de Boer
      */
-    async function setLiveQuiz () {
-      liveQuiz.value = props.sector.quizzes.find(quiz => quiz.isLive)
+    async function getLiveQuiz () {
+      return props.sector.quizzes.find(quiz => quiz.isLive)
     }
 
     /**
@@ -99,7 +99,11 @@ export default {
      * @Author Marco de Boer
      */
     const setQuizLive = async () => {
-      if (selectedQuizForLive.value === 'None') {
+      if (selectedQuizForLive.value === 'None' && liveQuiz.value === undefined) {
+        selectedQuizForLive.value = null
+        return
+      }
+      if (selectedQuizForLive.value === 'None' && liveQuiz.value !== null) {
         liveQuiz.value.isLive = false
         selectedQuizForLive.value = liveQuiz.value
       } else {
@@ -147,5 +151,24 @@ export default {
     .selectorData {
         max-width: 100px;
         width: 200px;
+    }
+
+    .liveQuizText {
+        max-width: 100px;
+        width: 200px;
+        max-height: 20px;
+    }
+
+    .quizSelect {
+        max-width: 250px;
+        min-width: 250px;
+        margin-right: 20px;
+    }
+
+    .sectorName {
+      text-align: center;
+      margin: auto;
+      font-size: 1.1rem;
+      font-weight: 550;
     }
 </style>
