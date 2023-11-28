@@ -1,5 +1,6 @@
 package app.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.hibernate.type.NumericBooleanConverter;
@@ -22,7 +23,7 @@ public class Quiz {
     @Column(name = "is_live", columnDefinition = "TINYINT", length = 1)
     private boolean isLive;
 
-    @OneToOne
+    @ManyToOne
     private Sector sector;
 
     @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, orphanRemoval = true)

@@ -10,6 +10,7 @@ export default class Sector {
   id
   name
   description
+  quizzes = []
 
   constructor (sectorJSON) {
     if (sectorJSON === undefined) throw new Error('JSON is undefined')
@@ -26,7 +27,6 @@ export default class Sector {
   }
 
   static copyConstructor (sectorJSON) {
-    console.log(sectorJSON)
     if (sectorJSON !== null && sectorJSON.length !== 0 && sectorJSON !== undefined) {
       return new Sector(sectorJSON)
     }
@@ -39,5 +39,14 @@ export default class Sector {
     if (other.name !== this.name) return false
     if (other.description !== this.description) return false
     return true
+  }
+
+  setQuizzes (quizzes) {
+    this.quizzes = []
+    for (const quiz of quizzes) {
+      if (quiz.sector.equals(this)) {
+        this.quizzes.push(quiz)
+      }
+    }
   }
 }

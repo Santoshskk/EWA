@@ -32,7 +32,7 @@ public class QuizService {
 
     public Quiz addQuiz(Quiz quiz) {
         if (quiz.getIsLive()){
-            List<Quiz> quizzes = quizRepository.findAll();
+            List<Quiz> quizzes = quizRepository.findAllBySector(quiz.getSector());
             for (Quiz q : quizzes) {
                 if (q.getIsLive()){
                     q.setIsLive(false);
