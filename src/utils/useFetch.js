@@ -23,16 +23,18 @@ export function useFetch (url, object, method = 'GET', params = null) {
     isAborted.value = true
   }
 
+  // Detect if the object is FormData and adjust headers accordingly
+  const isFormData = object instanceof FormData
+  const headers = isFormData ? {} : { 'Content-Type': 'application/json' }
+
   const fetchOptions = {
     method: method,
-    headers: {
-      'Content-Type': 'application/json'
-    },
+    headers: headers,
     signal: abortController.signal
   }
 
   if (method !== 'GET' && object) {
-    fetchOptions.body = JSON.stringify(object)
+    fetchOptions.body = isFormData ? object : JSON.stringify(object)
   }
 
   /**
@@ -54,7 +56,7 @@ export function useFetch (url, object, method = 'GET', params = null) {
       if (!response.ok) {
         throw Error('Could not fetch the data for that resource')
       }
-      data.value = await response.json()
+      data.value = isFormData ? await response.text() : await response.json() // If FormData, expect text response
       error.value = null
     } catch (err) {
       if (err.message === 'Failed to fetch') {
