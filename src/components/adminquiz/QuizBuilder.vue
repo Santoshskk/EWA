@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container minvh100">
       <div v-if="error">
         <ErrorComponent :error="error"/>
         <button class="btn btn-primary col-1" @click="backToOverview" :class="{ 'disabled' : hasChanged || pendingBusy}">
@@ -73,6 +73,7 @@
                   <QuizBuilderTrueFalse class="my-2" v-if="isTrueFalseQuesetion(value)" :question="value" @deleteQuestion="deleteQuestion" @saveQuestion="saveQuestion" @moveQuestion="moveQuestion"/>
                   <QuizBuilderMultipleChoice class="my-2" v-else-if="isMultipleChoiceQuestion(value)" :question="value" @deleteQuestion="deleteQuestion" @saveQuestion="saveQuestion" @moveQuestion="moveQuestion"/>
           </div>
+          <QuizQuestionBuilder />
           <div class="d-flex justify-content-center flexRow">
               <div class="quizBuilderQuestionType">
                   <select class="form-select " aria-label="Select a type of question" v-model="selectedQuestionType" >
@@ -95,6 +96,7 @@ import { useRoute } from 'vue-router'
 import QuizBuilderTrueFalse from './QuizBuilderTrueFalse.vue'
 import YesNoQuestion from '@/models/YesNoQuestion'
 import QuizBuilderMultipleChoice from './QuizBuilderMultipleChoice.vue'
+import QuizQuestionBuilder from './QuizQuestionBuilder.vue'
 import MultipleChoiceQuestion from '@/models/MultipleChoiceQuestion'
 import ErrorComponent from '@/components/ErrorComponent'
 import LoadingComponent from '@/components/LoadingComponent'
@@ -109,7 +111,8 @@ export default {
     ErrorComponent,
     LoadingComponent,
     QuizBuilderMultipleChoice,
-    SectorDropDownComponent
+    SectorDropDownComponent,
+    QuizQuestionBuilder
   },
   setup (props, { emit }) {
     const quizService = inject('quizService')
