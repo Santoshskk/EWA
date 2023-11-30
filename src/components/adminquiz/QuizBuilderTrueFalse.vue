@@ -39,10 +39,12 @@
         </div>
       </div>
       <div>
-        <UploadImageComponent ref="uploadImage" @image-previewed="setQuestionImgPath"/>
+        <div class="uploadImageSpace">
+          <UploadImageComponent ref="uploadImage" @image-previewed="setQuestionImgPath" :imagePath="questionClone.imgPath"/>
+        </div>
       </div>
       <div class="flexRow">
-        <div class="col-10 my-5">
+        <div class="col-10">
           <label class="justify-content-start h5" :for="questionClone.question">Question:</label>
           <textarea class="question-text" placeholder="How many of the following SDG goals have you worked on?"
             v-model="questionClone.question" :class="{ 'red-border': questionClone.questionIsEmpty }"></textarea>
@@ -86,6 +88,11 @@ import { ref, computed, onBeforeMount, inject, watchEffect, watch } from 'vue'
 import { useToast } from 'vue-toast-notification'
 import UploadImageComponent from '@/components/UploadImageComponent.vue'
 
+/**
+ * This component is used to build a true/false question for the quiz builder.
+ * @author Marco de Boer
+ */
+
 export default {
   name: 'QuizBuilderTrueFalse',
   props: {
@@ -119,7 +126,7 @@ export default {
     if (props.question.id === null) {
       saveButtonText.value = 'Save'
     }
-
+    // #todo SDG should be loaded from the database
     onBeforeMount(async () => {
       for (let i = 1; i <= 17; i++) {
         sdgOptions.value.push(i)
@@ -157,7 +164,6 @@ export default {
     }
 
     async function callUploadImage () {
-      console.log(uploadImage.value)
       if (uploadImage.value !== null) {
         questionClone.value.imgPath = await uploadImage.value.uploadImage()
       }
@@ -365,4 +371,11 @@ export default {
   max-height: 25px;
   max-width: 25px;
   margin-right: 5px !important;
-}</style>
+}
+
+.uploadImageSpace {
+  justify-content: center;
+  max-width: 100%;
+  max-height: 400px;
+}
+</style>

@@ -38,6 +38,11 @@
                 </button>
             </div>
         </div>
+        <div>
+        <div class="uploadImageSpace">
+          <UploadImageComponent ref="uploadImage" @image-previewed="setQuestionImgPath" :imagePath="questionClone.imgPath"/>
+        </div>
+      </div>
         <div class="d-flex row">
         <div class="my-5">
             <label class="justify-content-start h5" :for="questionClone.question">Question:</label>
@@ -89,11 +94,21 @@
 import { ref, computed, onBeforeMount, inject, watchEffect, watch } from 'vue'
 import MultipleChoiceOption from '@/models/MultipleChoiceOption'
 import { useToast } from 'vue-toast-notification'
+import UploadImageComponent from '@/components/UploadImageComponent'
+
+/**
+ * This component is used to build a multiple choice question.
+ * It is used in the QuizBuilder component.
+ * @author Marco de Boer
+ */
 
 export default {
   name: 'QuizBuilderTrueFalse',
   props: {
     question: Object
+  },
+  components: {
+    UploadImageComponent
   },
   data () {
     return {
@@ -111,7 +126,6 @@ export default {
     const deleteQuestionIsPending = ref(false)
     const $toast = useToast()
 
-    // In the setup function of your child component
     watch(() => props.question, async (newQuestion) => {
       questionClone.value = await newQuestion.clone()
     }, { deep: true })
@@ -120,6 +134,7 @@ export default {
       questionClone.value = await props.question.clone()
     }
 
+    // #todo load in all SDG's from database
     onBeforeMount(async () => {
       for (let i = 1; i <= 17; i++) {
         sdgOptions.value.push(i)
@@ -127,6 +142,11 @@ export default {
       await cloneScooter()
     })
 
+    /**
+     * This function validates the options of the question.
+     * It will also set the optionIsEmpty and sdgIsEmpty properties of the options.
+     * @returns {boolean} Returns true if the options are valid, false if not.
+     */
     function validateOptions () {
       let valid = true
       questionClone.value.options.forEach(option => {
@@ -215,7 +235,21 @@ export default {
     })
 
     return {
-      questionClone, deleteQuestion, sdgOptions, hasChanged, pendingBusy, saveQuestionIsPending, deleteQuestionIsPending, saveQuestion, handleSDGChange, saveButtonText, addOptionToList, deleteOption, moveQuestionUp, moveQuestionDown, answerLimitIsValid
+      questionClone,
+      sdgOptions,
+      hasChanged,
+      pendingBusy,
+      saveButtonText,
+      answerLimitIsValid,
+      saveQuestionIsPending,
+      deleteQuestionIsPending,
+      saveQuestion,
+      deleteQuestion,
+      handleSDGChange,
+      addOptionToList,
+      deleteOption,
+      moveQuestionUp,
+      moveQuestionDown
     }
   }
 }

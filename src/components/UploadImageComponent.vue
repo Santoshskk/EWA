@@ -1,9 +1,9 @@
 <template>
     <div class="container col-md-6">
-        <img id="frame" :src="imgSource" class="img-fluid" />
+        <img id="frame" :src="imgSource" class="img-fluid my-2" />
         <div class="mb-5">
             <input class="form-control" type="file" id="formFile" @change="preview">
-            <button @click="clearImage" class="btn btn-primary mt-3">Click me</button>
+            <button @click="clearImage" class="btn btn-primary mt-3">Remove Image</button>
         </div>
     </div>
 </template>
@@ -26,7 +26,7 @@ const uploadImage = async () => {
   const formData = new FormData()
   formData.append('file', currentImage.value)
 
-  const { load, data } = useFetch(CONFIG.BACKEND_URL + '/upload', currentImage.value, 'POST')
+  const { load, data } = useFetch(CONFIG.BACKEND_URL + '/upload', formData, 'POST')
 
   // Call the load function with the FormData, set the method to POST
   await load()
@@ -54,4 +54,8 @@ defineExpose({
 
 </script>
 
-<style></style>
+<style>
+ .borderRed {
+   border: 1px solid red;
+ }
+</style>

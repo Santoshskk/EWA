@@ -152,6 +152,11 @@ export default {
       })
     })
 
+    /**
+     * Sets the index of the questions in the quiz
+     * after a question has been moved
+     * @author Marco de Boer
+     */
     function setIndexOrder () {
       for (let i = 0; i < quiz.value.quizQuestions.length; i++) {
         quiz.value.quizQuestions[i].index = i + 1
@@ -169,6 +174,11 @@ export default {
       return valid
     }
 
+    /**
+     * Moves the question in the loaded array of question
+     * @param {Number} index it is currently at
+     * @param {Number} newIndex you want it to go to
+     */
     const moveQuestion = (index, newIndex) => {
       if (newIndex < 0 || newIndex === quiz.value.quizQuestions.length) {
         return
@@ -193,10 +203,8 @@ export default {
     }
 
     const deleteQuestion = (index) => {
-      console.log(quiz.value.quizQuestions)
       quiz.value.quizQuestions.splice(index, 1)
       setIndexOrder()
-      console.log(quiz.value.quizQuestions)
     }
 
     const saveQuiz = async () => {
@@ -278,7 +286,25 @@ export default {
     })
 
     return {
-      questionTypes, addQuestion, selectedQuestionType, deleteQuestion, error, isPending, quiz, saveQuestion, moveQuestion, saveButtonText, hasChanged, pendingBusy, saveQuiz, saveQuizIsPending, selectedValue, backToOverview, deleteButtonHover, deleteQuiz, setSector
+      questionTypes,
+      addQuestion,
+      selectedQuestionType,
+      deleteQuestion,
+      error,
+      isPending,
+      quiz,
+      saveQuestion,
+      moveQuestion,
+      saveButtonText,
+      hasChanged,
+      pendingBusy,
+      saveQuiz,
+      saveQuizIsPending,
+      selectedValue,
+      backToOverview,
+      deleteButtonHover,
+      deleteQuiz,
+      setSector
     }
   },
   methods: {
@@ -291,6 +317,7 @@ export default {
   }
 }
 </script>
+
 <style>
 .quizBuilderLabel {
     font-size: 20px;

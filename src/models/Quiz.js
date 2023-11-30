@@ -88,12 +88,12 @@ export default class Quiz {
   async #instatiateQuiz (questionJSON) {
     try {
       if (questionJSON === undefined || questionJSON.length === 0) throw new Error('JSON is undefined or length is 0')
-
       for (const question of questionJSON) {
+        console.log(question)
         if (question.type === 'multiplechoice') {
-          this.quizQuestions.push(new MultipleChoiceQuestion(question.id, question.index, question.question, question.options, question.answerLimit))
+          this.quizQuestions.push(new MultipleChoiceQuestion(question.id, question.index, question.question, question.imgPath, question.options, question.answerLimit))
         } else if (question.type === 'yesno') {
-          this.quizQuestions.push(new QuizQuestionTrueFalse(question.id, question.index, question.question, question.sdg))
+          this.quizQuestions.push(new QuizQuestionTrueFalse(question.id, question.index, question.question, question.imgPath, question.sdg))
         } else throw new Error('Question type is not valid')
       }
     } catch (error) {
