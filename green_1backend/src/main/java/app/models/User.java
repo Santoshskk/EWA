@@ -78,9 +78,10 @@ public class User {
         this.postalcode = postalcode;
         this.usergoal = usergoal;
     }
-    public User(String username, String password){
+    public User(String username, String password, boolean isAdmin) {
         this.username = username;
         this.password = password;
+        this.isAdmin = isAdmin;
     }
     public void setUser_id(int user_id) {
         this.user_id = user_id;

@@ -18,7 +18,7 @@ public class UsersRepositoryMock implements UsersRepository {
         for (int i = 0; i < numberOfUsers ; i++) {
             users.add(User.createSampleUser());
         }
-        users.add(new User("User27", "3927"));
+        users.add(new User("User27", "3927", true));
 
     }
     @Override
