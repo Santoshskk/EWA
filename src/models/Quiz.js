@@ -1,6 +1,7 @@
 import QuizQuestionTrueFalse from '@/models/YesNoQuestion'
 import MultipleChoiceQuestion from '@/models/MultipleChoiceQuestion'
 import QuizResult from '@/models/QuizResult'
+import Sector from './Sector'
 
 /**
  * Quiz model class.
@@ -26,6 +27,7 @@ export default class Quiz {
   isConcept
   isPublished
   isLive
+  sector
 
   /**
    * For the constructor is only json needed the json needs to be in the following format:
@@ -45,6 +47,7 @@ export default class Quiz {
       this.isConcept = true
       this.isPublished = false
       this.totalQuestions = 0
+      this.sector = null
       return
     }
 
@@ -65,6 +68,7 @@ export default class Quiz {
     this.isConcept = questionJSON.isConcept
     this.isPublished = questionJSON.isPublished
     this.isLive = questionJSON.isLive
+    this.sector = questionJSON.sector ? new Sector(questionJSON.sector) : null
 
     if (!isInQuizBuilder) {
       if (questionJSON.quizQuestions !== null && questionJSON.quizQuestions.length !== 0) {
@@ -84,12 +88,11 @@ export default class Quiz {
   async #instatiateQuiz (questionJSON) {
     try {
       if (questionJSON === undefined || questionJSON.length === 0) throw new Error('JSON is undefined or length is 0')
-
       for (const question of questionJSON) {
         if (question.type === 'multiplechoice') {
-          this.quizQuestions.push(new MultipleChoiceQuestion(question.id, question.index, question.question, question.options, question.answerLimit))
+          this.quizQuestions.push(new MultipleChoiceQuestion(question.id, question.index, question.question, question.imgPath, question.options, question.answerLimit))
         } else if (question.type === 'yesno') {
-          this.quizQuestions.push(new QuizQuestionTrueFalse(question.id, question.index, question.question, question.sdg))
+          this.quizQuestions.push(new QuizQuestionTrueFalse(question.id, question.index, question.question, question.imgPath, question.sdg))
         } else throw new Error('Question type is not valid')
       }
     } catch (error) {
@@ -194,6 +197,9 @@ export default class Quiz {
     if (this.isConcept !== other.isConcept) return false
     if (this.isPublished !== other.isPublished) return false
     if (this.quizQuestionsArrayEquals(other.quizQuestions) === false) return false
+    if (other.sector !== null) {
+      if (other.sector.equals(this.sector) === false) return false
+    }
     return true
   }
 

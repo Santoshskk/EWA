@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container minvh100">
       <div v-if="error">
         <ErrorComponent :error="error"/>
         <button class="btn btn-primary col-1" @click="backToOverview" :class="{ 'disabled' : hasChanged || pendingBusy}">
@@ -28,6 +28,9 @@
                   <div class="flexRow text-start m-auto">
                     <label for="quizName" class="quizBuilderLabel text-start">Quiz Name:</label>
                     <input v-model="quiz.quizName" type="text" autocomplete="off" class="form-control quizNameInput" id="quizName">
+                  </div>
+                  <div>
+                    <SectorDropDownComponent :sector="quiz.sector" @sectorSelected="setSector"/>
                   </div>
                   <div class="justify-content-center m-auto">
                     <button type="button" :class="{ 'disabled' : !hasChanged || pendingBusy}" @click="saveQuiz()" class="btn btn-success m-1">
@@ -70,6 +73,7 @@
                   <QuizBuilderTrueFalse class="my-2" v-if="isTrueFalseQuesetion(value)" :question="value" @deleteQuestion="deleteQuestion" @saveQuestion="saveQuestion" @moveQuestion="moveQuestion"/>
                   <QuizBuilderMultipleChoice class="my-2" v-else-if="isMultipleChoiceQuestion(value)" :question="value" @deleteQuestion="deleteQuestion" @saveQuestion="saveQuestion" @moveQuestion="moveQuestion"/>
           </div>
+          <QuizQuestionBuilder :question="quiz.quizQuestions[0]" @deleteQuestion="deleteQuestion" @saveQuestion="saveQuestion" @moveQuestion="moveQuestion"/>
           <div class="d-flex justify-content-center flexRow">
               <div class="quizBuilderQuestionType">
                   <select class="form-select " aria-label="Select a type of question" v-model="selectedQuestionType" >
@@ -92,11 +96,13 @@ import { useRoute } from 'vue-router'
 import QuizBuilderTrueFalse from './QuizBuilderTrueFalse.vue'
 import YesNoQuestion from '@/models/YesNoQuestion'
 import QuizBuilderMultipleChoice from './QuizBuilderMultipleChoice.vue'
+import QuizQuestionBuilder from './QuizQuestionBuilder.vue'
 import MultipleChoiceQuestion from '@/models/MultipleChoiceQuestion'
 import ErrorComponent from '@/components/ErrorComponent'
 import LoadingComponent from '@/components/LoadingComponent'
 import router from '@/router'
 import { useToast } from 'vue-toast-notification'
+import SectorDropDownComponent from './SectorDropDownComponent.vue'
 
 export default {
   name: 'QuizBuilder',
@@ -104,7 +110,9 @@ export default {
     QuizBuilderTrueFalse,
     ErrorComponent,
     LoadingComponent,
-    QuizBuilderMultipleChoice
+    QuizBuilderMultipleChoice,
+    SectorDropDownComponent,
+    QuizQuestionBuilder
   },
   setup (props, { emit }) {
     const quizService = inject('quizService')
@@ -139,7 +147,6 @@ export default {
 
       load.value().then(async () => {
         if (error.value === null) {
-          console.log(quizOriginal.value)
           await cloneQuiz(quizOriginal.value)
         }
         if (error.value === 'Could not fetch the data for that resource') {
@@ -148,6 +155,11 @@ export default {
       })
     })
 
+    /**
+     * Sets the index of the questions in the quiz
+     * after a question has been moved
+     * @author Marco de Boer
+     */
     function setIndexOrder () {
       for (let i = 0; i < quiz.value.quizQuestions.length; i++) {
         quiz.value.quizQuestions[i].index = i + 1
@@ -165,6 +177,11 @@ export default {
       return valid
     }
 
+    /**
+     * Moves the question in the loaded array of question
+     * @param {Number} index it is currently at
+     * @param {Number} newIndex you want it to go to
+     */
     const moveQuestion = (index, newIndex) => {
       if (newIndex < 0 || newIndex === quiz.value.quizQuestions.length) {
         return
@@ -189,10 +206,8 @@ export default {
     }
 
     const deleteQuestion = (index) => {
-      console.log(quiz.value.quizQuestions)
       quiz.value.quizQuestions.splice(index, 1)
       setIndexOrder()
-      console.log(quiz.value.quizQuestions)
     }
 
     const saveQuiz = async () => {
@@ -227,6 +242,10 @@ export default {
 
     const backToOverview = () => {
       router.push({ path: '/admin_dashboard/quiz' })
+    }
+
+    const setSector = (sector) => {
+      quiz.value.sector = sector
     }
 
     const deleteQuiz = async () => {
@@ -270,7 +289,25 @@ export default {
     })
 
     return {
-      questionTypes, addQuestion, selectedQuestionType, deleteQuestion, error, isPending, quiz, saveQuestion, moveQuestion, saveButtonText, hasChanged, pendingBusy, saveQuiz, saveQuizIsPending, selectedValue, backToOverview, deleteButtonHover, deleteQuiz
+      questionTypes,
+      addQuestion,
+      selectedQuestionType,
+      deleteQuestion,
+      error,
+      isPending,
+      quiz,
+      saveQuestion,
+      moveQuestion,
+      saveButtonText,
+      hasChanged,
+      pendingBusy,
+      saveQuiz,
+      saveQuizIsPending,
+      selectedValue,
+      backToOverview,
+      deleteButtonHover,
+      deleteQuiz,
+      setSector
     }
   },
   methods: {
@@ -283,6 +320,7 @@ export default {
   }
 }
 </script>
+
 <style>
 .quizBuilderLabel {
     font-size: 20px;
