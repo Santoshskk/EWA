@@ -4,13 +4,15 @@ export class User {
   username
   isAdmin
   usergoal
+  password
 
-  constructor (userId, email, username, isAdmin, usergoal) {
+  constructor (userId, email, username, isAdmin, usergoal, password) {
     this.userId = userId
     this.email = email
     this.username = username
     this.isAdmin = isAdmin
     this.usergoal = usergoal
+    this.password = password
   }
 
   async clone () {
@@ -18,7 +20,8 @@ export class User {
       this.email,
       this.username,
       this.isAdmin,
-      this.usergoal)
+      this.usergoal,
+      this.password)
   }
 
   static copyConstructor (user) {
@@ -28,7 +31,8 @@ export class User {
       user.email,
       user.username,
       user.isAdmin,
-      user.usergoal
+      user.usergoal,
+      user.password
     )
     return clonedUser
   }
@@ -46,7 +50,8 @@ export class User {
     if (user1.userId !== user2.userId ||
       user1.email !== user2.email ||
       user1.username !== user2.username ||
-      user1.isAdmin !== user2.isAdmin) {
+      user1.isAdmin !== user2.isAdmin ||
+      user1.password !== user2.password) {
       return false
     }
     // All checks passed, objects are equal

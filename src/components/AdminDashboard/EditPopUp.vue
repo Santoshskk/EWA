@@ -109,16 +109,4 @@ export default {
   padding: 32px;
 }
 
-.AdminVerifyComponent {
-  background: #FFFFFF;
-  position: absolute;
-  top: 24em;
-  left: 46em;
-  width: 25em;
-  height: 12em;
-  z-index: 100; /* Ensure the AdminVerifyComponent appears above the popup */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 </style>

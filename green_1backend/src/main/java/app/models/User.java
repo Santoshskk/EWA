@@ -24,6 +24,7 @@ public class User {
     private static final String[] FIRST_NAMES = {"John", "Mary", "David", "Lisa", "Michael", "Sarah"};
     private static final String[] LAST_NAMES = {"Smith", "Johnson", "Brown", "Taylor", "Clark", "Wilson"};
     private static final String[] EMAIL_USER = {"Smith@gmail.com", "Johnson@hotmail.com", "Brownlee@live.com", "TaylorA@gmail.com", "Clark123@gmail.com", "Wilsonbaba@gmail.com"};
+    private static final String[] USER_PASSWORD = {"R#9sGp@2", "3Fb*Zx7Y", "Qa2$8pVr", "D6&hFt1s", "Px9!cL5w"};
     private static final String[] USER_NAMES = {"Johny123", "Mary123", "David123", "Lisa123", "Michael123", "Sarah123"};
     private static final String[] USER_GOALS = {"No Poverty",
             "Zero Hunger",
@@ -37,13 +38,14 @@ public class User {
             "Life Below Water", "Life on Land",
             "Peace, Justice, and Strong Institutions",
             "Partnerships for the Goals"};
-    public User(int user_id, String first_name, String last_name, String email, String username, String usergoal, boolean isAdmin) {
+    public User(int user_id, String first_name, String last_name, String email, String username, String usergoal, String password, boolean isAdmin) {
         this.user_id = user_id;
         this.first_name = first_name;
         this.last_name = last_name;
         this.email = email;
         this.username = username;
         this.usergoal = usergoal;
+        this.password = password;
         this.isAdmin = isAdmin;
     }
 
@@ -57,10 +59,9 @@ public class User {
                 EMAIL_USER[random.nextInt(EMAIL_USER.length)],
                 USER_NAMES[random.nextInt(USER_NAMES.length)],
                 USER_GOALS[random.nextInt(USER_GOALS.length)],
+                USER_PASSWORD[random.nextInt(USER_PASSWORD.length)],
                 false
                 );
-
-
     }
 
     public User(int user_id, int sector_id, String first_name, String last_name, String email, int security_clearance, String password, String username, String bio, String occupation, LocalDate date_of_birth, String postalcode, String usergoal) {
