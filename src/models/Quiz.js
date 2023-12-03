@@ -89,7 +89,6 @@ export default class Quiz {
     try {
       if (questionJSON === undefined || questionJSON.length === 0) throw new Error('JSON is undefined or length is 0')
       for (const question of questionJSON) {
-        console.log(question)
         if (question.type === 'multiplechoice') {
           this.quizQuestions.push(new MultipleChoiceQuestion(question.id, question.index, question.question, question.imgPath, question.options, question.answerLimit))
         } else if (question.type === 'yesno') {

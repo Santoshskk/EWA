@@ -73,7 +73,7 @@
                   <QuizBuilderTrueFalse class="my-2" v-if="isTrueFalseQuesetion(value)" :question="value" @deleteQuestion="deleteQuestion" @saveQuestion="saveQuestion" @moveQuestion="moveQuestion"/>
                   <QuizBuilderMultipleChoice class="my-2" v-else-if="isMultipleChoiceQuestion(value)" :question="value" @deleteQuestion="deleteQuestion" @saveQuestion="saveQuestion" @moveQuestion="moveQuestion"/>
           </div>
-          <QuizQuestionBuilder />
+          <QuizQuestionBuilder :question="quiz.quizQuestions[0]" @deleteQuestion="deleteQuestion" @saveQuestion="saveQuestion" @moveQuestion="moveQuestion"/>
           <div class="d-flex justify-content-center flexRow">
               <div class="quizBuilderQuestionType">
                   <select class="form-select " aria-label="Select a type of question" v-model="selectedQuestionType" >
