@@ -1,24 +1,23 @@
 package app.rest;
 
 import app.models.User;
+import app.repositories.UsersRepositoryJPA;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import app.repositories.UsersRepository;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
 
     @Autowired
-    UsersRepository<User> usersRepository;
+    UsersRepositoryJPA usersRepository;
 
     @GetMapping(path = "/all", produces = "application/json")
     public List<User> getAllUsers(){
@@ -31,7 +30,7 @@ public class UserController {
         String passWord = userData.get("passWord");
 
         try {
-            User user = this.usersRepository.findByUserName(userName);
+            User user = this.usersRepository.findByUsername(userName);
 
             if (Objects.equals(passWord, user.getPassword())) {
                 return ResponseEntity.ok("Login successful!");
@@ -49,12 +48,13 @@ public class UserController {
 
     /**
      * this api is for getting the given ids for users
+     *
      * @param id the id given in the url
      * @return
      */
     @GetMapping("/{id}")
-    public ResponseEntity<User> getOfferById(@PathVariable long id) {
-        User user = usersRepository.findById(id);
+    public ResponseEntity<Optional<User>> getOfferById(@PathVariable long id) {
+        Optional<User> user = usersRepository.findById(id);
         if (user != null) {
             return ResponseEntity.ok(user);
         } else {
@@ -70,9 +70,10 @@ public class UserController {
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<User> deleteOffer(@PathVariable long id) {
-        User offer = usersRepository.deleteById(id);
-        if (offer != null) {
-            return ResponseEntity.ok(offer);
+        User user = usersRepository.findById(id).orElse(null);
+        if (user != null) {
+            usersRepository.delete(user);
+            return ResponseEntity.ok(user);
         } else {
             throw new ResourceNotFoundException("User not found with ID: " + id);
         }
@@ -92,7 +93,7 @@ public class UserController {
             throw new PreConditionFailedException("ID in the path does not match ID in the request body");
         }
         if (usersRepository.findById(id) != null) {
-            user.setUser_id((int) id);
+            user.setUser_id((long) id);
             user = usersRepository.save(user);
             return ResponseEntity.ok(user);
         } else {

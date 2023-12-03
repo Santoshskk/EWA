@@ -1,11 +1,18 @@
 package app.models;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
 import java.time.LocalDate;
 import java.util.Random;
 
+@Entity
 public class User {
-
-    private int user_id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long user_id = 0L;
     private int sector_id;
     private String first_name;
     private String last_name;
@@ -34,11 +41,12 @@ public class User {
             "Affordable and Clean Energy", "Decent Work and Economic Growth",
             "Industry, Innovation, and Infrastructure",
             "Reduced Inequality", "Sustainable Cities and Communities",
-            "Responsible Consumption and Production","Climate Action",
+            "Responsible Consumption and Production", "Climate Action",
             "Life Below Water", "Life on Land",
             "Peace, Justice, and Strong Institutions",
             "Partnerships for the Goals"};
-    public User(int user_id, String first_name, String last_name, String email, String username, String usergoal, String password, boolean isAdmin) {
+
+    public User(long user_id, String first_name, String last_name, String email, String username, String usergoal, String password, boolean isAdmin) {
         this.user_id = user_id;
         this.first_name = first_name;
         this.last_name = last_name;
@@ -49,11 +57,12 @@ public class User {
         this.isAdmin = isAdmin;
     }
 
-
+    public User() {
+    }
 
     public static User createSampleUser() {
         Random random = new Random();
-        return new User(random.nextInt(1000),
+        return new User(random.nextLong(1000),
                 FIRST_NAMES[random.nextInt(FIRST_NAMES.length)],
                 LAST_NAMES[random.nextInt(LAST_NAMES.length)],
                 EMAIL_USER[random.nextInt(EMAIL_USER.length)],
@@ -61,10 +70,10 @@ public class User {
                 USER_GOALS[random.nextInt(USER_GOALS.length)],
                 USER_PASSWORD[random.nextInt(USER_PASSWORD.length)],
                 false
-                );
+        );
     }
 
-    public User(int user_id, int sector_id, String first_name, String last_name, String email, int security_clearance, String password, String username, String bio, String occupation, LocalDate date_of_birth, String postalcode, String usergoal) {
+    public User(long user_id, int sector_id, String first_name, String last_name, String email, int security_clearance, String password, String username, String bio, String occupation, LocalDate date_of_birth, String postalcode, String usergoal) {
         this.user_id = user_id;
         this.sector_id = sector_id;
         this.first_name = first_name;
@@ -79,12 +88,14 @@ public class User {
         this.postalcode = postalcode;
         this.usergoal = usergoal;
     }
+
     public User(String username, String password, boolean isAdmin) {
         this.username = username;
         this.password = password;
         this.isAdmin = isAdmin;
     }
-    public void setUser_id(int user_id) {
+
+    public void setUser_id(long user_id) {
         this.user_id = user_id;
     }
 
@@ -117,8 +128,7 @@ public class User {
     }
 
 
-
-    public int getUser_id() {
+    public long getUser_id() {
         return user_id;
     }
 
