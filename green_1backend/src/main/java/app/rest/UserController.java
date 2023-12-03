@@ -24,7 +24,7 @@ public class UserController {
         return usersRepository.findAll();
     }
 
-    @PostMapping(path = "login", produces = "application/json")
+    @PostMapping(path = "/login", produces = "application/json")
     public ResponseEntity<String> login(@RequestBody Map<String, String> userData) {
         String userName = userData.get("userName");
         String passWord = userData.get("passWord");
@@ -93,9 +93,16 @@ public class UserController {
             throw new PreConditionFailedException("ID in the path does not match ID in the request body");
         }
         if (usersRepository.findById(id) != null) {
-            user.setUser_id((long) id);
-            user = usersRepository.save(user);
-            return ResponseEntity.ok(user);
+            User existingUser = usersRepository.findById(id).orElse(null);
+            if (existingUser == null) {
+                throw new ResourceNotFoundException("Cannot find a user with id=" + id);
+            } else {
+                existingUser.setUsername(user.getUsername());
+                existingUser.setEmail(user.getEmail());
+                existingUser.setIsAdmin(user.getIsAdmin());
+                user = usersRepository.save(existingUser);
+                return ResponseEntity.ok(user);
+            }
         } else {
             throw new ResourceNotFoundException("Offer not found with ID: " + id);
         }

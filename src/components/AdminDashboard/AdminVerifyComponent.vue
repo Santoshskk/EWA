@@ -54,6 +54,9 @@ export default {
         if (foundUser && foundUser.isAdmin === true) {
           this.isAdmin = true
           this.$emit('verifiedClose')
+        } else {
+          this.isAdmin = false
+          alert('You are not an admin')
         }
       } catch (error) {
         console.log(error)

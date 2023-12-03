@@ -25,7 +25,7 @@
       <tr v-for="user in users && filteredSearch " :key="user.user_id">
         <td>{{ user.username }}</td>
         <td>{{ user.email }}</td>
-        <td>{{ user.usergoal }}</td>
+        <td>{{ user.user_goal }}</td>
         <td>
           <button id="editButton" @click="() => ToggelPopUp('isEditing', user)">Edit</button>
         </td>
@@ -80,7 +80,7 @@ export default {
         return (
           (user.username && user.username.toLowerCase().indexOf(this.searchUser.toLowerCase()) > -1) ||
           (user.email && user.email.toLowerCase().indexOf(this.searchUser.toLowerCase()) > -1) ||
-          (user.usergoal && user.usergoal.toLowerCase().indexOf(this.searchUser.toLowerCase()) > -1)
+          (user.user_goal && user.user_goal.toLowerCase().indexOf(this.searchUser.toLowerCase()) > -1)
         )
       })
     }
@@ -96,7 +96,7 @@ export default {
       try {
         console.log(updatedUser)
         console.log(this.users)
-        const index = this.users.findIndex(o => o.userId === updatedUser.userId)
+        const index = this.users.findIndex(o => o.user_id === updatedUser.user_id)
         console.log(updatedUser)
         if (index !== -1) {
           this.users.splice(index, 1, updatedUser)

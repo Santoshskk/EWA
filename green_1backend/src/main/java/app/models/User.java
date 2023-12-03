@@ -24,9 +24,9 @@ public class User {
     private String occupation;
     private LocalDate date_of_birth;
     private String postalcode;
-    private String usergoal;
+    private String user_goal;
 
-    private boolean isAdmin;
+    private boolean isAdmin = false;
 
     private static final String[] FIRST_NAMES = {"John", "Mary", "David", "Lisa", "Michael", "Sarah"};
     private static final String[] LAST_NAMES = {"Smith", "Johnson", "Brown", "Taylor", "Clark", "Wilson"};
@@ -46,13 +46,13 @@ public class User {
             "Peace, Justice, and Strong Institutions",
             "Partnerships for the Goals"};
 
-    public User(long user_id, String first_name, String last_name, String email, String username, String usergoal, String password, boolean isAdmin) {
+    public User(long user_id, String first_name, String last_name, String email, String username, String user_goal, String password, boolean isAdmin) {
         this.user_id = user_id;
         this.first_name = first_name;
         this.last_name = last_name;
         this.email = email;
         this.username = username;
-        this.usergoal = usergoal;
+        this.user_goal = user_goal;
         this.password = password;
         this.isAdmin = isAdmin;
     }
@@ -73,7 +73,7 @@ public class User {
         );
     }
 
-    public User(long user_id, int sector_id, String first_name, String last_name, String email, int security_clearance, String password, String username, String bio, String occupation, LocalDate date_of_birth, String postalcode, String usergoal) {
+    public User(long user_id, int sector_id, String first_name, String last_name, String email, int security_clearance, String password, String username, String bio, String occupation, LocalDate date_of_birth, String postalcode, String user_goal, boolean isAdmin) {
         this.user_id = user_id;
         this.sector_id = sector_id;
         this.first_name = first_name;
@@ -86,7 +86,8 @@ public class User {
         this.occupation = occupation;
         this.date_of_birth = date_of_birth;
         this.postalcode = postalcode;
-        this.usergoal = usergoal;
+        this.user_goal = user_goal;
+        this.isAdmin = isAdmin;
     }
 
     public User(String username, String password, boolean isAdmin) {
@@ -192,12 +193,12 @@ public class User {
         return postalcode;
     }
 
-    public String getUsergoal() {
-        return usergoal;
+    public String getUser_goal() {
+        return user_goal;
     }
 
-    public void setUsergoal(String usergoal) {
-        this.usergoal = usergoal;
+    public void setUser_goal(String usergoal) {
+        this.user_goal = usergoal;
     }
 
     public boolean getIsAdmin() {

@@ -40,12 +40,13 @@ export class UsersAdaptor {
     let method
 
     try {
+      console.log('user.id', user.user_id)
       if (user.userId === 0) {
         url = `${this.resourcesUrl}/users`
         method = 'POST'
       } else {
         console.log('user.id', user)
-        url = `${this.resourcesUrl}/users/${parseInt(user.userId)}`
+        url = `${this.resourcesUrl}/users/${parseInt(user.user_id)}`
         method = 'PUT'
       }
 
