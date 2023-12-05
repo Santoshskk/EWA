@@ -39,25 +39,21 @@ export default {
     return {
       isAdmin: false,
       userName: sessionStorage.getItem('userName'),
-      isLoggedIn: this.userName !== null && this.userName !== '' && this.userName !== undefined,
-      users: []
+      isLoggedIn: this.userName !== null && this.userName !== '' && this.userName !== undefined
     }
   },
   async created () {
-    this.users = await this.usersServices.asyncFindAll()
-    this.users = this.users.filter(user => user.isAdmin === true)
-    console.log(this.users)
+    let users = []
+    users = await this.usersServices.asyncFindAll()
+    console.log(users)
     /**
      * EventBus is used for listening to emits from LogInView
      * @author Jiaming Yan
      */
     eventBus.on('change-data', (data) => {
       this.userName = sessionStorage.getItem('userName')
-      if (this.users.find(user => user.isAdmin === true && user.username === this.userName)) {
-        this.isAdmin = true
-      } else {
-        this.isAdmin = false
-      }
+      const currentUser = users.find(user => user.username === this.userName)
+      this.isAdmin = currentUser.isAdmin
       this.isLoggedIn = true
     })
   },
