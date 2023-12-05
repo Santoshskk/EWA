@@ -45,7 +45,6 @@ export default {
   async created () {
     let users = []
     users = await this.usersServices.asyncFindAll()
-    console.log(users)
     /**
      * EventBus is used for listening to emits from LogInView
      * @author Jiaming Yan

@@ -62,9 +62,7 @@ export default {
 
     const ToggelPopUp = (trigger, user) => {
       popUpTrigger.value[trigger] = !popUpTrigger.value[trigger]
-      console.log(user)
       selectedUser.value = user
-      console.log(selectedUser.value)
     }
     return {
       EditPopUp,
@@ -94,27 +92,15 @@ export default {
     },
     async updateUser (updatedUser) {
       try {
-        console.log(updatedUser)
-        console.log(this.users)
         const index = this.users.findIndex(o => o.user_id === updatedUser.user_id)
-        console.log(updatedUser)
         if (index !== -1) {
           this.users.splice(index, 1, updatedUser)
         }
-        const user = await this.usersServices.asyncSave(updatedUser)
-        console.log(user)
+        await this.usersServices.asyncSave(updatedUser)
       } catch (error) {
         console.log(error)
       }
     }
-    // updateOffer (updatedUser) {
-    //   console.log(updatedUser)
-    //   console.log(updatedUser)
-    //   const index = this.users.findIndex(o => o.id === updatedUser.id)
-    //   if (index !== -1) {
-    //     this.users.splice(index, 1, updatedUser)
-    //   }
-    // }
   }
 }
 
