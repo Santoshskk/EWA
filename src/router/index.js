@@ -5,6 +5,7 @@ import QuizResultsView from '@/views/quizResultsView'
 import SdgInfoPage from '@/components/LandingPage/SdgInfoPage.vue'
 import QuizBuilder from '@/components/adminquiz/QuizBuilder.vue'
 import QuizOverview from '@/components/adminquiz/QuizOverview.vue'
+import ImageEditor from '@/components/AdminDashboard/AdminImageEdit/ImageEditor'
 
 const routes = [
   {
@@ -109,6 +110,31 @@ const routes = [
             name: 'QuizBuilder',
             component: QuizBuilder,
             props: true
+          }
+        ]
+      },
+      {
+        path: '/admin_dashboard/image',
+        name: 'ImageOverview',
+        component: ImageEditor,
+        children: [
+          {
+            path: ':id',
+            name: 'ImageChangerComponent',
+            component: () => import('@/components/AdminDashboard/AdminImageEdit/ImageChangerComponent'),
+            props: true
+          },
+          {
+            path: 'preview',
+            name: 'PagePreview',
+            component: () => import('@/components/AdminDashboard/AdminImageEdit/PagePreview'),
+            props: true,
+            children: [{
+              path: 'landing_page_preview',
+              name: 'LandingPagePreview',
+              component: () => import('@/components/AdminDashboard/AdminImageEdit/LandingPagePreview'),
+              props: true
+            }]
           }
         ]
       },
