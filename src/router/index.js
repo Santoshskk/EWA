@@ -140,7 +140,14 @@ const routes = [
       },
 
       { path: 'intro', component: () => import('@/components/AdminDashboard/AdminIntroComponent') },
-      { path: 'users', component: () => import('@/components/AdminDashboard/AdminUserComponent') }
+      { path: 'users', component: () => import('@/components/AdminDashboard/AdminUserComponent') },
+      {
+        path: 'action_plans',
+        component: () => import('@/components/AdminDashboard/ActionPlanEditorComponent/ActionPlanEditorMain'),
+        children: [
+          { path: ':sector/:id?', component: () => import('@/components/AdminDashboard/ActionPlanEditorComponent/SectorAllPlansComponent') }
+        ]
+      }
     ],
     component: () => import(/* webpackChunkName: "about" */ '../views/AdminDashboardView')
   },
