@@ -1,37 +1,39 @@
 <template>
-    <div class="actionPlan shadow">
-        <div class="actionPlanTop">
-          <div class="col-9 m-auto">
-            <h1 class="h5 paddingLeft10 m-0">{{ props.title }}</h1>
-          </div>
-          <div class="col justify-content-end m-auto d-flex px-2 overflow-auto">
-            <div class="overflow-scroll">
-              <img v-for="(value, key) in imgSrcs" :key="key" class="actionPlanSdgImg" alt="..." :src="value">
-            </div>
-          </div>
+  <div class="actionPlan shadow">
+    <div class="actionPlanTop">
+      <div class="col-9 m-auto">
+        <h1 class="h5 paddingLeft10 m-0">{{ props.title }}</h1>
+      </div>
+      <div class="col justify-content-end m-auto d-flex px-2 overflow-auto">
+        <div class="overflow-scroll">
+          <img v-for="(value, key) in imgSrcs" :key="key" class="actionPlanSdgImg" alt="..." :src="value">
         </div>
-        <div :id="'actionplan' + props.id" class="actionPlanMiddle">
-            <p class="textLeft" v-html="props.description"></p>
-        </div>
-        <div class="actionPlanFooter">
-          <div class="col-4"></div>
-          <div class="col-4">
-            <button @click="expandActionPlan" class="dropDownButton">
-            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="white" class="bi bi-chevron-down" :class="{'flip': expanded}" viewBox="0 0 16 16">
-              <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
-            </svg>
-          </button>
-          </div>
-          <div class="col-4 actionPlanBtn justify-content-end m-auto d-flex">
-            <button v-if="!isFromProfile" class="btn btn-primary d-inline" @click="addPlan" :disabled="disableButton">
-                {{ addPlanButtonText }}
-            </button>
-            <button v-else class="btn btn-primary d-inline" @click="completePlan" :disabled="disableButton">
-                {{ completedPlanButtonText }}
-            </button>
-          </div>
-        </div>
+      </div>
     </div>
+    <div :id="'actionplan' + props.id" class="actionPlanMiddle">
+      <p class="textLeft" v-html="props.description"></p>
+    </div>
+    <div class="actionPlanFooter">
+      <div class="col-4"></div>
+      <div class="col-4">
+        <button @click="expandActionPlan" class="dropDownButton">
+          <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="white" class="bi bi-chevron-down"
+               :class="{'flip': expanded}" viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+                  d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+          </svg>
+        </button>
+      </div>
+      <div class="col-4 actionPlanBtn justify-content-end m-auto d-flex">
+          <button v-if="!isFromProfile" class="btn btn-primary d-inline" @click="addPlan" :disabled="disableButton">
+            {{ addPlanButtonText }}
+          </button>
+          <button v-else class="btn btn-primary d-inline" @click="completePlan" :disabled="disableButton">
+            {{ completedPlanButtonText }}
+          </button>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup>
@@ -98,7 +100,10 @@ const expandActionPlan = () => {
 
 const addPlan = () => {
   if (user !== null) {
-    const body = { actionPlanId: props.id, userId: user.user_id }
+    const body = {
+      actionPlanId: props.id,
+      userId: user.user_id
+    }
     const result = useFetch(`${CONFIG.BACKEND_URL}/actionplans/add`, body, 'POST')
     addPlanIsPending.value = true
     addPlanButtonText.value = 'Adding...'
@@ -169,41 +174,41 @@ const completePlan = () => {
 }
 
 .actionPlanTop {
-    background-color: #beabf9;
-    color: #FFFFFF;
-    max-height: fit-content;
-    overflow: unset;
-    text-overflow: ellipsis;
-    width: 100%;
-    border-radius: 10px 10px 0px 0px;
-    display: flex;
-    text-align: center;
-    justify-content: center;
+  background-color: #beabf9;
+  color: #FFFFFF;
+  max-height: fit-content;
+  overflow: unset;
+  text-overflow: ellipsis;
+  width: 100%;
+  border-radius: 10px 10px 0px 0px;
+  display: flex;
+  text-align: center;
+  justify-content: center;
 }
 
 .actionPlanMiddle {
-    background-color: #FFFFFF;
-    min-height: 60px;
-    max-height: 150px;
-    width: 100%;
-    border-radius: 0px 0px 0px 0px;
-    display: flex;
-    padding: 5px;
-    overflow: hidden;
-    text-align: start;
+  background-color: #FFFFFF;
+  min-height: 60px;
+  max-height: 150px;
+  width: 100%;
+  border-radius: 0px 0px 0px 0px;
+  display: flex;
+  padding: 5px;
+  overflow: hidden;
+  text-align: start;
 }
 
 .actionPlanFooter {
-    /* position: absolute;
-    bottom: 0; */
-    background-color: #beabf9;
-    max-height: 45px;
-    width: 100%;
-    border-radius: 0px 0px 10px 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 5px !important ;
+  /* position: absolute;
+  bottom: 0; */
+  background-color: #beabf9;
+  max-height: 45px;
+  width: 100%;
+  border-radius: 0px 0px 10px 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px !important;
 }
 
 .dropDownButton:hover {
