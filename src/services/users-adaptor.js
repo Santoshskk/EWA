@@ -14,8 +14,12 @@ export class UsersAdaptor {
       if (response.ok) {
         return await response.json()
       } else {
-        console.log(response, !response.bodyUsed ? await response.text() : '')
-        return null
+        const responseText = await response.text()
+        console.log(response, !response.bodyUsed ? responseText : '')
+        return {
+          response: response,
+          responseText: responseText
+        }
       }
     } catch (error) {
       console.error('Error during fetch:', error)
@@ -52,8 +56,8 @@ export class UsersAdaptor {
     let method
 
     try {
-      if (user.user_id === 0) {
-        url = `${this.resourcesUrl}/users`
+      if (user.user_id === undefined || user.user_id === 0) {
+        url = `${this.resourcesUrl}/authentication/signup`
         method = 'POST'
       } else {
         url = `${this.resourcesUrl}/users/${parseInt(user.user_id)}`
@@ -61,14 +65,14 @@ export class UsersAdaptor {
       }
 
       const options = {
-        method,
+        method: method,
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(user)
       }
 
-      return User.copyConstructor(this.fetchJson(url, options))
+      return this.fetchJson(url, options)
     } catch (error) {
       console.error('Error during fetch:', error)
       return null
