@@ -30,10 +30,11 @@ public class User {
     private String postalcode;
     private String user_goal;
 
-    private String img_path;
-
     @OneToMany
     private List<ActionPlan> actionplans;
+
+    private String img_path;
+
     @JsonView({ViewClasses.Summary.class})
     private boolean isAdmin = false;
 
