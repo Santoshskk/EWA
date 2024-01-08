@@ -61,7 +61,6 @@ public class UserController {
 //            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("This user does not exist!");
 //        }
 //    }
-
     /**
      * this api is for getting the given ids for users
      *
