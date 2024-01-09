@@ -75,10 +75,6 @@ export default {
   data () {
     return {
       resultsSaved: false,
-      resultId: '',
-      sdgArray: '',
-      user: '',
-      dateOfQuiz: null,
       // This ensures that I can retrieve the userId via the sessionStorge
       account: sessionStorage.getItem('ACCOUNT'),
       data: {
