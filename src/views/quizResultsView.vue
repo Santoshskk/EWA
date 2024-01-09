@@ -1,24 +1,6 @@
 <template>
-  <div>
-    <h2 class="mx-0">These are your top sdgs!</h2>
-    <!-- The button is displayed if the user is logged in and if the results are not saved -->
-    <button v-if="isAuthenticated && !resultsSaved" @click="saveResults" class="btn btn-primary">Save Results</button>
-    <!-- The text "Saved" is displayed if the results are saved -->
-    <p class="saved-message" v-if="resultsSaved">Saved</p>
-  </div>
-  <section class="container">
-    <div class="row">
-      <div style="width: 400px">
-        <Doughnut :data="this.data" :options="this.options"/>
-      </div>
-      <!-- Loop om alle sdg-results toe te voegen -->
-      <div v-for="(sdg, index) in sdgData.slice(0, 7)" :key="index" class="col p-0">
-        <sdg-card-component :sdg-data="sdg"/>
-      </div>
-    </div>
-  </section>
   <div class="minvh100 container">
-    <h1 class="d-flex justify-content-start text-dark my-5 headerText2 row">The results are in! These are your top SDG's!<div class="purpleLine"></div></h1>
+    <h1 class="d-flex justify-content-start text-dark my-4 headerText2 row">The results are in! These are your top SDG's!<div class="purpleLine"></div></h1>
     <section class="">
       <div class="d-flex flex-column flex-sm-row  justify-content-center gap-5 topsection">
         <div class="col-sm-5 col dougnet" >
@@ -33,7 +15,8 @@
       </div>
     </section>
     <div class="my-5">
-      <h1 class="d-flex justify-content-end my-5 mx-auto headerText2 row">Now choose an actionplan! <div class="purpleLine"></div></h1>
+      <button v-if="isAuthenticated && !resultsSaved" @click="saveResults" class="btn btn-primary">Save Results</button>
+      <h1 class="d-flex justify-content-end my-4 mx-auto headerText2 row">Now choose an actionplan! <div class="purpleLine"></div></h1>
       <div v-if="actionPlansAreLoading">
         <LoadingComponentVue  />
       </div>
@@ -55,7 +38,7 @@
 </template>
 
 <script>
-import SdgCardComponent from '@/components/quizResultsComponents/sdgCardComponent'
+import SdgCardComponent from '@/components/quizResultsComponents/sdgCardComponentBars'
 import { ArcElement, Chart as ChartJS, Legend, Tooltip } from 'chart.js'
 import { Doughnut } from 'vue-chartjs'
 import { options } from '@/assets/testData/chartOptions'
