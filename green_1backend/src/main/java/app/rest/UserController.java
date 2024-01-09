@@ -36,7 +36,7 @@ public class UserController {
      * @return
      */
     @GetMapping("/{id}")
-    public ResponseEntity<User> getOfferById(@PathVariable long id) {
+    public ResponseEntity<User> getUserById(@PathVariable long id) {
         Optional<User> user = usersRepository.findById(id);
         if (user.isPresent()) {
             User foundUser = user.get();
@@ -80,7 +80,7 @@ public class UserController {
      * @throws ResourceNotFoundException if the user with the specified ID is not found.
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<User> deleteOffer(@PathVariable long id) {
+    public ResponseEntity<User> deleteUser(@PathVariable long id) {
         User user = usersRepository.findById(id).orElse(null);
         if (user != null) {
             usersRepository.delete(user);
@@ -100,7 +100,7 @@ public class UserController {
      * @throws ResourceNotFoundException   if the offer with the specified ID is not found.
      */
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateOffer(@PathVariable long id, @RequestBody User user) {
+    public ResponseEntity<User> updateUser(@PathVariable long id, @RequestBody User user) {
         if (id != user.getUser_id()) {
             throw new PreConditionFailedException("ID in the path does not match ID in the request body");
         }
@@ -116,7 +116,7 @@ public class UserController {
                 return ResponseEntity.ok(user);
             }
         } else {
-            throw new ResourceNotFoundException("Offer not found with ID: " + id);
+            throw new ResourceNotFoundException("User not found with ID: " + id);
         }
     }
 
