@@ -1,24 +1,31 @@
 <template>
-<div class="container row-cols-1 row-cols-2-md" style="text-align: left">
-  <div class="row">
-    <div class="col-sm-6">
-      <div class="row"><h1>{{ this.sdgContent.info.title }}</h1></div>
-      <div class="row"><h2>Problem:</h2></div>
-      <div class="row">{{ this.sdgContent.info.problem }}</div>
+  <div class="container-fluid d-flex flex-row justify-content-around m-2 mx-auto" style="width: 80%">
+    <div class="card" style="width: 25vw; border: 2px solid black;">
+      <img :src="this.sdgContent.goal.image" class="card-img-top" alt="sdg-img">
+      <div class="card-body">
+        <h5 class="card-title">{{ this.sdgContent.info.title }}</h5>
+        <p class="card-text text-start">{{ this.sdgContent.info.problem }}</p>
       </div>
-    <div class="col-6"><img class="img-fluid sizing" :src="this.sdgContent.goal.image" alt="foto"></div>
+    </div>
+    <div class="card" style="width: 25vw; border: 2px solid black;">
+      <img src="@/assets/img/logos/target.png" class="card-img-top" alt="sdg-img">
+      <div class="card-body">
+        <h5 class="card-title">Target</h5>
+        <ol>
+          <li class="sdg-targets" v-for="target in this.sdgContent.info.targets" :key="target">{{ target }}</li>
+        </ol>
+      </div>
+    </div>
+    <div class="card" style="width: 25vw; border: 2px solid black;">
+      <img src="@/assets/img/logos/sdg_goal.jpg" class="card-img-top" alt="sdg-img">
+      <div class="card-body">
+        <h5 class="card-title">Goal</h5>
+        <ul>
+          <li class="sdg-user-goals" v-for="pGoal in this.sdgContent.info.potentialGoals" :key="pGoal">{{ pGoal }}</li>
+        </ul>
+      </div>
+    </div>
   </div>
-  <div class="row"><h2>Targets</h2>
-      <ol>
-        <li class="sdg-targets" v-for="target in this.sdgContent.info.targets" :key="target">{{target}}</li>
-      </ol>
-  </div>
-  <div class="row"><h2>Goals</h2>
-      <ul>
-        <li class="sdg-user-goals" v-for="pGoal in this.sdgContent.info.potentialGoals" :key="pGoal">{{pGoal}}</li>
-      </ul>
-  </div>
-</div>
 </template>
 
 <script>
