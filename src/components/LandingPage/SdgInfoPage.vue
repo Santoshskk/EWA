@@ -10,19 +10,37 @@
     <div class="card" style="width: 25vw; border: 2px solid black;">
       <img src="@/assets/img/logos/target.png" class="card-img-top" alt="sdg-img">
       <div class="card-body">
-        <h5 class="card-title">Target</h5>
-        <ol>
-          <li class="sdg-targets" v-for="target in this.sdgContent.info.targets" :key="target">{{ target }}</li>
-        </ol>
+        <h5 class="card-title">Targets</h5>
+        <table class="table">
+          <thead>
+          <th scope="col">#</th>
+          <th scope="col">Target</th>
+          </thead>
+          <tbody>
+          <tr class="sdg-targets" v-for="target in this.sdgContent.info.targets" :key="target">
+            <th scope="row">{{ this.sdgContent.info.targets.indexOf(target)+1 }}</th>
+            <td>{{ target }}</td>
+          </tr>
+          </tbody>
+        </table>
       </div>
     </div>
     <div class="card" style="width: 25vw; border: 2px solid black;">
       <img src="@/assets/img/logos/sdg_goal.jpg" class="card-img-top" alt="sdg-img">
       <div class="card-body">
-        <h5 class="card-title">Goal</h5>
-        <ul>
-          <li class="sdg-user-goals" v-for="pGoal in this.sdgContent.info.potentialGoals" :key="pGoal">{{ pGoal }}</li>
-        </ul>
+        <h5 class="card-title">Goals</h5>
+        <table class="table">
+          <thead>
+          <th scope="col">#</th>
+          <th scope="col">Goal</th>
+          </thead>
+          <tbody>
+          <tr class="sdg-user-goals" v-for="pGoal in this.sdgContent.info.potentialGoals" :key="pGoal">
+            <th scope="row">{{ this.sdgContent.info.potentialGoals.indexOf(pGoal)+1 }}</th>
+            <td>{{ pGoal }}</td>
+          </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
@@ -69,6 +87,7 @@ export default {
    * Once created, load data
    */
   created () {
+    console.log(this.sdgContent.info.targets)
     this.loadData(this.$route.params.id)
   }
 }
