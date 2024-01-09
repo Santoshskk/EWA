@@ -38,6 +38,7 @@ const routes = [
   },
   {
     path: '/:pathMatch(.*)',
+    name: 'unknown',
     component: () => import('../components/UnknownRoute')
   },
   {

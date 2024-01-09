@@ -1,5 +1,6 @@
 <template>
   <div class="container-fluid d-flex flex-row justify-content-around m-2 mx-auto" style="width: 80%">
+    <button type="button" class="btn btn-primary btn-lg" @click="this.toPreviousSDG">Previous SDG</button>
     <div class="card" style="width: 25vw; border: 2px solid black;">
       <img :src="this.sdgContent.goal.image" class="card-img-top" alt="sdg-img">
       <div class="card-body">
@@ -43,6 +44,7 @@
         </table>
       </div>
     </div>
+    <button type="button" class="btn btn-primary btn-lg" @click="this.toNextSDG">Next SDG</button>
   </div>
 </template>
 
@@ -68,10 +70,37 @@ export default {
      */
     '$route' (route) {
       const goalId = route.params.id
+      // If the id of the sdg is greater than 17 and less than 1, it should show the user that it does not exist
+      const intId = parseInt(goalId)
+      if (intId < 1 || intId > 17) {
+        this.$router.push('/unknown')
+      }
       this.loadData(goalId)
     }
   },
   methods: {
+    /**
+     * Use this method to switch to the previous SDG info page
+     */
+    toPreviousSDG () {
+      const id = parseInt(this.$route.params.id)
+      if (id === 1) {
+        this.$router.push('/sdg/17')
+      } else {
+        this.$router.push('/sdg/' + (id - 1))
+      }
+    },
+    /**
+     * Use this method to switch to the next SDG info page
+     */
+    toNextSDG () {
+      const id = parseInt(this.$route.params.id)
+      if (id === 17) {
+        this.$router.push('/sdg/1')
+      } else {
+        this.$router.push('/sdg/' + (id + 1))
+      }
+    },
     /**
      * Loads additional data from an SDG by id
      * **TEMPORARY** set id=1 to prevent /sdg from crashing
@@ -87,7 +116,6 @@ export default {
    * Once created, load data
    */
   created () {
-    console.log(this.sdgContent.info.targets)
     this.loadData(this.$route.params.id)
   }
 }
