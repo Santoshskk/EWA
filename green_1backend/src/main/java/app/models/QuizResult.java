@@ -18,10 +18,10 @@ import java.util.Set;
 @NamedQueries({
         @NamedQuery(name = "Get_quiz_result_by_user_id", query = "SELECT q FROM QuizResult q WHERE q.user = ?1"),
 })
-public class QuizResult implements Identifiable {
+public class QuizResult {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long resultId;
 
     @ElementCollection
@@ -122,13 +122,6 @@ public class QuizResult implements Identifiable {
         return resultId;
     }
 
-    @Override
-    public long getId() {
-        return this.resultId;
-    }
 
-    @Override
-    public void setId(long id) {
 
-    }
 }

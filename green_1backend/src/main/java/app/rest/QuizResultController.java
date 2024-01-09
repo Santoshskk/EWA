@@ -2,8 +2,6 @@ package app.rest;
 
 import app.models.QuizResult;
 import app.models.User;
-import app.repositories.AbstractEntityRepositoryJpa;
-import app.repositories.AbstractQuizResultEntityRepositoryJpa;
 import app.repositories.QuizResultRepositoryJPA;
 import app.repositories.UsersRepositoryJPA;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +16,10 @@ public class QuizResultController {
 
 //    private final QuizResultRepositoryJPA quizResultRepositoryJPA;
     private final UsersRepositoryJPA usersRepositoryJPA;
-    private final AbstractQuizResultEntityRepositoryJpa quizResultRepositoryJPA;
+    private final QuizResultRepositoryJPA quizResultRepositoryJPA;
 
     @Autowired
-    public QuizResultController( AbstractQuizResultEntityRepositoryJpa quizResultRepositoryJPA, UsersRepositoryJPA usersRepositoryJPA, AbstractQuizResultEntityRepositoryJpa abstractQuizResultEntityRepositoryJpa) {
+    public QuizResultController( QuizResultRepositoryJPA quizResultRepositoryJPA, UsersRepositoryJPA usersRepositoryJPA, QuizResultRepositoryJPA abstractQuizResultEntityRepositoryJpa) {
         this.quizResultRepositoryJPA = quizResultRepositoryJPA;
         this.usersRepositoryJPA = usersRepositoryJPA;
     }
@@ -36,7 +34,7 @@ public class QuizResultController {
     //Get a result by id
     @GetMapping("/{id}")
     public ResponseEntity<QuizResult> getQuizResultById(@PathVariable long id) {
-        Optional<QuizResult> optionalQuizResult = Optional.ofNullable(quizResultRepositoryJPA.findById(id));
+        Optional<QuizResult> optionalQuizResult = Optional.ofNullable(quizResultRepositoryJPA.findById(id).orElse(null));
 
         if (optionalQuizResult.isPresent()) {
             QuizResult quizResult = optionalQuizResult.get();
@@ -49,11 +47,11 @@ public class QuizResultController {
     //Delete the results
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteOffer(@PathVariable long id) {
-        Optional<QuizResult> optionalQuizResult = Optional.ofNullable(quizResultRepositoryJPA.findById(id));
+        Optional<QuizResult> optionalQuizResult = Optional.ofNullable(quizResultRepositoryJPA.findById(id).orElse(null));
 
         if (optionalQuizResult.isPresent()) {
             QuizResult quizResult = optionalQuizResult.get();
-            quizResultRepositoryJPA.deleteById(quizResult.getId());
+            quizResultRepositoryJPA.deleteById(quizResult.getResultId());
             return ResponseEntity.noContent().build(); // 204 successfully deleted
         } else {
             throw new ResourceNotFoundException("QuizResult not found with ID: " + id);
@@ -74,7 +72,7 @@ public class QuizResultController {
     public ResponseEntity<List<QuizResult>> getResultsForUser(
              @PathVariable long userId ) {
         User user = this.usersRepositoryJPA .findById(userId).orElse(null);
-        List<QuizResult>quizResultsFromUser = this.quizResultRepositoryJPA.findByQuery("Get_quiz_result_by_user_id",user);
+        List<QuizResult>quizResultsFromUser = this.quizResultRepositoryJPA.findQuizResultByUser(user);
 
         return ResponseEntity.ok(quizResultsFromUser); // 200 found successfully
     }

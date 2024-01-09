@@ -195,7 +195,6 @@ export default {
       try {
         const currentUser = JSON.parse(this.account).user_id
         const resultJson = this.createJson()
-        console.log(resultJson)
         await this.quizResultService.saveResults(resultJson, currentUser)
         this.resultsSaved = true
       } catch (err) {
@@ -211,7 +210,8 @@ export default {
       const top3 = this.top7.slice(0, 3).map(item => item.SDG)
       const newResult = {
         sdgArray: top3,
-        dateOfQuiz: new Date()
+        dateOfQuiz: new Date(),
+        resultId: 0
       }
       return newResult
     }
