@@ -45,10 +45,12 @@ import { sdgData } from '@/assets/testData/sdgTestData'
 import useFetch from '@/utils/useFetch'
 import CONFIG from '@/app-config'
 import { useToast } from 'vue-toast-notification'
+import { useRouter } from 'vue-router'
 
 const expanded = ref(false)
 const disableButton = ref(false)
 const toast = useToast()
+const router = useRouter()
 
 const emits = defineEmits(['refreshPlans'])
 
@@ -124,7 +126,7 @@ const addPlan = () => {
       }
     })
   } else {
-    window.location.href = '/login'
+    router.push('/login')
   }
 }
 
