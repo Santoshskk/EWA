@@ -31,19 +31,8 @@ export class User {
 
   static copyConstructor (user) {
     if (!user) return null // Handle the case where 'user' is null or undefined
-    const clonedUser = new User(
-      user.user_id,
-      user.sector_id,
-      user.first_name,
-      user.last_name,
-      user.email,
-      user.security_clearance,
-      user.username,
-      user.password,
-      user.date_of_birth,
-      user.isAdmin
-    )
-    return clonedUser
+    const clonedUser = new User()
+    return Object.assign(clonedUser, user)
   }
 
   static equals (user1, user2) {
