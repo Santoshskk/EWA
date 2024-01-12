@@ -6,6 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
+    "test:clear-cache": "node_modules/.bin/jest --clearCache",
     "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint"
   },
@@ -18,6 +19,7 @@
     "chartjs": "^0.3.24",
     "core-js": "^3.8.3",
     "fetch-intercept": "^2.4.0",
+    "jstransformer": "^1.0.0",
     "mitt": "^3.0.1",
     "vue": "^3.2.13",
     "vue-chartjs": "^5.2.0",
@@ -80,7 +82,17 @@
     "not ie 11"
   ],
   "jest": {
-    "preset": "@vue/cli-plugin-unit-jest"
+    "preset": "@vue/cli-plugin-unit-jest",
+    "setupFilesAfterEnv": [
+      "jest-expect-message"
+    ]
+  },
+  "testMatch": [
+    "**/src/**/*.spec.js"
+  ],
+  "moduleNameMapper": {
+    "^@/(.*)$": "<rootDit>/src/$1",
+    "/image/(.$*)$": "<rootDir>/public/images/$1"
   },
   "gitHooks": {
     "pre-commit": "lint-staged"
