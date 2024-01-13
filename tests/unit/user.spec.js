@@ -21,6 +21,10 @@ beforeEach(function () {
   )
 })
 
+/**
+ * Test for User Model in front end
+ * @author Jiaming Yan
+ */
 describe('User Model', () => {
   it('creates a copy of a user', () => {
     const userCopy = User.copyConstructor(user1)
