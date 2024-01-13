@@ -90,8 +90,7 @@
   },
   "testMatch": [
     "**/__tests__/**/*.js",
-    "**/?(*.)+(spec|test).js",
-    "src/models/user.spec.js"
+    "**/?(*.)+(spec|test).js"
   ],
   "moduleNameMapper": {
     "^@/(.*)$": "<rootDir>/src/$1",
