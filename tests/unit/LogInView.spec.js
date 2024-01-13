@@ -25,9 +25,25 @@ beforeEach(async function () {
  */
 describe('Trying to login', () => {
   it('can login successfully', async function () {
+    // Verifying whether the input field for username and password exists
     const userNameField = wrapper.find('input[placeholder="Username"]')
+    const passwordField = wrapper.find('input[placeholder="Password"]')
+    const loginButton = wrapper.find('button[id="loginButton"]')
     expect(userNameField.exists(),
       'Cannot find input field with placeholder = Username').toBe(true)
+    expect(passwordField.exists(),
+      'Cannot find input field with placeholder = Password').toBe(true)
+    expect(loginButton.exists(),
+      'Cannot find button with id = loginButton').toBe(true)
+
+    // Attempt to log in with valid user credentials
+    await userNameField.setValue('sTaylor37')
+    await passwordField.setValue('Staylor123!')
+    await loginButton.trigger('submit')
+
+    // Error message should not exist when login attempt is successful
+    expect(wrapper.vm.errorMessage,
+      'Login attempt failed').toBe('')
   })
 })
 
