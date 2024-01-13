@@ -59,12 +59,18 @@ const questionJSON = {
   ]
 }
 
+let quiz
+
+beforeEach(() => {
+  // Initialize the quiz object before each test
+  quiz = new Quiz(questionJSON, isInQuizBuilder)
+})
+
 describe('Constructing a quiz outside quizbuilder', () => {
   it('with valid json should create a Quiz object', () => {
-    const quiz = new Quiz(questionJSON, isInQuizBuilder)
-    expect(quiz, 'quiz should be a Quiz Model').toBeInstanceOf(Quiz)
+    const quiz2 = new Quiz(questionJSON, isInQuizBuilder)
+    expect(quiz2, 'quiz should be a Quiz Model').toBeInstanceOf(Quiz)
   })
-
   it('with undefined json should throw an error', () => {
     expect(() => {
       // eslint-disable-next-line no-new
@@ -89,11 +95,9 @@ describe('Constructing a quiz outside quizbuilder', () => {
   })
   describe('Quiz instatiateQuiz method', () => {
     it('should create a multiplechoice question from quizQuestion[0]', () => {
-      const quiz = new Quiz(questionJSON, isInQuizBuilder)
       expect(quiz.quizQuestions[0], 'quizQuestions[0] should be a QuizQuestion Model').toBeInstanceOf(MultipleChoiceQuestion)
     })
     it('should create a yesno question from quizQuestion[1]', () => {
-      const quiz = new Quiz(questionJSON, isInQuizBuilder)
       expect(quiz.quizQuestions[1], 'quizQuestions[1] should be a QuizQuestion Model').toBeInstanceOf(YesNoQuestion)
     })
   })
@@ -110,33 +114,27 @@ describe('Constructing a quiz outside quizbuilder', () => {
 describe('While the currentQuestionIndex', () => {
   describe('is 0', () => {
     it('the currentQuestion method should return the first question', () => {
-      const quiz = new Quiz(questionJSON, isInQuizBuilder)
       expect(quiz.getCurrentQuestion(), 'should return the first question').toEqual(quiz.quizQuestions[0])
     })
     it('the previousQuestion method should throw error', () => {
-      const quiz = new Quiz(questionJSON, isInQuizBuilder)
       quiz.currentQuestionIndex = 0
       expect(quiz.getPreviousQuestion(), 'should return null').toBeNull()
     })
     it('the nextQuestion method should return the second question', () => {
-      const quiz = new Quiz(questionJSON, isInQuizBuilder)
       quiz.currentQuestionIndex = 0
       expect(quiz.getNextQuestion(), 'should return the second question').toEqual(quiz.quizQuestions[1])
     })
   })
   describe('is 1', () => {
     it('the currentQuestion method should return the second question', () => {
-      const quiz = new Quiz(questionJSON, isInQuizBuilder)
       quiz.currentQuestionIndex = 1
       expect(quiz.getCurrentQuestion(), 'should return the first question').toEqual(quiz.quizQuestions[1])
     })
     it('the previousQuestion method should return the first question', () => {
-      const quiz = new Quiz(questionJSON, isInQuizBuilder)
       quiz.currentQuestionIndex = 1
       expect(quiz.getPreviousQuestion(), 'should return the first question').toEqual(quiz.quizQuestions[0])
     })
     it('the nextQuestion method should return null', () => {
-      const quiz = new Quiz(questionJSON, isInQuizBuilder)
       quiz.currentQuestionIndex = 1
       expect(quiz.getNextQuestion(), 'should return null').toBeNull()
     })
@@ -145,17 +143,14 @@ describe('While the currentQuestionIndex', () => {
 
 describe('When answering a question the totalAnsweredQuestions should be increased by 1', () => {
   it('should be 0 when no question is answered', () => {
-    const quiz = new Quiz(questionJSON, isInQuizBuilder)
     expect(quiz.getTotalAnsweredQuestions(), 'should be 0').toEqual(0)
   })
   it('should be 1 when multiplechoicequestion is answered', () => {
-    const quiz = new Quiz(questionJSON, isInQuizBuilder)
     quiz.quizQuestions[0].options[0].isSelected = true
     quiz.quizQuestions[0].setGivenAnswers()
     expect(quiz.getTotalAnsweredQuestions(), 'should be 1').toEqual(1)
   })
   it('should be 1 when yesnoquestion is answered', () => {
-    const quiz = new Quiz(questionJSON, isInQuizBuilder)
     quiz.quizQuestions[1].givenAnswer = true
     expect(quiz.getTotalAnsweredQuestions(), 'should be 1').toEqual(1)
   })
@@ -163,7 +158,6 @@ describe('When answering a question the totalAnsweredQuestions should be increas
 
 describe('When cloning a quiz', () => {
   it('should return a new quiz with the same values', () => {
-    const quiz = new Quiz(questionJSON, isInQuizBuilder)
     const clonedQuiz = quiz.clone()
     expect(clonedQuiz, 'should be a Quiz Model').toBeInstanceOf(Quiz)
     expect(clonedQuiz.quizQuestions[0], 'should be a QuizQuestion Model').toBeInstanceOf(MultipleChoiceQuestion)
@@ -171,39 +165,33 @@ describe('When cloning a quiz', () => {
     expect(clonedQuiz.quizResultObjectArray, 'and should be an array of Quizresults').toEqual(quiz.quizResultObjectArray)
   })
   it('should equal itself', function () {
-    const quiz = new Quiz(questionJSON, isInQuizBuilder)
-    const clonedQuiz = quiz.clone()
-    expect(clonedQuiz).toEqual(quiz)
+    const quiz3 = new Quiz(questionJSON, isInQuizBuilder)
+    const clonedQuiz = quiz3.clone()
+    expect(clonedQuiz).toEqual(quiz3)
   })
 })
 
 describe('When using the equals method', () => {
   it('should return true when comparing a quiz with itself', () => {
-    const quiz = new Quiz(questionJSON, isInQuizBuilder)
     expect(quiz.equals(quiz)).toEqual(true)
   })
   it('should return false when comparing a quiz with null', () => {
-    const quiz = new Quiz(questionJSON, isInQuizBuilder)
     expect(quiz.equals(null)).toEqual(false)
   })
   it('should return false when comparing a quiz with undefined', () => {
-    const quiz = new Quiz(questionJSON, isInQuizBuilder)
     expect(quiz.equals(undefined)).toEqual(false)
   })
   it('should return false when comparing a quiz with a quiz with different name', () => {
-    const quiz = new Quiz(questionJSON, isInQuizBuilder)
     const quiz2 = new Quiz(questionJSON, isInQuizBuilder)
     quiz2.name = 'test'
     expect(quiz.equals(quiz2)).toEqual(false)
   })
   it('should return false when comparing a quiz with a quiz with different quizQuestions', () => {
-    const quiz = new Quiz(questionJSON, isInQuizBuilder)
     const quiz2 = new Quiz(questionJSON, isInQuizBuilder)
     quiz2.quizQuestions[0].question = 'test'
     expect(quiz.equals(quiz2)).toEqual(false)
   })
   it('should return false when comparing a quiz with a quiz with different sector', () => {
-    const quiz = new Quiz(questionJSON, isInQuizBuilder)
     const quiz2 = new Quiz(questionJSON, isInQuizBuilder)
     const sector2 = new Sector({
       id: 2,
@@ -223,7 +211,6 @@ describe('When using the copyConstructor method', () => {
     expect(Quiz.copyConstructor(undefined)).toEqual(null)
   })
   it('should return a quiz when using a valid json', () => {
-    const quiz = Quiz.copyConstructor(questionJSON)
     expect(quiz, 'quiz should be a Quiz Model').toBeInstanceOf(Quiz)
   })
 })
