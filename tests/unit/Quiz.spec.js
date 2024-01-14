@@ -11,69 +11,16 @@ import Sector from '@/models/Sector'
 
 const isInQuizBuilder = false
 
-const questionJSON = {
-  id: 1,
-  name: 'Starter',
-  isPublished: true,
-  isConcept: false,
-  isLive: true,
-  sector: {
-    id: 1,
-    name: 'None',
-    description: 'No sector assigned'
-  },
-  quizQuestions: [
-    {
-      id: 21,
-      question: 'Which social issue do you think is most pressing in the Netherlands?',
-      imgPath: 'http://localhost:8085/images/889682f5-dade-4d3d-8167-2071744ad76b.PNG',
-      options: [
-        {
-          id: 25,
-          option: 'Gender equality in the workforce',
-          sdg: 5
-        },
-        {
-          id: 26,
-          option: 'Quality education for all',
-          sdg: 4
-        },
-        {
-          id: 27,
-          option: 'Reducing income inequality',
-          sdg: 10
-        },
-        {
-          id: 28,
-          option: 'Ensuring healthy lives for all age groups',
-          sdg: 3
-        }
-      ],
-      answerLimit: 1,
-      index: 1,
-      type: 'multiplechoice'
-    },
-    {
-      id: 17,
-      question: 'Do you believe that providing affordable and clean energy is a key challenge for the Netherlands?',
-      imgPath: 'http://localhost:8085/images/c00bcccb-9c49-47b0-b650-50076734a2e1.JPEG',
-      sdg: 7,
-      index: 3,
-      type: 'yesno'
-    }
-  ]
-}
-
 let quiz
 
 beforeEach(() => {
   // Initialize the quiz object before each test
-  quiz = new Quiz(questionJSON, isInQuizBuilder)
+  quiz = new Quiz(quizJSON, isInQuizBuilder)
 })
 
 describe('Constructing a quiz outside quizbuilder', () => {
   it('with valid json should create a Quiz object', () => {
-    const quiz2 = new Quiz(questionJSON, isInQuizBuilder)
+    const quiz2 = new Quiz(quizJSON, isInQuizBuilder)
     expect(quiz2, 'quiz should be a Quiz Model').toBeInstanceOf(Quiz)
   })
   it('with undefined json should throw an error', () => {
@@ -83,7 +30,7 @@ describe('Constructing a quiz outside quizbuilder', () => {
     }).toThrow('JSON is undefined')
   })
   it('with undefined name in json should throw an error', () => {
-    const json = JSON.parse(JSON.stringify(questionJSON))
+    const json = JSON.parse(JSON.stringify(quizJSON))
     json.name = undefined
     expect(() => {
       // eslint-disable-next-line no-new
@@ -91,7 +38,7 @@ describe('Constructing a quiz outside quizbuilder', () => {
     }).toThrow('name is undefined')
   })
   it('with undefined quizQuestions in json should throw an error', () => {
-    const json = JSON.parse(JSON.stringify(questionJSON))
+    const json = JSON.parse(JSON.stringify(quizJSON))
     json.quizQuestions = undefined
     expect(() => {
       // eslint-disable-next-line no-new
@@ -111,7 +58,7 @@ describe('Constructing a quiz outside quizbuilder', () => {
     for (let i = 1; i < 18; i++) {
       quizResultObjectArray.push(new QuizResult(i, 0))
     }
-    const quiz = new Quiz(questionJSON, isInQuizBuilder)
+    const quiz = new Quiz(quizJSON, isInQuizBuilder)
     expect(quiz.quizResultObjectArray, 'and should be an array of Quizresults').toEqual(quizResultObjectArray)
   })
 })
@@ -170,7 +117,7 @@ describe('When cloning a quiz', () => {
     expect(clonedQuiz.quizResultObjectArray, 'and should be an array of Quizresults').toEqual(quiz.quizResultObjectArray)
   })
   it('should equal itself', function () {
-    const quiz3 = new Quiz(questionJSON, isInQuizBuilder)
+    const quiz3 = new Quiz(quizJSON, isInQuizBuilder)
     const clonedQuiz = quiz3.clone()
     expect(clonedQuiz).toEqual(quiz3)
   })
@@ -187,17 +134,17 @@ describe('When using the equals method', () => {
     expect(quiz.equals(undefined)).toEqual(false)
   })
   it('should return false when comparing a quiz with a quiz with different name', () => {
-    const quiz2 = new Quiz(questionJSON, isInQuizBuilder)
+    const quiz2 = new Quiz(quizJSON, isInQuizBuilder)
     quiz2.name = 'test'
     expect(quiz.equals(quiz2)).toEqual(false)
   })
   it('should return false when comparing a quiz with a quiz with different quizQuestions', () => {
-    const quiz2 = new Quiz(questionJSON, isInQuizBuilder)
+    const quiz2 = new Quiz(quizJSON, isInQuizBuilder)
     quiz2.quizQuestions[0].question = 'test'
     expect(quiz.equals(quiz2)).toEqual(false)
   })
   it('should return false when comparing a quiz with a quiz with different sector', () => {
-    const quiz2 = new Quiz(questionJSON, isInQuizBuilder)
+    const quiz2 = new Quiz(quizJSON, isInQuizBuilder)
     const sector2 = new Sector({
       id: 2,
       name: 'None',
@@ -219,3 +166,56 @@ describe('When using the copyConstructor method', () => {
     expect(quiz, 'quiz should be a Quiz Model').toBeInstanceOf(Quiz)
   })
 })
+
+const quizJSON = {
+  id: 1,
+  name: 'Starter',
+  isPublished: true,
+  isConcept: false,
+  isLive: true,
+  sector: {
+    id: 1,
+    name: 'None',
+    description: 'No sector assigned'
+  },
+  quizQuestions: [
+    {
+      id: 21,
+      question: 'Which social issue do you think is most pressing in the Netherlands?',
+      imgPath: 'http://localhost:8085/images/889682f5-dade-4d3d-8167-2071744ad76b.PNG',
+      options: [
+        {
+          id: 25,
+          option: 'Gender equality in the workforce',
+          sdg: 5
+        },
+        {
+          id: 26,
+          option: 'Quality education for all',
+          sdg: 4
+        },
+        {
+          id: 27,
+          option: 'Reducing income inequality',
+          sdg: 10
+        },
+        {
+          id: 28,
+          option: 'Ensuring healthy lives for all age groups',
+          sdg: 3
+        }
+      ],
+      answerLimit: 1,
+      index: 1,
+      type: 'multiplechoice'
+    },
+    {
+      id: 17,
+      question: 'Do you believe that providing affordable and clean energy is a key challenge for the Netherlands?',
+      imgPath: 'http://localhost:8085/images/c00bcccb-9c49-47b0-b650-50076734a2e1.JPEG',
+      sdg: 7,
+      index: 3,
+      type: 'yesno'
+    }
+  ]
+}
