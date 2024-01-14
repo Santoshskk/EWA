@@ -4,6 +4,11 @@ import YesNoQuestion from '@/models/YesNoQuestion'
 import QuizResult from '@/models/QuizResult'
 import Sector from '@/models/Sector'
 
+/**
+ * Test for the Quiz model class.
+ * @author Marco de Boer
+ */
+
 const isInQuizBuilder = false
 
 const questionJSON = {
