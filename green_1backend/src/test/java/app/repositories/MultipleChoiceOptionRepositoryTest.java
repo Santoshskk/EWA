@@ -19,6 +19,11 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * This class tests the MultipleChoiceOptionRepository.
+ * @Author: Marco de Boer
+ */
+
 @Import(DataLoader.class)
 @DataJpaTest(includeFilters = @ComponentScan.Filter(type = FilterType.ANNOTATION,
         classes = { Repository.class, Entity.class }))
