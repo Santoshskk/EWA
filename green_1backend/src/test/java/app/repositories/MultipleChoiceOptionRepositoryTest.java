@@ -52,13 +52,11 @@ public class MultipleChoiceOptionRepositoryTest {
 
     @Test
     public void repoFindAllReturnsAll() {
-        // check books have been loaded
         assertTrue(this.someMultipleChoiceOptions.size() > 0);
     }
 
     @Test
     public void repoFindByIdReturnsProperMultipleChoiceOption() {
-        // check all books can be found by id
         for (int i = 0; i < this.someMultipleChoiceOptions.size(); i++) {
             MultipleChoiceOption multipleChoiceOption = multipleChoiceOptionRepo.findById(this.someMultipleChoiceOptions.get(i).getId()).orElse(null);
             assert multipleChoiceOption != null;
@@ -68,7 +66,6 @@ public class MultipleChoiceOptionRepositoryTest {
                     "MultipleChoiceOption SDG should be the same");
         }
 
-        // check non-existing book
         MultipleChoiceOption multipleChoiceOption = multipleChoiceOptionRepo.findById((long) 9999999).orElse(null);
         assertNull(multipleChoiceOption);
     }
