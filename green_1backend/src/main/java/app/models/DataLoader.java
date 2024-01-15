@@ -3,6 +3,7 @@ package app.models;
 import app.repositories.MultipleChoiceOptionRepository;
 import app.repositories.QuizRepository;
 import app.repositories.SectorRepository;
+import app.repositories.YesNoQuestionRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -22,6 +23,7 @@ public class DataLoader implements CommandLineRunner {
         this.createInitialMultipleChoiceOptions();
         this.createInitialSectors();
         this.createInitialQuizzes();
+        this.createYesNoQuestions();
 
         System.out.println("Injected multiplechoice options from " +
                 (this.multipleChoiceOptionRepo != null ? getUserClass(this.multipleChoiceOptionRepo.getClass()).getName() : "none"));
@@ -29,6 +31,8 @@ public class DataLoader implements CommandLineRunner {
                 (this.quizRepo != null ? getUserClass(this.quizRepo.getClass()).getName() : "none"));
         System.out.println("Injected sectors from " +
                 (this.sectorRepo != null ? getUserClass(this.sectorRepo.getClass()).getName() : "none"));
+        System.out.println("Injected yesno questions from " +
+                (this.questionRepo != null ? getUserClass(this.questionRepo.getClass()).getName() : "none"));
     }
 
     @Autowired
@@ -63,5 +67,20 @@ public class DataLoader implements CommandLineRunner {
                 false, sectorRepo.findById((long) 1).orElse(null))));
         quizzes.add(this.quizRepo.save(new Quiz((long) 0, "quiz 2", true, false,
                 true, sectorRepo.findById((long) 1).orElse(null))));
+    }
+
+    @Autowired
+    private YesNoQuestionRepository questionRepo;
+
+    private void createYesNoQuestions(){
+        Quiz quiz = quizRepo.findById((long) 1).orElse(null);
+
+        List<YesNoQuestion> questions = this.questionRepo.findAll();
+        if (questions.size() > 0) return;
+        System.out.println("Configuring some initial questions in the repository");
+        questions.add(this.questionRepo.save(new YesNoQuestion((long) 0, "question 1", "imgpath", quiz, 1,
+                1)));
+        questions.add(this.questionRepo.save(new YesNoQuestion((long) 0, "question 2", "imgpath2", quiz, 2,
+                2)));
     }
 }
