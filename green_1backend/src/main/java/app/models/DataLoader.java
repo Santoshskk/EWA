@@ -1,9 +1,6 @@
 package app.models;
 
-import app.repositories.MultipleChoiceOptionRepository;
-import app.repositories.QuizRepository;
-import app.repositories.SectorRepository;
-import app.repositories.YesNoQuestionRepository;
+import app.repositories.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -24,6 +21,7 @@ public class DataLoader implements CommandLineRunner {
         this.createInitialSectors();
         this.createInitialQuizzes();
         this.createYesNoQuestions();
+        this.createMultipleChoiceQuestions();
 
         System.out.println("Injected multiplechoice options from " +
                 (this.multipleChoiceOptionRepo != null ? getUserClass(this.multipleChoiceOptionRepo.getClass()).getName() : "none"));
@@ -33,6 +31,8 @@ public class DataLoader implements CommandLineRunner {
                 (this.sectorRepo != null ? getUserClass(this.sectorRepo.getClass()).getName() : "none"));
         System.out.println("Injected yesno questions from " +
                 (this.questionRepo != null ? getUserClass(this.questionRepo.getClass()).getName() : "none"));
+        System.out.println("Injected multiplechoice questions from " +
+                (this.multipleChoiceQuestionRepo != null ? getUserClass(this.multipleChoiceQuestionRepo.getClass()).getName() : "none"));
     }
 
     @Autowired
@@ -81,6 +81,21 @@ public class DataLoader implements CommandLineRunner {
         questions.add(this.questionRepo.save(new YesNoQuestion((long) 0, "question 1", "imgpath", quiz, 1,
                 1)));
         questions.add(this.questionRepo.save(new YesNoQuestion((long) 0, "question 2", "imgpath2", quiz, 2,
+                2)));
+    }
+
+    @Autowired
+    private MultipleChoiceQuestionRepository multipleChoiceQuestionRepo;
+
+    private void createMultipleChoiceQuestions(){
+        Quiz quiz = quizRepo.findById((long) 1).orElse(null);
+
+        List<MultipleChoiceQuestion> questions = this.multipleChoiceQuestionRepo.findAll();
+        if (questions.size() > 0) return;
+        System.out.println("Configuring some initial questions in the repository");
+        questions.add(this.multipleChoiceQuestionRepo.save(new MultipleChoiceQuestion((long) 0, "question 1", "imgpath", quiz, 1,
+                1)));
+        questions.add(this.multipleChoiceQuestionRepo.save(new MultipleChoiceQuestion((long) 0, "question 2", "imgpath2", quiz, 2,
                 2)));
     }
 }
