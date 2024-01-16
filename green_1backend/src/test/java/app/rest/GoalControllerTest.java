@@ -15,8 +15,7 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class GoalControllerTest {
@@ -52,4 +51,25 @@ public class GoalControllerTest {
             assertTrue(goalsList[i] instanceof Goal, "This is not a Goal object!");
         }
     }
+
+    /**
+     * Testing if a single Goal can be retrieved by ID
+     * @author Santosh Kakkar
+     */
+    @Test
+    public void singleGoalCanBeRetrievedById() {
+        ResponseEntity<Goal> response =
+                this.restTemplate.getForEntity("/goals/3", Goal.class);
+
+        // check status code, location header and response body of post request
+        assertEquals(HttpStatus.OK, response.getStatusCode(), "Status code should be 200 OK");
+
+        Goal goal = response.getBody();
+        assertNotNull(goal);
+        assertEquals(3, goal.getId());
+        assertEquals(1, goal.getUser_id());
+        assertEquals("Good Health and Well-being", goal.getTitle());
+
+    }
+
 }
