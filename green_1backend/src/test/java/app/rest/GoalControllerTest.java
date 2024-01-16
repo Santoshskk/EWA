@@ -15,8 +15,7 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class GoalControllerTest {
@@ -51,5 +50,23 @@ public class GoalControllerTest {
         for (int i = 0; i < goalsList.length; i++) {
             assertTrue(goalsList[i] instanceof Goal, "This is not a Goal object!");
         }
+    }
+
+    /**
+     * Testing if a goal can be saved
+     * @author Santosh Kakkar
+     */
+    @Test
+    public void newGoalCanBeSaved() {
+        Goal newGoal = new Goal(4, 2, "Life under water");
+        ResponseEntity<Goal> response =
+                this.restTemplate.postForEntity("/goals", newGoal, Goal.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode(), "Status code should be 200 OK");
+        Goal savedGoal = response.getBody();
+        assertNotNull(savedGoal, "Saved goal is null");
+        ResponseEntity<Goal[]> responseGetAll =
+                this.restTemplate.getForEntity("/goals", Goal[].class);
+        Goal[] goalsList = responseGetAll.getBody();
+        assertTrue(goalsList.length == 4, "The goal is not correctly saved");
     }
 }
