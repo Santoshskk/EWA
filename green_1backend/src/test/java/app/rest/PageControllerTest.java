@@ -34,6 +34,7 @@ public class PageControllerTest {
 
     @BeforeEach
     void setup() {
+        pageRepository.deleteAll();
         pages = Arrays.asList(
                 new Page(1L, "Title1"),
                 new Page(2L, "Title2"));
