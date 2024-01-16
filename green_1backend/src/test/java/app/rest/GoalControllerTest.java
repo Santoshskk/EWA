@@ -67,11 +67,13 @@ public class GoalControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode(), "Status code should be 200 OK");
         Goal savedGoal = response.getBody();
         assertNotNull(savedGoal, "Saved goal is null");
-        ResponseEntity<Goal[]> responseGetAll =
-                this.restTemplate.getForEntity("/goals", Goal[].class);
-        Goal[] goalsList = responseGetAll.getBody();
-        assertTrue(goalsList.length == 4, "The goal is not correctly saved");
-     * Testing if a single Goal can be retrieved by ID
+        ResponseEntity<Goal> responseGetOne =
+                this.restTemplate.getForEntity("/goals/4", Goal.class);
+        Goal goalSaved = responseGetOne.getBody();
+        assertNotNull(goalSaved, "The goal is not correctly saved");
+    }
+
+     /** Testing if a single Goal can be retrieved by ID
      * @author Santosh Kakkar
      */
     @Test
