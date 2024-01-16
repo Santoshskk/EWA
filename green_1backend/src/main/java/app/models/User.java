@@ -96,6 +96,7 @@ public class User {
     public User(long user_id){
         this.user_id = user_id;
     }
+
     public User(long user_id, String username, String password, boolean isAdmin) {
         this.user_id = user_id;
         this.username = username;

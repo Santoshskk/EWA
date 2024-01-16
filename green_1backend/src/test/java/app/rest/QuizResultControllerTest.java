@@ -34,11 +34,12 @@ public class QuizResultControllerTest {
 
     private List<QuizResult> quizResults;
     private User user;
+    private User savedUser;
 
     @BeforeEach
     void setup() {
         user = new User(1);
-        usersRepository.save(user);
+        savedUser = usersRepository.save(user);
 
         Set<Long> sdgArray1 = new HashSet<>();
         sdgArray1.add(1L);
@@ -51,8 +52,8 @@ public class QuizResultControllerTest {
         sdgArray2.add(7L);
 
         quizResults = List.of(
-                new QuizResult(sdgArray1, user, LocalDate.now()),
-                new QuizResult(sdgArray2, user, LocalDate.now())
+                new QuizResult(sdgArray1, savedUser, LocalDate.now()),
+                new QuizResult(sdgArray2, savedUser, LocalDate.now())
         );
 
         quizResultRepository.saveAll(quizResults);
@@ -60,6 +61,7 @@ public class QuizResultControllerTest {
 
     /**
      * Test for retrieving of quiz results
+     * @author Santosh Kakkar
      */
 
     @Test
@@ -71,6 +73,7 @@ public class QuizResultControllerTest {
         assertEquals(quizResults.size(), Objects.requireNonNull(response.getBody()).length, "Size should be " + quizResults.size());
     }
 
+
     @Test
     public void quizResultCanBeAdded() {
         Set<Long> sdgArray = new HashSet<>();
@@ -78,10 +81,11 @@ public class QuizResultControllerTest {
         sdgArray.add(2L);
         sdgArray.add(4L);
 
-        QuizResult quizResult = new QuizResult(sdgArray, user, LocalDate.now());
+
+        QuizResult quizResult = new QuizResult(sdgArray, savedUser, LocalDate.now());
 
         ResponseEntity<String> response =
-                this.restTemplate.postForEntity("/quizresult/save/" + user.getUser_id(), quizResult, String.class);
+                this.restTemplate.postForEntity("/quizresult/save/" + savedUser.getUser_id(), quizResult, String.class);
 
         assertEquals(HttpStatus.OK, response.getStatusCode(), "Status code should be 200 OK");
         assertEquals("QuizResult Saved", response.getBody(), "Body should be QuizResult Saved");
