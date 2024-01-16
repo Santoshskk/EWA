@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Random;
 
 @Entity
 public class User {
@@ -90,6 +89,10 @@ public class User {
         this.username = username;
         this.password = password;
         this.isAdmin = isAdmin;
+    }
+
+    public User(long user_id){
+        this.user_id = user_id;
     }
 
     public void setActionplans(List<ActionPlan> actionplans) {
