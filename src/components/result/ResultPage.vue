@@ -38,6 +38,27 @@ import sdgCardComponent from '@/components/quizResultsComponents/sdgCardComponen
 import { sdgData } from '@/assets/testData/sdgTestData'
 
 export default {
+  /**
+   * ResultPage Vue component.
+   * Displays the top SDGs for the user based on quiz results.
+   *
+   * @component
+   * @name ResultPage
+   * @namespace app.views
+   *
+   * @property {string} account - User account information.
+   * @property {Array} quizResults - Array of quiz results.
+   * @property {Array} sdgData - Array of SDG data.
+   * @property {Array} sortedQuizResults - Array of sorted quiz results.
+   * @property {string} sortDirection - Sorting direction ('asc' or 'desc').
+   *
+   * @event {method} formatDate - Format date string.
+   * @event {method} onBack - Navigate back to the user's profile page.
+   * @event {method} getQuizResults - Retrieve quiz results for the current user.
+   * @event {method} getSdgDataById - Get SDG data by ID.
+   * @event {method} sortResults - Sort quiz results based on date and direction.
+   */
+
   name: 'ResultPage',
   components: { sdgCardComponent },
   inject: ['profileService', 'quizResultService', 'sessionService'],
@@ -82,6 +103,7 @@ export default {
       this.sortedQuizResults.sort((a, b) => {
         const dateA = new Date(a.dateOfQuiz)
         const dateB = new Date(b.dateOfQuiz)
+        // If its 'asc' dateA will be compared to dateB else dateB will be compared with dateA
         return direction === 'asc' ? dateA - dateB : dateB - dateA
       })
     }

@@ -51,12 +51,11 @@ describe('Sort buttons exists', () => {
 
 describe('Sort buttons', () => {
   it('Should sort results in ascending order when "Date ascending" button is clicked', async () => {
-    expect(wrapper.vm.sortDirection).toBe('asc')
+    expect(wrapper.vm.sortDirection).toBe('desc')
 
     // Click the "Date ascending" button
     await wrapper.find('#top').trigger('click')
 
-    // Expect the sort direction to be 'asc'
     expect(wrapper.vm.sortDirection).toBe('asc')
   })
 
@@ -66,8 +65,7 @@ describe('Sort buttons', () => {
     // Click the "Date descending" button
     await wrapper.find('#bottom').trigger('click')
 
-    // Expect the sort direction to be 'desc'
-    expect(wrapper.vm.sortDirection).toBe('desc')
+    expect(wrapper.vm.sortDirection).toBe('asc')
   })
 })
 

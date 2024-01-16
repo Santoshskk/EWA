@@ -40,27 +40,21 @@ describe('AdminUserComponent', () => {
     // Check if the component loads correctly
     expect(wrapper.exists()).toBe(true)
 
-    // Check if default data values are set
     expect(wrapper.vm.users).toEqual(mockedUsers)
     expect(wrapper.vm.searchUser).toBe('')
 
-    // You can also test the presence of certain elements if needed
     expect(wrapper.find('#searchbar').exists()).toBe(true)
     expect(wrapper.find('.table').exists()).toBe(true)
 
-    // Check if the component fetches users on creation (async)
+    // Wait for the asynchronous created hook
     await wrapper.vm.$nextTick()
     expect(wrapper.vm.users).toEqual(mockedUsers)
   })
   it('updates the searchUser data when input value changes', async () => {
-    // Set the input value
     await wrapper.setData({ searchUser: 'Gijs' })
-
-    // Check if the searchUser data is updated
     expect(wrapper.vm.searchUser).toBe('Gijs')
   })
   it('toggles the EditPopUp when clicking the Edit button', async () => {
-    // Wait for the asynchronous created hook to complete
     await wrapper.vm.$nextTick()
 
     // Button is made if users_id is present
