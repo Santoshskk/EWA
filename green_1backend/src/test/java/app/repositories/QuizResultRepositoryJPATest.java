@@ -29,7 +29,7 @@ public class QuizResultRepositoryJPATest {
     @BeforeEach
     public void setup() {
         System.out.println("setup");
-        User user = new User((long) 3);
+        User user = new User(3);
         User saveduser = usersRepositoryJPA.save(user);
         System.out.println("user saved");
 
@@ -47,18 +47,25 @@ public class QuizResultRepositoryJPATest {
 
         QuizResult quizResult1 = new QuizResult(sdgArray1, saveduser, dateOfQuiz1);
         QuizResult quizResult2 = new QuizResult(sdgArray2, saveduser, dateOfQuiz2);
-        System.out.println(quizResultRepository.save(quizResult1));
-        System.out.println("quizresult saved");
+        quizResultRepository.save(quizResult1);
         quizResultRepository.save(quizResult2);
 
 
     }
 
+    /**
+     * Test for returning the quizResults
+     * @author Santosh Kakkar
+     */
     @Test
     public void findAndReturn() {
         assertEquals(2, quizResultRepository.findAll().size(), "Size should be 2");
     }
 
+    /**
+     * Initialization test
+     * @author Santosh Kakkar
+     */
     @Test
     public void testQuizResultInitialization() {
         Set<Long> sdgArray = new HashSet<>();
@@ -74,6 +81,10 @@ public class QuizResultRepositoryJPATest {
         assertEquals(dateOfQuiz, quizResult.getDateOfQuiz());
     }
 
+    /**
+     * Initialization test with default values
+     * @author Santosh Kakkar
+     */
     @Test
     public void testQuizResultInitializationWithDefaultValues() {
         QuizResult quizResult = new QuizResult();
@@ -83,11 +94,6 @@ public class QuizResultRepositoryJPATest {
         assertNull(quizResult.getUser());
         assertNull(quizResult.getDateOfQuiz());
     }
-
-//    @Test
-//    public void testFindQuizResultsByUser() {;
-//       assertEquals(2,quizResultRepository.findQuizResultByUser() );
-//    }
 
 }
 

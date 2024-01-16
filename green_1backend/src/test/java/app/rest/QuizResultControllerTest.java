@@ -58,6 +58,10 @@ public class QuizResultControllerTest {
         quizResultRepository.saveAll(quizResults);
     }
 
+    /**
+     * Test for retrieving of quiz results
+     */
+
     @Test
     public void allQuizResultsCanBeRetrieved() {
         ResponseEntity<QuizResult[]> response =
