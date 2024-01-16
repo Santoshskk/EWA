@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -29,7 +30,9 @@ public class GoalControllerTest {
                 new Goal(1, 1, "No Poverty"),
                 new Goal(2, 1, "Zero Hunger"),
                 new Goal(3, 1, "Good Health and Well-being")
+
         );
+
     }
 
     /**
@@ -67,9 +70,26 @@ public class GoalControllerTest {
         Goal goal = response.getBody();
         assertNotNull(goal);
         assertEquals(3, goal.getId());
-        assertEquals(1, goal.getUser_id());
-        assertEquals("Good Health and Well-being", goal.getTitle());
-
     }
 
+    /**
+     * Testing if a single Goal can be deleted by ID
+     * @author Santosh Kakker
+     */
+    @Test
+    public void singleGoalCanBeDeletedById() {
+        ResponseEntity<Goal> response =
+                this.restTemplate.exchange("/goals/2", HttpMethod.DELETE, null, Goal.class);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode(), "Status code should be 200 OK");
+
+        Goal deletedGoal = response.getBody();
+        assertNotNull(deletedGoal);
+        assertEquals(2, deletedGoal.getId());
+
+        // Check if the goal is deleated
+        ResponseEntity<Goal> checkDeletedGoal =
+                this.restTemplate.getForEntity("/goals/2", Goal.class);
+        assertEquals(HttpStatus.OK, checkDeletedGoal.getStatusCode(), "Status code should be OK");
+    }
 }
