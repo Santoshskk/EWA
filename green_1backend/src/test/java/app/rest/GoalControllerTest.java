@@ -55,6 +55,22 @@ public class GoalControllerTest {
         }
     }
 
+     /** Testing if a single Goal can be retrieved by ID
+     * @author Santosh Kakkar
+     */
+    @Test
+    public void singleGoalCanBeRetrievedById() {
+        ResponseEntity<Goal> response =
+                this.restTemplate.getForEntity("/goals/3", Goal.class);
+
+        // check status code, location header and response body of post request
+        assertEquals(HttpStatus.OK, response.getStatusCode(), "Status code should be 200 OK");
+
+        Goal goal = response.getBody();
+        assertNotNull(goal);
+        assertEquals(3, goal.getId());
+    }
+
     /**
      * Testing if a goal can be saved
      * @author Santosh Kakkar
@@ -71,22 +87,6 @@ public class GoalControllerTest {
                 this.restTemplate.getForEntity("/goals/4", Goal.class);
         Goal goalSaved = responseGetOne.getBody();
         assertNotNull(goalSaved, "The goal is not correctly saved");
-    }
-
-     /** Testing if a single Goal can be retrieved by ID
-     * @author Santosh Kakkar
-     */
-    @Test
-    public void singleGoalCanBeRetrievedById() {
-        ResponseEntity<Goal> response =
-                this.restTemplate.getForEntity("/goals/3", Goal.class);
-
-        // check status code, location header and response body of post request
-        assertEquals(HttpStatus.OK, response.getStatusCode(), "Status code should be 200 OK");
-
-        Goal goal = response.getBody();
-        assertNotNull(goal);
-        assertEquals(3, goal.getId());
     }
 
     /**
