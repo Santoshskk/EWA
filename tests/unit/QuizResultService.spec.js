@@ -10,26 +10,41 @@ const quizResultService = new RESTQuizResultAdaptor(CONFIG.BACKEND_URL + '/quizr
 beforeEach(() => {
   fetch.resetMocks()
 })
-
+// FAST
 describe('Saving results with async saveResults', () => {
   it('saves the quizResults', async function () {
-    // Feches a mock response with mockdata
+    // Arrange: Mock a response with mock data
     fetch.mockResponseOnce(JSON.stringify(mockQuizResults), { headers: { 'Content-Type': 'application/json' }, method: 'POST' })
+
+    // Act: Call the async saveResults method
     const response = await quizResultService.saveResults(mockQuizResults, mockUser)
+
+    // Assert: Check that the response has the correct length
     expect(response.length, 'The amount of results is incorrect').toStrictEqual(2)
   })
 })
+
+// FAST
 describe('Getting user with async getUserById', () => {
   it('should return null if userId is null', async function () {
-    // Feches a mock response with null
+    // Arrange: Mock a response with null
     fetch.mockResponseOnce(JSON.stringify(null), { headers: { 'Content-Type': 'application/json' }, method: 'POST' })
+
+    // Act: Call the async getByUserId method with null userId
     const response = await quizResultService.getByUserId(null)
+
+    // Assert: Check that the response is null
     expect(response, 'The user does not exist').toBeNull()
   })
+
   it('should return null if the user does not exist', async function () {
-    // Feches a mock response with an user that does not exists
+    // Arrange: Mock a response with an user that does not exist
     fetch.mockResponseOnce(JSON.stringify(null), { headers: { 'Content-Type': 'application/json' }, method: 'POST' })
+
+    // Act: Call the async getByUserId method with a non-existing userId
     const response = await quizResultService.getByUserId(5)
+
+    // Assert: Check that the response is null
     expect(response, 'The user does not exist').toBeNull()
   })
 })

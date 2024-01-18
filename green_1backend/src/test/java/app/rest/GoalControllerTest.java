@@ -20,32 +20,33 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class GoalControllerTest {
+
     @Autowired
     private TestRestTemplate restTemplate;
     private List<Goal> goals;
 
     @BeforeEach
     void setup() {
+        // arrange
         this.goals = List.of(
                 new Goal(1, 1, "No Poverty"),
                 new Goal(2, 1, "Zero Hunger"),
                 new Goal(3, 1, "Good Health and Well-being")
-
         );
-
     }
 
     /**
      * Testing if all Goals can be retrieved
      * @author Jiaming Yan
      */
+    // FAST
     @Test
     public void allGoalsCanBeRetrieved() {
-
+        // act
         ResponseEntity<Goal[]> response =
                 this.restTemplate.getForEntity("/goals", Goal[].class);
 
-        // check status code, location header and response body of post request
+        // assert
         assertEquals(HttpStatus.OK, response.getStatusCode(), "Status code should be 200 OK");
 
         Goal[] goalsList = response.getBody();
@@ -55,15 +56,18 @@ public class GoalControllerTest {
         }
     }
 
-     /** Testing if a single Goal can be retrieved by ID
+    /**
+     * Testing if a single Goal can be retrieved by ID
      * @author Santosh Kakkar
      */
+    // FAST
     @Test
     public void singleGoalCanBeRetrievedById() {
+        // act
         ResponseEntity<Goal> response =
                 this.restTemplate.getForEntity("/goals/3", Goal.class);
 
-        // check status code, location header and response body of post request
+        // assert
         assertEquals(HttpStatus.OK, response.getStatusCode(), "Status code should be 200 OK");
 
         Goal goal = response.getBody();
@@ -72,41 +76,55 @@ public class GoalControllerTest {
     }
 
     /**
-     * Testing if a goal can be saved
-     * @author Santosh Kakkar
-     */
-    @Test
-    public void newGoalCanBeSaved() {
-        Goal newGoal = new Goal(4, 2, "Life under water");
-        ResponseEntity<Goal> response =
-                this.restTemplate.postForEntity("/goals", newGoal, Goal.class);
-        assertEquals(HttpStatus.OK, response.getStatusCode(), "Status code should be 200 OK");
-        Goal savedGoal = response.getBody();
-        assertNotNull(savedGoal, "Saved goal is null");
-        ResponseEntity<Goal> responseGetOne =
-                this.restTemplate.getForEntity("/goals/4", Goal.class);
-        Goal goalSaved = responseGetOne.getBody();
-        assertNotNull(goalSaved, "The goal is not correctly saved");
-    }
-
-    /**
      * Testing if a single Goal can be deleted by ID
      * @author Santosh Kakker
      */
+    // Right Bicep
     @Test
     public void singleGoalCanBeDeletedById() {
+        // Act (Delete the goal)
         ResponseEntity<Goal> response =
                 this.restTemplate.exchange("/goals/2", HttpMethod.DELETE, null, Goal.class);
 
+        // Assert (Check HTTP status and deleted goal)
         assertEquals(HttpStatus.OK, response.getStatusCode(), "Status code should be 200 OK");
 
         Goal deletedGoal = response.getBody();
         assertNotNull(deletedGoal);
         assertEquals(2, deletedGoal.getId());
 
-        // Check if the goal is deleated
+        // Check if the goal is deleted
         ResponseEntity<Goal> checkDeletedGoal =
                 this.restTemplate.getForEntity("/goals/2", Goal.class);
-        assertEquals(HttpStatus.OK, checkDeletedGoal.getStatusCode(), "Status code should be OK");
+        assertEquals(HttpStatus.OK, checkDeletedGoal.getStatusCode(), "Status code should be 404 NOT FOUND");
+    }
+
+    /**
+     * Testing if a goal can be saved
+     * @author Santosh Kakkar
+     */
+    // FIRST
+    @Test
+    public void newGoalCanBeSaved() {
+        // arrange
+        Goal newGoal = new Goal(4, 2, "Life under water");
+
+        // act
+        ResponseEntity<Goal> response =
+                this.restTemplate.postForEntity("/goals", newGoal, Goal.class);
+
+        // assert
+        assertEquals(HttpStatus.OK, response.getStatusCode(), "Status code should be 200 OK");
+        Goal savedGoal = response.getBody();
+        assertNotNull(savedGoal, "Saved goal is null");
+
+        // act
+        ResponseEntity<Goal> responseGetOne =
+                this.restTemplate.getForEntity("/goals/4", Goal.class);
+
+        // assert
+        Goal goalSaved = responseGetOne.getBody();
+        assertNotNull(goalSaved, "The goal is not correctly saved");
     }
 }
+

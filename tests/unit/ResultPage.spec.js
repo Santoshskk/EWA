@@ -27,44 +27,67 @@ beforeEach(() => {
     }
   })
 })
-
+// FIRST
 describe('Getting results with async getUserById', () => {
+  // arrange
   it('should return quizResults of user', async function () {
     // Feches a mock response with null
     fetch.mockResponseOnce(JSON.stringify(mockQuizResults), { headers: { 'Content-Type': 'application/json' }, method: 'GET' })
+
+    // act
     const response = await quizResultService.getByUserId(mockUser.user_id)
+
+    // assert
     expect(response, 'There are no results for this user').not.toBeNull()
   })
 })
 
+// FIRST
 describe('Sort buttons exists', () => {
+  // arrange
   it('Should have sorting button', () => {
+    // assert
     expect(wrapper.find('#sortButton'), 'There is no sorting button').toBeTruthy()
   })
+
+  // arrange
   it('Should have ascending button', () => {
+    // assert
     expect(wrapper.find('#top'), 'There is no ascending button found ').toBeTruthy()
   })
+
+  // arrange
   it('Should have descending button', () => {
+    // assert
     expect(wrapper.find('#bottom'), 'There is no descending button found ').toBeTruthy()
   })
 })
 
+// FIRST
 describe('Sort buttons', () => {
+  // arrange
   it('Should sort results in ascending order when "Date ascending" button is clicked', async () => {
+    // assert
     expect(wrapper.vm.sortDirection).toBe('desc')
 
+    // act
     // Click the "Date ascending" button
     await wrapper.find('#top').trigger('click')
 
+    // assert
     expect(wrapper.vm.sortDirection).toBe('asc')
   })
 
+  // arrange
   it('Should sort results in descending order when "Date descending" button is clicked', async () => {
+    // assert
     expect(wrapper.vm.sortDirection).toBe('asc')
 
+    // act
     // Click the "Date descending" button
     await wrapper.find('#bottom').trigger('click')
 
+    // assert
     expect(wrapper.vm.sortDirection).toBe('asc')
   })
 })

@@ -28,10 +28,9 @@ public class QuizResultRepositoryJPATest {
 
     @BeforeEach
     public void setup() {
-        System.out.println("setup");
+        // Arrange: Create and save a user, quiz results with different SDG arrays and dates
         User user = new User(3);
         User saveduser = usersRepositoryJPA.save(user);
-        System.out.println("user saved");
 
         Set<Long> sdgArray1 = new HashSet<>();
         sdgArray1.add(1L);
@@ -47,18 +46,21 @@ public class QuizResultRepositoryJPATest {
 
         QuizResult quizResult1 = new QuizResult(sdgArray1, saveduser, dateOfQuiz1);
         QuizResult quizResult2 = new QuizResult(sdgArray2, saveduser, dateOfQuiz2);
+
+        // Act: Save the quiz results in the repository
         quizResultRepository.save(quizResult1);
         quizResultRepository.save(quizResult2);
-
-
     }
 
     /**
      * Test for returning the quizResults
      * @author Santosh Kakkar
      */
+    //FIRST
     @Test
     public void findAndReturn() {
+        // Act: Retrieve all quiz results from the repository
+        // Assert: Check that the size of the returned list is 2
         assertEquals(2, quizResultRepository.findAll().size(), "Size should be 2");
     }
 
@@ -68,11 +70,14 @@ public class QuizResultRepositoryJPATest {
      */
     @Test
     public void testQuizResultInitialization() {
+        // Arrange: Create a user, SDG array, and date
         Set<Long> sdgArray = new HashSet<>();
         sdgArray.add(1L);
         User user = new User();
         LocalDate dateOfQuiz = LocalDate.now();
 
+        // Act: Create a quiz result with the arranged data
+        // Assert: Check that the quiz result has the expected properties
         QuizResult quizResult = new QuizResult(sdgArray, user, dateOfQuiz);
 
         assertNotNull(quizResult);
@@ -86,7 +91,10 @@ public class QuizResultRepositoryJPATest {
      * @author Santosh Kakkar
      */
     @Test
+    //FIRST
     public void testQuizResultInitializationWithDefaultValues() {
+        // Act: Create a quiz result with default values
+        // Assert: Check that the quiz result has the expected default properties
         QuizResult quizResult = new QuizResult();
 
         assertNotNull(quizResult);
@@ -94,6 +102,6 @@ public class QuizResultRepositoryJPATest {
         assertNull(quizResult.getUser());
         assertNull(quizResult.getDateOfQuiz());
     }
-
 }
+
 

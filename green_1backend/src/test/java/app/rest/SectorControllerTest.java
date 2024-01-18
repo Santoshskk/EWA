@@ -28,51 +28,73 @@ public class SectorControllerTest {
 
     @BeforeEach
     void setup() {
+        // arrange
         sector = new Sector((long) 1, "The new sector", "The new sector description");
     }
-
+// FIRST
     @Test
     public void allSectorsCanBeRetrieved() {
+        // act
         ResponseEntity<Sector[]> response =
                 this.restTemplate.getForEntity("/sector/all", Sector[].class);
+
+        // assert
         assertEquals(HttpStatus.OK, response.getStatusCode(), "Status code should be 200 OK");
     }
-
+// FIRST
     @Test
     public void sectorCanBeAdded() {
+        // act
         ResponseEntity<Sector> response =
                 this.restTemplate.postForEntity("/sector/0", sector, Sector.class);
+
+        // assert
         assertEquals(HttpStatus.CREATED, response.getStatusCode(), "Status code should be 201 CREATED");
     }
-
+// FIRST
     @Test
     public void sectorCanBeEdited() {
+        // arrange
         sector.setName("The edited sector");
+
+        // act
         ResponseEntity<Sector> response =
                 this.restTemplate.postForEntity("/sector/1", sector, Sector.class);
+
+        // assert
         assertEquals(HttpStatus.OK, response.getStatusCode(), "Status code should be 200 OK");
         assertEquals("The edited sector", Objects.requireNonNull(response.getBody()).getName(),
                 "Name should be 'The edited sector'");
     }
-
+// FIRST
     @Test
     public void sectorCantBeDeleted() {
+        // act
         ResponseEntity<Void> response =
                 this.restTemplate.exchange("/sector/1", HttpMethod.DELETE, null, Void.class);
+
+        // assert
         assertEquals(HttpStatus.CONFLICT, response.getStatusCode(), "Status code should be 409 CONFLICT");
     }
-
+// FIRST
     @Test
     public void sectorCanBeRetrievedById() {
+        // act
         ResponseEntity<Sector> response =
                 this.restTemplate.getForEntity("/sector/1", Sector.class);
+
+        // assert
         assertEquals(HttpStatus.OK, response.getStatusCode(), "Status code should be 200 OK");
     }
-
-    @Test public void sectorCantBeFound() {
+// FIRST
+    @Test
+    public void sectorCantBeFound() {
+        // act
         ResponseEntity<?> response =
                 this.restTemplate.getForEntity("/sector/7", Void.class);
+
+        // assert
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode(), "Status code should be 404 NOT FOUND");
     }
-
 }
+
